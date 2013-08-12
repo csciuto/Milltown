@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -26,16 +27,11 @@ public class InfoBar extends JPanel {
 	 */
 	public InfoBar(String name, int height) {
 		super();
+		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		setName(name);
 		setBackground(Color.WHITE);
 		setBorder(BorderFactory.createLoweredBevelBorder());
 		setPreferredSize(new Dimension(BAR_WIDTH,height));
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showMessageDialog(null, "Clicked in infobar");
-			}
-		});
 	}
 
 }

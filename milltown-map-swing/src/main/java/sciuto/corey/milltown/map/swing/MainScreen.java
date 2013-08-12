@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -41,10 +42,10 @@ public class MainScreen extends JFrame {
 	private static final int WINDOW_HEIGHT = 768;
 
 	// Timer stuff
-	private static final int SLOW = 50000;
-	private static final int MEDIUM = 10000;
-	private static final int FAST = 5000;
-	private static final int WICKED_FAST = 1000;
+	private static final int SLOW = 10000;
+	private static final int MEDIUM = 5000;
+	private static final int FAST = 1000;
+	private static final int WICKED_FAST = 500;
 
 	/*
 	 * INSTANCE VARIABLES
@@ -70,6 +71,7 @@ public class MainScreen extends JFrame {
 	
 	private InfoBar topBar;
 	private FieldDisplayer dateLabel;
+	private SpeedButton speedButton;
 	
 	private InfoBar bottomBar;
 
@@ -100,7 +102,7 @@ public class MainScreen extends JFrame {
 	private SimulationHandler simulationHandler;
 	
 	/**
-	 * Renders Game in the Main Screen
+	 * Renders Game in the Main Screen and starts the simulation
 	 */
 	public MainScreen(Game g) {
 
@@ -121,11 +123,19 @@ public class MainScreen extends JFrame {
 		/*
 		 * GRAPHICS
 		 */
-		setMinimumSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
-
+		
+		// The screen itself
 		final Dimension screenSize = new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT);
+		setMinimumSize(screenSize);
 		setSize(screenSize);
 
+		BorderLayout mgr = new BorderLayout();
+		mgr.setVgap(5);
+		mgr.setHgap(5);
+		getContentPane().setLayout(mgr);
+		getContentPane().setBackground(Color.LIGHT_GRAY);
+		
+		// The menu bar
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		JMenu helpMenu = new JMenu("Help");
@@ -135,28 +145,31 @@ public class MainScreen extends JFrame {
 		menuBar.add(helpMenu);
 		this.setJMenuBar(menuBar);
 
-		BorderLayout mgr = new BorderLayout();
-		mgr.setVgap(5);
-		mgr.setHgap(5);
-		getContentPane().setLayout(mgr);
-		getContentPane().setBackground(Color.LIGHT_GRAY);
-
-		leftBox = new ToolBox("left",150);
-		getContentPane().add(leftBox,BorderLayout.LINE_START);
-		
+		// Center Map
 		map = new GameMap(game.getBoard(), guiUpdateTimer);
 		getContentPane().add(map,BorderLayout.CENTER);
 		
+		// Left Panel
+		leftBox = new ToolBox("left",150);
+		getContentPane().add(leftBox,BorderLayout.LINE_START);
+		
+		// Right Panel
 		rightBox = new ToolBox("right", 221);
 		getContentPane().add(rightBox,BorderLayout.LINE_END);
 		
+		// Top Panel
 		topBar = new InfoBar("top", 35);
-		topBar.setLayout(new BoxLayout(topBar, BoxLayout.LINE_AXIS));
 		getContentPane().add(topBar,BorderLayout.PAGE_START);
 		
 		dateLabel = new FieldDisplayer("Date", game.getGameDate(), guiUpdateTimer);
 		topBar.add(dateLabel);
+
+		topBar.add(Box.createHorizontalStrut(10));
 		
+		speedButton = new SpeedButton(simulationTimer);
+		topBar.add(speedButton);
+		
+		// Bottom Panel
 		bottomBar = new InfoBar("bottom", 35);
 		getContentPane().add(bottomBar,BorderLayout.PAGE_END);
 
@@ -211,26 +224,12 @@ public class MainScreen extends JFrame {
 						simulationTimer.start();
 					}
 				} else if (k.getKeyChar() == 's') {
-					simulationTimer.stop();
-					if (simulationTimer.getDelay() == SLOW) {
-						simulationTimer.setDelay(MEDIUM);
-						JOptionPane.showMessageDialog(null, "Simulation Speed: MEDIUM");
-					} else if (simulationTimer.getDelay() == MEDIUM) {
-						simulationTimer.setDelay(FAST);
-						JOptionPane.showMessageDialog(null, "Simulation Speed: FAST");
-					} else if (simulationTimer.getDelay() == FAST) {
-						simulationTimer.setDelay(WICKED_FAST);
-						JOptionPane.showMessageDialog(null, "Simulation Speed: WICKED FAST");
-					} else if (simulationTimer.getDelay() == WICKED_FAST) {
-						simulationTimer.setDelay(SLOW);
-						JOptionPane.showMessageDialog(null, "Simulation Speed: SLOW");
-					}
-					if (timerRunning) {
-						simulationTimer.start();
-					}
+					speedButton.doClick();
 				}
 			}
 		});
+		
+		simulationTimer.start();
 	}
 
 }

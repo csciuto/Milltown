@@ -34,6 +34,9 @@ public class FieldDisplayer extends JLabel implements ActionListener {
 		this.displayName = displayName;
 		this.field = field;
 		this.t = t;
+		
+		setText(String.format("%s:  %s", displayName, field));
+		
 		t.addActionListener(this);
 	}
 }
