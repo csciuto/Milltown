@@ -1,5 +1,6 @@
 package sciuto.corey.milltown.map.swing;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,6 +23,25 @@ public class FieldDisplayer extends JLabel implements ActionListener {
 		if (e.getSource() == t){
 			setText(String.format("%s:  %s", displayName, field));
 		}
+	}
+	
+	/**
+	 * Creates a FieldDisplayer
+	 * @param displayName The name to display the field as
+	 * @param field The field to call toString on
+	 * @param labelSize The preferred size of the label
+	 * @param The timer to listen to updates from.
+	 */
+	public FieldDisplayer(String displayName, Object field, Dimension labelSize, Timer t){
+		this.displayName = displayName;
+		this.field = field;
+		this.t = t;
+		
+		this.setPreferredSize(labelSize);
+		
+		setText(String.format("%s:  %s", displayName, field));
+		
+		t.addActionListener(this);
 	}
 	
 	/**

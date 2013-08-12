@@ -11,7 +11,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -71,6 +70,9 @@ public class MainScreen extends JFrame {
 	
 	private InfoBar topBar;
 	private FieldDisplayer dateLabel;
+	private FieldDisplayer populationLabel;
+	private FieldDisplayer moneyLabel;
+	private FieldDisplayer economyLabel;
 	private SpeedButton speedButton;
 	
 	private InfoBar bottomBar;
@@ -160,14 +162,27 @@ public class MainScreen extends JFrame {
 		// Top Panel
 		topBar = new InfoBar("top", 35);
 		getContentPane().add(topBar,BorderLayout.PAGE_START);
-		
-		dateLabel = new FieldDisplayer("Date", game.getGameDate(), guiUpdateTimer);
-		topBar.add(dateLabel);
 
 		topBar.add(Box.createHorizontalStrut(10));
-		
-		speedButton = new SpeedButton(simulationTimer);
+		speedButton = new SpeedButton(new Dimension(150,35), simulationTimer);
 		topBar.add(speedButton);
+		
+		topBar.add(Box.createHorizontalStrut(10));
+		dateLabel = new FieldDisplayer("Date", game.getGameDate(), new Dimension(150,35), guiUpdateTimer);
+		topBar.add(dateLabel);
+
+		topBar.add(Box.createHorizontalStrut(50));
+		populationLabel = new FieldDisplayer("Population", game.getPopulation(), new Dimension(250,35), guiUpdateTimer);
+		topBar.add(populationLabel);
+
+		topBar.add(Box.createHorizontalStrut(10));
+		moneyLabel = new FieldDisplayer("Funds", game.getMoney(), new Dimension(250,35), guiUpdateTimer);
+		topBar.add(moneyLabel);
+		
+		topBar.add(Box.createHorizontalStrut(10));
+		economyLabel = new FieldDisplayer("Economy", game.getEconomy(), new Dimension(250,35), guiUpdateTimer);
+		topBar.add(economyLabel);
+		topBar.add(Box.createHorizontalStrut(10));
 		
 		// Bottom Panel
 		bottomBar = new InfoBar("bottom", 35);

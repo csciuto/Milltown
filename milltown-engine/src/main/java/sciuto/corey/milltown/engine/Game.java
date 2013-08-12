@@ -2,6 +2,8 @@ package sciuto.corey.milltown.engine;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.mutable.MutableLong;
+
 /**
  * The main game state class
  * 
@@ -15,10 +17,12 @@ public class Game implements Serializable {
 	private GameBoard board;
 
 	private GameDate gameDate = new GameDate();
-
+	private FormattedNumber population = new FormattedNumber(0);
+	private DollarAmount money = new DollarAmount(2000000L);
+	private DollarAmount economy = new DollarAmount(0);
+	
 	protected Game() {
 		board = new GameBoard();
-		gameDate = new GameDate();
 	}
 
 	/**
@@ -38,5 +42,17 @@ public class Game implements Serializable {
 
 	public GameDate getGameDate() {
 		return gameDate;
+	}
+	
+	public MutableLong getPopulation() {
+		return population;
+	}
+	
+	public MutableLong getMoney() {
+		return money;
+	}
+	
+	public MutableLong getEconomy() {
+		return economy;
 	}
 }

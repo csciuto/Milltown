@@ -1,5 +1,6 @@
 package sciuto.corey.milltown.map.swing;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -25,11 +26,14 @@ public class SpeedButton extends JButton implements ActionListener {
 
 	private Speed speed;
 
-	public SpeedButton(Timer simulationTimer) {
+	public SpeedButton(Dimension buttonSize, Timer simulationTimer) {
 		this.simulationTimer = simulationTimer;
 		this.speed = Speed.MEDIUM;
 		this.setText(this.speed.speedName);
 		this.setFocusable(false);
+		this.setPreferredSize(buttonSize);
+		this.setMinimumSize(buttonSize);
+		this.setToolTipText("Speed");
 		this.addActionListener(this);
 	}
 
