@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import sciuto.corey.milltown.engine.GameBoard;
+import sciuto.corey.milltown.engine.board.GameBoard;
 
 /**
  * The main map

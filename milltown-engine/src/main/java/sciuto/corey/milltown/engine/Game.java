@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.mutable.MutableLong;
 
+import sciuto.corey.milltown.engine.board.GameBoard;
+import sciuto.corey.milltown.engine.board.GameDate;
+
 /**
  * The main game state class
  * 

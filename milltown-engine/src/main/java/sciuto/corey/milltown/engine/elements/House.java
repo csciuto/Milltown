@@ -4,12 +4,11 @@ import sciuto.corey.milltown.engine.board.AbstractBuilding;
 
 
 
-public class Land extends AbstractBuilding {
+public class House extends AbstractBuilding {
 
-	private static final long serialVersionUID = -9171824974913412268L;
+	private static final long serialVersionUID = 2870508695570731740L;
 
-	public Land(){
+	public House(){
 		super(SMALL_SQUARE);
 	}
-	
 }

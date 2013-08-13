@@ -1,4 +1,4 @@
-package sciuto.corey.milltown.engine;
+package sciuto.corey.milltown.engine.board;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -16,7 +16,7 @@ public class GameDate implements Serializable {
 	}
 	
 	public void tick(){
-		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		calendar.add(Calendar.WEEK_OF_YEAR, 1);
 	}
 	
 	@Override
