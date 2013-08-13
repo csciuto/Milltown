@@ -22,7 +22,6 @@ public abstract class AbstractBuilding implements Serializable {
 	protected final Pair<Integer, Integer> size;
 
 	private Tile rootTile = null;
-	private boolean isConstructed = false;
 
 	/**
 	 * Instantiates an unbuilt building.
@@ -41,10 +40,6 @@ public abstract class AbstractBuilding implements Serializable {
 		return rootTile;
 	}
 
-	public boolean isConstructed() {
-		return isConstructed;
-	}
-	
 	/**
 	 * Unit tests only! Otherwise, use the BuidingConstructor.
 	 * @param t

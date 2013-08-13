@@ -3,6 +3,7 @@ package sciuto.corey.milltown.engine.board;
 import org.apache.commons.lang3.tuple.Pair;
 
 import sciuto.corey.milltown.engine.elements.Land;
+import sciuto.corey.milltown.engine.elements.Water;
 
 /**
  * This class ties together the Tile and AbstractBuilding classes.
@@ -42,20 +43,59 @@ public class BuildingConstructor {
 	}
 
 	/**
-	 * Builds on this spot. Does not check if it can first!
+	 * Builds on this spot. Returns true if the building was built.
 	 * @param t
 	 * @param b
+	 * @return
 	 */
-	public void build(Tile t, AbstractBuilding b) {
+	public boolean build(Tile upperLeftTile, AbstractBuilding building) {
+		
+		if (!canBuild(upperLeftTile,building)){
+			return false;
+		}
+		
+		Pair<Integer, Integer> size = null;
+		size = building.getSize();
 
+		for (int x = upperLeftTile.getXLoc(); x < upperLeftTile.getXLoc() + size.getLeft(); x++) {
+			for (int y = upperLeftTile.getYLoc(); y < upperLeftTile.getYLoc() + size.getRight(); y++) {
+				Tile t = board.getTile(x, y);
+				t.setContents(building);
+				t.setDirty(true);
+			}
+		}
+		
+		building.setRootTile(upperLeftTile);
+		
+		return true;
 	}
 
 	/**
 	 * Demolish whatever building is on this spot.
 	 * @param t
 	 */
-	public void demolish(Tile t) {
+	public void demolish(Tile tile) {
 
+		AbstractBuilding building = tile.getContents();
+		
+		if (building instanceof Water || building instanceof Land){
+			return;
+		}
+		Tile rootTile = building.getRootTile();
+		
+		Pair<Integer, Integer> size = null;
+		size = building.getSize();
+
+		for (int x = rootTile.getXLoc(); x < rootTile.getXLoc() + size.getLeft(); x++) {
+			for (int y = rootTile.getYLoc(); y < rootTile.getYLoc() + size.getRight(); y++) {
+				Tile t = board.getTile(x, y);
+				Land land = new Land();
+				t.setContents(land);
+				land.setRootTile(t);
+				t.setDirty(true);
+			}
+		}
+		building = null;
 	}
 
 	

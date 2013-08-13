@@ -5,12 +5,12 @@ import sciuto.corey.milltown.engine.elements.Water;
 public class DummyBoardGenerator {
 
 	/**
-	 * Makes this board:
+	 * Makes this board:<br><br>
 	 * 
-	 * LLLLL
-	 * LLWLL
-	 * LLLWL
-	 * LLLLW 
+	 * LLLLL<br>
+	 * LLWLL<br>
+	 * LLLWL<br>
+	 * LLLLW <br>
 	 * LLLLL
 	 * 
 	 */
