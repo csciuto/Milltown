@@ -1,8 +1,10 @@
 package sciuto.corey.milltown.map.swing;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -15,8 +17,9 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.Timer;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
 
 import sciuto.corey.milltown.engine.GameBoard;
 import sciuto.corey.milltown.model.board.Tile;
@@ -38,48 +41,64 @@ public class GameMap extends JPanel implements ActionListener {
 
 	private final int squareSize;
 
-	private Timer t;
-	
-	private final SquareMapper squarePicker;
-	
-	private final Highlight selectedTile;
-	
+	private Timer timer;
+
+	private final SquareMapper squareMapper;
+
+	/*
+	 * The tile to highlight Set the active tile to null to hide the highlight.
+	 */
+	private Tile activeTile = null;
+
 	public int getSquareSize() {
 		return squareSize;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == t){
+		if (e.getSource() == timer) {
 			repaint();
 		}
 	}
 
-	public GameMap(final GameBoard b, final MultiLineDisplay selectionPanel, final Timer t) {
+	public GameMap(final GameBoard b, final MultiLineDisplay selectionPanel, final Timer timer) {
 		super();
 
 		board = b;
 
 		squareSize = (MAP_SIZE_PX) / board.getBoardSize();
-		
-		squarePicker = new SquareMapper(board, MAP_SIZE_PX);
-		
-		selectedTile = new Highlight(squareSize, squareSize, Color.PINK);
-		
+
+		squareMapper = new SquareMapper(board, MAP_SIZE_PX);
+
 		setName("mainMap");
 		setBackground(new Color(0, 255, 0));
 		setBorder(BorderFactory.createEtchedBorder());
 		setPreferredSize(new Dimension(MAP_SIZE_PX, MAP_SIZE_PX));
 
-		addMouseListener(new MouseAdapter() {
+		MouseInputListener listener = new MouseInputAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Tile activeTile = squarePicker.mapSquare(e, selectedTile);
+				repaintSelectionBox(e);
+				activeTile = squareMapper.mapSquare(e);
 				selectionPanel.setText(activeTile.toString());
+				repaintSelectionBox(e);
 			}
-		});
-		
-		this.t = t;
+
+			/**
+			 * Used to color and uncolor the highlighted square.
+			 * @param e
+			 */
+			protected void repaintSelectionBox(MouseEvent e) {
+				if (activeTile != null){
+					e.getComponent().repaint(activeTile.getXLoc() * squareSize, activeTile.getYLoc() * squareSize,
+							squareSize, squareSize);
+				}
+			}
+		};
+		addMouseListener(listener);
+		addMouseMotionListener(listener);
+
+		this.timer = timer;
 	}
 
 	@Override
@@ -87,12 +106,13 @@ public class GameMap extends JPanel implements ActionListener {
 
 		super.paintComponent(g);
 
+		// Draw the board itself.
 		if (board != null) {
 			int currentX = 0;
 			int currentY = 0;
 
 			int dimension = board.getBoardSize();
-			
+
 			for (int j = 0; j < dimension; j++) {
 				for (int i = 0; i < dimension; i++) {
 
@@ -121,6 +141,15 @@ public class GameMap extends JPanel implements ActionListener {
 				currentX = 0;
 
 			}
+		}
+
+		// Draw the highlight box.
+		if (activeTile != null){
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setColor(Color.PINK);
+			g2.drawRect(activeTile.getXLoc() * squareSize, activeTile.getYLoc() * squareSize, squareSize, squareSize);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.5f));
+			g2.fillRect(activeTile.getXLoc() * squareSize, activeTile.getYLoc() * squareSize, squareSize, squareSize);
 		}
 	}
 }

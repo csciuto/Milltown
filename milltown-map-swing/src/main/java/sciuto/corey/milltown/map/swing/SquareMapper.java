@@ -29,19 +29,14 @@ public class SquareMapper {
 	/**
 	 * Maps the tile on board to the click position on the Mouse event.
 	 * @param e The click event
-	 * @param selectedTile The highlighter to put over the tile, or null.
 	 * @return
 	 */
-	public Tile mapSquare(MouseEvent e, Highlight selectedTile) {
+	public Tile mapSquare(MouseEvent e) {
 			int x = e.getX();
 			int y = e.getY();
 			
 			int xModSquareSize = mappingHelper(x);
 			int yModSquareSize = mappingHelper(y);
-			
-			if (selectedTile != null){
-				selectedTile.setLocation(xModSquareSize*squareSize, yModSquareSize*squareSize);
-			}
 			
 			return board.getTile(xModSquareSize, yModSquareSize);
 	}
