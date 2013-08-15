@@ -18,8 +18,8 @@ public class SpeedButton extends JButton implements ActionListener {
 		this.speed = Speed.MEDIUM;
 		this.setText(this.speed.getSpeedName());
 		this.setFocusable(false);
-		this.setPreferredSize(buttonSize);
-		this.setMinimumSize(buttonSize);
+		this.setSize(buttonSize);
+		this.setSize(buttonSize);
 		this.setToolTipText("Speed");
 		this.addActionListener(this);
 	}

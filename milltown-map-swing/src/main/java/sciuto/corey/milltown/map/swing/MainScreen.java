@@ -125,7 +125,7 @@ public class MainScreen extends JFrame {
 
 		// The screen itself
 		final Dimension screenSize = new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT);
-		setMinimumSize(screenSize);
+		setSize(screenSize);
 		setSize(screenSize);
 
 		BorderLayout mgr = new BorderLayout();

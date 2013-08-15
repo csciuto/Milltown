@@ -10,8 +10,7 @@ public class MultiLineDisplay extends JTextArea {
 
 	public MultiLineDisplay(String name, int xSize, int ySize){
 		this.setName(name);
-		this.setPreferredSize(new Dimension(xSize,ySize));
-		this.setMaximumSize(new Dimension(xSize,ySize));
+		this.setSize(new Dimension(xSize,ySize));
 		
 		this.setBorder(BorderFactory.createTitledBorder(null, getName(), TitledBorder.CENTER,TitledBorder.TOP));
 		

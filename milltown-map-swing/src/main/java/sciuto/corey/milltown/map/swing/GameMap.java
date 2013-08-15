@@ -42,6 +42,8 @@ public class GameMap extends JPanel implements ActionListener {
 	
 	private final SquareMapper squarePicker;
 	
+	private final Highlight selectedTile;
+	
 	public int getSquareSize() {
 		return squareSize;
 	}
@@ -62,6 +64,8 @@ public class GameMap extends JPanel implements ActionListener {
 		
 		squarePicker = new SquareMapper(board, MAP_SIZE_PX);
 		
+		selectedTile = new Highlight(squareSize, squareSize, Color.PINK);
+		
 		setName("mainMap");
 		setBackground(new Color(0, 255, 0));
 		setBorder(BorderFactory.createEtchedBorder());
@@ -70,7 +74,7 @@ public class GameMap extends JPanel implements ActionListener {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Tile activeTile = squarePicker.mapSquare(e);
+				Tile activeTile = squarePicker.mapSquare(e, selectedTile);
 				selectionPanel.setText(activeTile.toString());
 			}
 		});
