@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import sciuto.corey.milltown.engine.GameBoard;
+import sciuto.corey.milltown.model.board.Tile;
 
 /**
  * The main map
@@ -32,7 +33,7 @@ public class GameMap extends JPanel implements ActionListener {
 	 */
 	public static final int MAP_SIZE_PX = 625;
 
-	private GameBoard board = null;
+	private final GameBoard board;
 
 	private final int squareSize;
 
@@ -64,7 +65,7 @@ public class GameMap extends JPanel implements ActionListener {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showMessageDialog(null, "Click.");
+				Tile activeTole = SquarePicker.mapSquare(e, board, this);
 			}
 		});
 		
