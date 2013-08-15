@@ -14,9 +14,9 @@ public class GameMapUnitTest {
 	public void testConstruction(){ 
 		Game g = GameManager.newGame();
 		
-		GameMap gm = new GameMap(g.getBoard(), null);
+		GameMap gm = new GameMap(g.getBoard(), null, null);
 		
-		assertEquals((GameMap.MAP_SIZE_PX - g.getBoard().getBoardSize()) / g.getBoard().getBoardSize(), gm.getSquareSize());
+		assertEquals((GameMap.MAP_SIZE_PX) / g.getBoard().getBoardSize(), gm.getSquareSize());
 		
 	}
 	

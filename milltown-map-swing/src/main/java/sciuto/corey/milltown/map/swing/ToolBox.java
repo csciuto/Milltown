@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -28,6 +29,8 @@ public class ToolBox extends JPanel {
 		super();
 		setName(name);
 		setBackground(Color.WHITE);
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		
 		setBorder(BorderFactory.createLoweredBevelBorder());
 		setPreferredSize(new Dimension(width, BOX_HEIGHT));
 		addMouseListener(new MouseAdapter() {

@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 import sciuto.corey.milltown.engine.GameBoard;
@@ -39,6 +40,8 @@ public class GameMap extends JPanel implements ActionListener {
 
 	private Timer t;
 	
+	private final SquareMapper squarePicker;
+	
 	public int getSquareSize() {
 		return squareSize;
 	}
@@ -50,22 +53,25 @@ public class GameMap extends JPanel implements ActionListener {
 		}
 	}
 
-	public GameMap(GameBoard b, Timer t) {
+	public GameMap(final GameBoard b, final MultiLineDisplay selectionPanel, final Timer t) {
 		super();
 
 		board = b;
 
-		squareSize = (MAP_SIZE_PX - board.getBoardSize()) / board.getBoardSize();
+		squareSize = (MAP_SIZE_PX) / board.getBoardSize();
+		
+		squarePicker = new SquareMapper(board, MAP_SIZE_PX);
 		
 		setName("mainMap");
-		setBackground(new Color(0, 127, 0));
+		setBackground(new Color(0, 255, 0));
 		setBorder(BorderFactory.createEtchedBorder());
 		setPreferredSize(new Dimension(MAP_SIZE_PX, MAP_SIZE_PX));
 
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Tile activeTole = SquarePicker.mapSquare(e, board, this);
+				Tile activeTile = squarePicker.mapSquare(e);
+				selectionPanel.setText(activeTile.toString());
 			}
 		});
 		
@@ -78,16 +84,16 @@ public class GameMap extends JPanel implements ActionListener {
 		super.paintComponent(g);
 
 		if (board != null) {
-			int currentX = 1;
-			int currentY = 1;
+			int currentX = 0;
+			int currentY = 0;
 
 			int dimension = board.getBoardSize();
 			
 			for (int j = 0; j < dimension; j++) {
 				for (int i = 0; i < dimension; i++) {
 
-					g.setColor(new Color(0, 255, 0));
-					g.fillRect(currentX, currentY, squareSize, squareSize);
+					g.setColor(new Color(0, 127, 0));
+					g.drawRect(currentX, currentY, squareSize, squareSize);
 
 					String fileName = "/map_images/mill.png";
 					BufferedImage img = null;
@@ -104,11 +110,11 @@ public class GameMap extends JPanel implements ActionListener {
 					}
 					g.drawImage(img, currentX, currentY, squareSize, squareSize, null);
 
-					currentX += squareSize + 1;
+					currentX += squareSize;
 				}
 
-				currentY += squareSize + 1;
-				currentX = 1;
+				currentY += squareSize;
+				currentX = 0;
 
 			}
 		}

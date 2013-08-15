@@ -80,5 +80,10 @@ public class Tile implements Serializable {
 	public void setDirty(boolean isDirty) {
 		this.isDirty = isDirty;
 	}
+	
+	@Override
+	public String toString(){
+		return String.format("Tile: (%d,  %d)\nContents: %s",Integer.valueOf(xLoc),Integer.valueOf(yLoc),contents.toString());
+	}
 
 }

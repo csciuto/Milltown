@@ -6,8 +6,8 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>milltown-map-swing</artifactId>
-  <name>milltown-map-swing</name>
+  <artifactId>milltown-engine</artifactId>
+  <name>milltown-engine</name>
   <url>http://maven.apache.org</url>
   <build>
     <plugins>

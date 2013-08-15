@@ -47,4 +47,9 @@ public abstract class AbstractBuilding implements Serializable {
 	public void setRootTile(Tile t) {
 		rootTile = t;
 	}
+	
+	@Override
+	public String toString(){
+		return this.getClass().getSimpleName();
+	}
 }

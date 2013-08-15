@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 import sciuto.corey.milltown.engine.Game;
@@ -61,6 +62,7 @@ public class MainScreen extends JFrame {
 	private ToolBox leftBox;
 
 	private ToolBox rightBox;
+	private MultiLineDisplay clickDataBox;
 
 	private InfoBar topBar;
 	private FieldDisplayer dateLabel;
@@ -142,10 +144,6 @@ public class MainScreen extends JFrame {
 		menuBar.add(helpMenu);
 		this.setJMenuBar(menuBar);
 
-		// Center Map
-		map = new GameMap(game.getBoard(), guiUpdateTimer);
-		getContentPane().add(map, BorderLayout.CENTER);
-
 		// Left Panel
 		leftBox = new ToolBox("left", 150);
 		getContentPane().add(leftBox, BorderLayout.LINE_START);
@@ -153,6 +151,9 @@ public class MainScreen extends JFrame {
 		// Right Panel
 		rightBox = new ToolBox("right", 221);
 		getContentPane().add(rightBox, BorderLayout.LINE_END);
+
+		clickDataBox = new MultiLineDisplay("Current Selection", 221, 100);
+		rightBox.add(clickDataBox);
 
 		// Top Panel
 		topBar = new InfoBar("top", 35);
@@ -183,6 +184,10 @@ public class MainScreen extends JFrame {
 		bottomBar = new InfoBar("bottom", 35);
 		getContentPane().add(bottomBar, BorderLayout.PAGE_END);
 
+		// Center Map
+		map = new GameMap(game.getBoard(), clickDataBox, guiUpdateTimer);
+		getContentPane().add(map, BorderLayout.CENTER);
+		
 		/*
 		 * LISTENERS
 		 */
