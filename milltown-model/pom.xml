@@ -2,10 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>milltown-engine</artifactId>
+  <artifactId>milltown-model</artifactId>
   <packaging>jar</packaging>
 
-  <name>milltown-engine</name>
+  <name>milltown-model</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -20,24 +20,12 @@
       </plugin>
     </plugins>
   </build>
-
   <dependencies>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.1</version>
-    </dependency>
-    <dependency>
-      <groupId>sciuto.corey</groupId>
-      <artifactId>milltown-model</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
+  <dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+  </dependency>
   </dependencies>
-
   <parent>
     <groupId>sciuto.corey</groupId>
     <artifactId>milltown</artifactId>
