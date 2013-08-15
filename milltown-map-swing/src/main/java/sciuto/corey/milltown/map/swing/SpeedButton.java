@@ -11,25 +11,12 @@ public class SpeedButton extends JButton implements ActionListener {
 
 	private final Timer simulationTimer;
 
-	private enum Speed {
-		PAUSE("PAUSE", -1), SLOW("SLOW", 10000), MEDIUM("MEDIUM", 5000), FAST("FAST", 1000), WICKED_FAST("WICKED FAST",
-				500);
-
-		private final String speedName;
-		private final int speedInMilliseconds;
-
-		private Speed(String txt, int speedInMilliseconds) {
-			this.speedName = txt;
-			this.speedInMilliseconds = speedInMilliseconds;
-		}
-	};
-
 	private Speed speed;
 
 	public SpeedButton(Dimension buttonSize, Timer simulationTimer) {
 		this.simulationTimer = simulationTimer;
 		this.speed = Speed.MEDIUM;
-		this.setText(this.speed.speedName);
+		this.setText(this.speed.getSpeedName());
 		this.setFocusable(false);
 		this.setPreferredSize(buttonSize);
 		this.setMinimumSize(buttonSize);
@@ -58,14 +45,13 @@ public class SpeedButton extends JButton implements ActionListener {
 				this.speed = Speed.SLOW;
 				break;
 			}
-			
-			this.setText(this.speed.speedName);
-			
-			if (this.speed.speedInMilliseconds >= 0){
-				this.simulationTimer.setDelay(this.speed.speedInMilliseconds);
+
+			this.setText(this.speed.getSpeedName());
+
+			if (this.speed.getSpeedInMilliseconds() >= 0) {
+				this.simulationTimer.setDelay(this.speed.getSpeedInMilliseconds());
 				this.simulationTimer.start();
-			}
-			else {
+			} else {
 				this.simulationTimer.stop();
 			}
 

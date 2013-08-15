@@ -15,7 +15,7 @@ public class GameDate implements Serializable {
 		calendar.set(1820,0,1);
 	}
 	
-	public void tick(){
+	public void addWeek(){
 		calendar.add(Calendar.WEEK_OF_YEAR, 1);
 	}
 	

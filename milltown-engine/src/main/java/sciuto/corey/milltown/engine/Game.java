@@ -33,7 +33,7 @@ public class Game implements Serializable {
 	 * Runs the engine.
 	 */
 	public void simulate() {
-		gameDate.tick();
+		gameDate.addWeek();
 	}
 
 	public GameBoard getBoard() {

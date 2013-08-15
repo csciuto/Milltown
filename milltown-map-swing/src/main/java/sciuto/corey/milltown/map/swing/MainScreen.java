@@ -40,92 +40,87 @@ public class MainScreen extends JFrame {
 	private static final int WINDOW_WIDTH = 1024;
 	private static final int WINDOW_HEIGHT = 768;
 
-	// Timer stuff
-	private static final int SLOW = 10000;
-	private static final int MEDIUM = 5000;
-	private static final int FAST = 1000;
-	private static final int WICKED_FAST = 500;
-
 	/*
 	 * INSTANCE VARIABLES
 	 */
 
 	private Game game;
-	
+
 	/**
 	 * Runs the simulation itself
 	 */
 	private Timer simulationTimer;
-	
+
 	/**
 	 * Updates the GUI. Graphics that need to update register to it.
 	 */
 	private Timer guiUpdateTimer;
 
 	private GameMap map;
-	
+
 	private ToolBox leftBox;
-	
+
 	private ToolBox rightBox;
-	
+
 	private InfoBar topBar;
 	private FieldDisplayer dateLabel;
 	private FieldDisplayer populationLabel;
 	private FieldDisplayer moneyLabel;
 	private FieldDisplayer economyLabel;
 	private SpeedButton speedButton;
-	
+
 	private InfoBar bottomBar;
 
 	/**
 	 * This code controls the simulation/gui interaction.
 	 * 
-	 * When the Simulation timer ticks, the simulation is run. Once the simulation updates,
-	 * the GUI timer ticks once to update the UI. 
+	 * When the Simulation timer ticks, the simulation is run. Once the
+	 * simulation updates, the GUI timer ticks once to update the UI.
 	 * 
 	 * @author Corey
-	 *
+	 * 
 	 */
-	private class SimulationHandler implements ActionListener{
+	private class SimulationHandler implements ActionListener {
 
 		private Game game;
-		
-		public SimulationHandler(Game g){
+
+		public SimulationHandler(Game g) {
 			this.game = g;
 		}
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			game.simulate();
 			guiUpdateTimer.start();
 		}
-		
+
 	};
+
 	private SimulationHandler simulationHandler;
-	
+
 	/**
 	 * Renders Game in the Main Screen and starts the simulation
 	 */
 	public MainScreen(Game g) {
 
 		super(PROGRAM_NAME);
-		
+
 		this.game = g;
-		
+
 		/*
 		 * Set up the timers
 		 */
 		simulationHandler = new SimulationHandler(this.game);
-		simulationTimer = new Timer(MEDIUM, simulationHandler);
+		simulationTimer = new Timer(Speed.MEDIUM.getSpeedInMilliseconds(), simulationHandler);
 		simulationTimer.setInitialDelay(0);
-		
-		guiUpdateTimer = new Timer(0,null);
+
+		guiUpdateTimer = new Timer(0, null);
 		guiUpdateTimer.setRepeats(false);
-				 
+
 		/*
 		 * GRAPHICS
 		 */
-		
+
 		// The screen itself
 		final Dimension screenSize = new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT);
 		setMinimumSize(screenSize);
@@ -136,7 +131,7 @@ public class MainScreen extends JFrame {
 		mgr.setHgap(5);
 		getContentPane().setLayout(mgr);
 		getContentPane().setBackground(Color.LIGHT_GRAY);
-		
+
 		// The menu bar
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
@@ -149,44 +144,44 @@ public class MainScreen extends JFrame {
 
 		// Center Map
 		map = new GameMap(game.getBoard(), guiUpdateTimer);
-		getContentPane().add(map,BorderLayout.CENTER);
-		
+		getContentPane().add(map, BorderLayout.CENTER);
+
 		// Left Panel
-		leftBox = new ToolBox("left",150);
-		getContentPane().add(leftBox,BorderLayout.LINE_START);
-		
+		leftBox = new ToolBox("left", 150);
+		getContentPane().add(leftBox, BorderLayout.LINE_START);
+
 		// Right Panel
 		rightBox = new ToolBox("right", 221);
-		getContentPane().add(rightBox,BorderLayout.LINE_END);
-		
+		getContentPane().add(rightBox, BorderLayout.LINE_END);
+
 		// Top Panel
 		topBar = new InfoBar("top", 35);
-		getContentPane().add(topBar,BorderLayout.PAGE_START);
+		getContentPane().add(topBar, BorderLayout.PAGE_START);
 
 		topBar.add(Box.createHorizontalStrut(10));
-		speedButton = new SpeedButton(new Dimension(150,35), simulationTimer);
+		speedButton = new SpeedButton(new Dimension(150, 35), simulationTimer);
 		topBar.add(speedButton);
-		
+
 		topBar.add(Box.createHorizontalStrut(10));
-		dateLabel = new FieldDisplayer("Date", game.getGameDate(), new Dimension(150,35), guiUpdateTimer);
+		dateLabel = new FieldDisplayer("Date", game.getGameDate(), new Dimension(150, 35), guiUpdateTimer);
 		topBar.add(dateLabel);
 
 		topBar.add(Box.createHorizontalStrut(50));
-		populationLabel = new FieldDisplayer("Population", game.getPopulation(), new Dimension(250,35), guiUpdateTimer);
+		populationLabel = new FieldDisplayer("Population", game.getPopulation(), new Dimension(250, 35), guiUpdateTimer);
 		topBar.add(populationLabel);
 
 		topBar.add(Box.createHorizontalStrut(10));
-		moneyLabel = new FieldDisplayer("Funds", game.getMoney(), new Dimension(250,35), guiUpdateTimer);
+		moneyLabel = new FieldDisplayer("Funds", game.getMoney(), new Dimension(250, 35), guiUpdateTimer);
 		topBar.add(moneyLabel);
-		
+
 		topBar.add(Box.createHorizontalStrut(10));
-		economyLabel = new FieldDisplayer("Economy", game.getEconomy(), new Dimension(250,35), guiUpdateTimer);
+		economyLabel = new FieldDisplayer("Economy", game.getEconomy(), new Dimension(250, 35), guiUpdateTimer);
 		topBar.add(economyLabel);
 		topBar.add(Box.createHorizontalStrut(10));
-		
+
 		// Bottom Panel
 		bottomBar = new InfoBar("bottom", 35);
-		getContentPane().add(bottomBar,BorderLayout.PAGE_END);
+		getContentPane().add(bottomBar, BorderLayout.PAGE_END);
 
 		/*
 		 * LISTENERS
@@ -214,10 +209,10 @@ public class MainScreen extends JFrame {
 			public void keyTyped(KeyEvent k) {
 
 				/*
-				 * TODO: This needs some refactoring. Most of these shouldn't be popups.
+				 * TODO: This needs some refactoring. Most of these shouldn't be
+				 * popups.
 				 */
-				
-				
+
 				// Message dialogs stop the timer - we need to know if we should
 				// restart it.
 				boolean timerRunning = simulationTimer.isRunning();
@@ -243,7 +238,7 @@ public class MainScreen extends JFrame {
 				}
 			}
 		});
-		
+
 		simulationTimer.start();
 	}
 
