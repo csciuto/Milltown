@@ -4,8 +4,9 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.mutable.MutableLong;
 
-import sciuto.corey.milltown.engine.board.GameBoard;
-import sciuto.corey.milltown.engine.board.GameDate;
+import sciuto.corey.milltown.model.DollarAmount;
+import sciuto.corey.milltown.model.FormattedNumber;
+import sciuto.corey.milltown.model.board.GameDate;
 
 /**
  * The main game state class

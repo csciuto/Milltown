@@ -7,9 +7,8 @@ import java.io.File;
 import org.junit.After;
 import org.junit.Test;
 
-import sciuto.corey.milltown.engine.board.DummyBoardGenerator;
-import sciuto.corey.milltown.engine.elements.Land;
-import sciuto.corey.milltown.engine.elements.Water;
+import sciuto.corey.milltown.model.buildings.Land;
+import sciuto.corey.milltown.model.buildings.Water;
 
 public class GameManagerUnitTest {
 
