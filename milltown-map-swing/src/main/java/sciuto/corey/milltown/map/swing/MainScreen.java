@@ -15,10 +15,10 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 import sciuto.corey.milltown.engine.Game;
+import sciuto.corey.milltown.model.board.Tile;
 
 /**
  * Runs the simulator and displays the output. Also accepts the input.
@@ -243,7 +243,7 @@ public class MainScreen extends JFrame {
 				}
 			}
 		});
-
+		
 		simulationTimer.start();
 	}
 

@@ -2,12 +2,12 @@ package sciuto.corey.milltown.map.swing;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -21,8 +21,11 @@ import javax.swing.Timer;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
+import sciuto.corey.milltown.engine.BuildingConstructor;
 import sciuto.corey.milltown.engine.GameBoard;
+import sciuto.corey.milltown.model.board.AbstractBuilding;
 import sciuto.corey.milltown.model.board.Tile;
+import sciuto.corey.milltown.model.buildings.Mill;
 
 /**
  * The main map
@@ -41,7 +44,9 @@ public class GameMap extends JPanel implements ActionListener {
 
 	private final int squareSize;
 
-	private Timer timer;
+	private final Timer timer;
+
+	private final BuildingConstructor buildingConstructor;
 
 	private final SquareMapper squareMapper;
 
@@ -70,6 +75,8 @@ public class GameMap extends JPanel implements ActionListener {
 
 		squareMapper = new SquareMapper(board, MAP_SIZE_PX);
 
+		buildingConstructor = new BuildingConstructor(board);
+		
 		setName("mainMap");
 		setBackground(new Color(0, 255, 0));
 		setBorder(BorderFactory.createEtchedBorder());
@@ -78,20 +85,32 @@ public class GameMap extends JPanel implements ActionListener {
 		MouseInputListener listener = new MouseInputAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				repaintSelectionBox(e);
+				Tile oldTile = activeTile;
 				activeTile = squareMapper.mapSquare(e);
+
+				// TODO: TEMP CODE
+				buildingConstructor.build(activeTile, new Mill());
+				//
+				
+				repaintTiles(e.getComponent(), oldTile);
+				repaintTiles(e.getComponent(), activeTile);
+				
 				selectionPanel.setText(activeTile.toString());
-				repaintSelectionBox(e);
 			}
 
 			/**
-			 * Used to color and uncolor the highlighted square.
-			 * @param e
+			 * Used to redraw whatever was clicked on.
+			 * 
+			 * @param c The component to repaint (that is, this board
+			 * @param t The tile that was acted on.
 			 */
-			protected void repaintSelectionBox(MouseEvent e) {
-				if (activeTile != null){
-					e.getComponent().repaint(activeTile.getXLoc() * squareSize, activeTile.getYLoc() * squareSize,
-							squareSize, squareSize);
+			protected void repaintTiles(Component c, Tile t) {
+				if (t != null) {
+					
+					AbstractBuilding b = t.getContents();
+					
+					c.repaint(t.getXLoc() * squareSize, t.getYLoc() * squareSize,
+							squareSize * b.getSize().getLeft(), squareSize * b.getSize().getRight());
 				}
 			}
 		};
@@ -99,6 +118,7 @@ public class GameMap extends JPanel implements ActionListener {
 		addMouseMotionListener(listener);
 
 		this.timer = timer;
+
 	}
 
 	@Override
@@ -119,21 +139,22 @@ public class GameMap extends JPanel implements ActionListener {
 					g.setColor(new Color(0, 127, 0));
 					g.drawRect(currentX, currentY, squareSize, squareSize);
 
-					String fileName = "/map_images/mill.png";
-					BufferedImage img = null;
-					URL url = this.getClass().getResource(fileName);
-					if (url == null) {
-						JOptionPane.showMessageDialog(null, String.format("Cannot find image %s", fileName));
-						System.exit(-1);
+					if (board.getTile(i, j).getContents().getClass().equals(Mill.class)) {
+						String fileName = "/map_images/mill.png";
+						BufferedImage img = null;
+						URL url = this.getClass().getResource(fileName);
+						if (url == null) {
+							JOptionPane.showMessageDialog(null, String.format("Cannot find image %s", fileName));
+							System.exit(-1);
+						}
+						try {
+							img = ImageIO.read(url);
+						} catch (IOException e) {
+							JOptionPane.showMessageDialog(null, String.format("Cannot render image: % ", url));
+							System.exit(-1);
+						}
+						g.drawImage(img, currentX, currentY, squareSize, squareSize, null);
 					}
-					try {
-						img = ImageIO.read(url);
-					} catch (IOException e) {
-						JOptionPane.showMessageDialog(null, String.format("Cannot render image: % ", url));
-						System.exit(-1);
-					}
-					g.drawImage(img, currentX, currentY, squareSize, squareSize, null);
-
 					currentX += squareSize;
 				}
 
@@ -144,7 +165,7 @@ public class GameMap extends JPanel implements ActionListener {
 		}
 
 		// Draw the highlight box.
-		if (activeTile != null){
+		if (activeTile != null) {
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setColor(Color.PINK);
 			g2.drawRect(activeTile.getXLoc() * squareSize, activeTile.getYLoc() * squareSize, squareSize, squareSize);
