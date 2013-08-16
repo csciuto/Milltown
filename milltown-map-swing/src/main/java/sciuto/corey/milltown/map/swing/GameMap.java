@@ -40,15 +40,11 @@ public class GameMap extends JPanel implements ActionListener {
 	 * The size of the map in pixels
 	 */
 	public static final int MAP_SIZE_PX = 625;
-
-	private final GameBoard board;
-
 	private final int squareSize;
-
+	
+	private final GameBoard board;
 	private final Timer timer;
-
 	private final BuildingConstructor buildingConstructor;
-
 	private final SquareMapper squareMapper;
 
 	/*
@@ -63,7 +59,9 @@ public class GameMap extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == timer) {
-			repaint();
+			// TODO: Don't repaint the whole board...check to see what's dirty.
+			// Only need this if buildings change due to timer...
+			//repaint();
 		}
 	}
 
@@ -111,8 +109,9 @@ public class GameMap extends JPanel implements ActionListener {
 				if (t != null) {
 
 					AbstractBuilding b = t.getContents();
+					Tile rootTile = b.getRootTile();
 
-					c.repaint(t.getXLoc() * squareSize, t.getYLoc() * squareSize, squareSize * b.getSize().getLeft(),
+					c.repaint(rootTile.getXLoc() * squareSize, rootTile.getYLoc() * squareSize, squareSize * b.getSize().getLeft(),
 							squareSize * b.getSize().getRight());
 				}
 			}
@@ -176,7 +175,7 @@ public class GameMap extends JPanel implements ActionListener {
 		}
 
 		// Draw the highlight box.
-		// XXX: This is complex enough for a method and a unit test
+		// TODO: This is complex enough for a method and a unit test
 		// Especially as its buggy.
 		if (activeTile != null) {
 			AbstractBuilding b = activeTile.getContents();
