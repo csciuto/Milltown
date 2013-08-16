@@ -14,16 +14,21 @@ import sciuto.corey.milltown.model.board.Tile;
 public class SquareMapper {
 
 	private final GameBoard board;
-	private final int squareSize;
+	private final GameMap map;
+	
+	private int squareSize;
 	
 	/**
 	 * Creates a SquareMapper
 	 * @param board The board to select a tile from
-	 * @param mapSize The size of the map in pixels
+	 * @param mapSize The map to map from
 	 */
-	public SquareMapper(GameBoard board, int mapSize){
+	public SquareMapper(GameBoard board, GameMap map){
 		this.board = board;
-		this.squareSize = mapSize / board.getBoardSize();
+		this.map = map;
+		
+		int smallSide =  map.getWidth() < map.getHeight() ? map.getWidth() : map.getHeight();
+		this.squareSize = smallSide / board.getBoardSize();
 	}
 	
 	/**
@@ -42,14 +47,23 @@ public class SquareMapper {
 	}
 	
 	/**
+	 * Updates the size of the map and square. Attach to an event listener.
+	 */
+	public void update(){
+		int smallSide =  map.getWidth() < map.getHeight() ? map.getWidth() : map.getHeight();
+		this.squareSize = smallSide / board.getBoardSize();
+	}
+	
+	/**
 	 * To make unit testing simpler.
 	 * @param pixel
 	 */
 	protected int mappingHelper(int pixel){
-		int tile = pixel / squareSize;
-		if (tile == board.getBoardSize()){
+		
+		int tile = pixel /squareSize;
+		if (tile > board.getBoardSize()){
 			// To prevent the last pixel from causing an error:
-			// 625px / 25 = 25. The last index is 24...
+			// e.g. 625px / 25 = 25. The last index is 24...
 			tile -= 1;
 		}
 		return tile;

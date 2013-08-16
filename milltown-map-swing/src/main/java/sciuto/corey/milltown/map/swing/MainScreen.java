@@ -178,7 +178,7 @@ public class MainScreen extends JFrame {
 		topBar.add(Box.createHorizontalStrut(10));
 		economyLabel = new FieldDisplayer("Economy", game.getEconomy(), new Dimension(250, 35), guiUpdateTimer);
 		topBar.add(economyLabel);
-		topBar.add(Box.createHorizontalStrut(10));
+		topBar.add(Box.createHorizontalGlue());
 
 		// Bottom Panel
 		bottomBar = new InfoBar("bottom", 35);
