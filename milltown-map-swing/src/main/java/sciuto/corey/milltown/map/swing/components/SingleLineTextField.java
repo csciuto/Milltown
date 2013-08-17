@@ -12,7 +12,7 @@ import javax.swing.Timer;
  * @author Corey
  *
  */
-public class TextField extends JLabel implements ActionListener {
+public class SingleLineTextField extends JLabel implements ActionListener {
 
 	private Object field;
 	private String displayName;
@@ -32,7 +32,7 @@ public class TextField extends JLabel implements ActionListener {
 	 * @param labelSize The preferred size of the label
 	 * @param The timer to listen to updates from.
 	 */
-	public TextField(String displayName, Object field, Dimension labelSize, Timer t){
+	public SingleLineTextField(String displayName, Object field, Dimension labelSize, Timer t){
 		this.displayName = displayName;
 		this.field = field;
 		this.t = t;
@@ -50,7 +50,7 @@ public class TextField extends JLabel implements ActionListener {
 	 * @param field The field to call toString on
 	 * @param The timer to listen to updates from.
 	 */
-	public TextField(String displayName, Object field, Timer t){
+	public SingleLineTextField(String displayName, Object field, Timer t){
 		this.displayName = displayName;
 		this.field = field;
 		this.t = t;

@@ -3,27 +3,12 @@ package sciuto.corey.milltown.map.swing;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
-import javax.swing.Box;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
-import javax.swing.Timer;
+import javax.swing.*;
 
 import sciuto.corey.milltown.engine.Game;
-import sciuto.corey.milltown.map.swing.components.GameMap;
-import sciuto.corey.milltown.map.swing.components.HorizontalPanel;
-import sciuto.corey.milltown.map.swing.components.MultiLineTextField;
-import sciuto.corey.milltown.map.swing.components.SpeedButton;
-import sciuto.corey.milltown.map.swing.components.TextField;
-import sciuto.corey.milltown.map.swing.components.VerticalPanel;
+import sciuto.corey.milltown.map.swing.components.*;
 
 /**
  * Runs the simulator and displays the output. Also accepts the input.
@@ -61,15 +46,17 @@ public class MainScreen extends JFrame {
 	private final GameMap map;
 
 	private final VerticalPanel leftBox;
+	private final JScrollPane buildingSelectorScrollPane;
+	private final BuildingSelector buildingSelector;
 
 	private final VerticalPanel rightBox;
 	private final MultiLineTextField clickDataBox;
 
 	private final HorizontalPanel topBar;
-	private final TextField dateLabel;
-	private final TextField populationLabel;
-	private final TextField moneyLabel;
-	private final TextField economyLabel;
+	private final SingleLineTextField dateLabel;
+	private final SingleLineTextField populationLabel;
+	private final SingleLineTextField moneyLabel;
+	private final SingleLineTextField economyLabel;
 	private final SpeedButton speedButton;
 	
 	private final HorizontalPanel bottomBar;
@@ -148,6 +135,11 @@ public class MainScreen extends JFrame {
 		// Left Panel - selection
 		leftBox = new VerticalPanel("left", 150);
 		getContentPane().add(leftBox, BorderLayout.LINE_START);
+		buildingSelector = new BuildingSelector();
+		buildingSelectorScrollPane = new JScrollPane(buildingSelector, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		buildingSelectorScrollPane.setMaximumSize(new Dimension(150,300));
+		
+		leftBox.add(buildingSelectorScrollPane);
 
 		// Right Panel - info
 		rightBox = new VerticalPanel("right", 221);
@@ -165,19 +157,19 @@ public class MainScreen extends JFrame {
 		topBar.add(speedButton);
 
 		topBar.add(Box.createHorizontalStrut(10));
-		dateLabel = new TextField("Date", game.getGameDate(), new Dimension(150, 35), guiUpdateTimer);
+		dateLabel = new SingleLineTextField("Date", game.getGameDate(), new Dimension(150, 35), guiUpdateTimer);
 		topBar.add(dateLabel);
 
 		topBar.add(Box.createHorizontalStrut(50));
-		populationLabel = new TextField("Population", game.getPopulation(), new Dimension(250, 35), guiUpdateTimer);
+		populationLabel = new SingleLineTextField("Population", game.getPopulation(), new Dimension(250, 35), guiUpdateTimer);
 		topBar.add(populationLabel);
 
 		topBar.add(Box.createHorizontalStrut(10));
-		moneyLabel = new TextField("Funds", game.getMoney(), new Dimension(250, 35), guiUpdateTimer);
+		moneyLabel = new SingleLineTextField("Funds", game.getMoney(), new Dimension(250, 35), guiUpdateTimer);
 		topBar.add(moneyLabel);
 
 		topBar.add(Box.createHorizontalStrut(10));
-		economyLabel = new TextField("Economy", game.getEconomy(), new Dimension(250, 35), guiUpdateTimer);
+		economyLabel = new SingleLineTextField("Economy", game.getEconomy(), new Dimension(250, 35), guiUpdateTimer);
 		topBar.add(economyLabel);
 		topBar.add(Box.createHorizontalGlue());
 
