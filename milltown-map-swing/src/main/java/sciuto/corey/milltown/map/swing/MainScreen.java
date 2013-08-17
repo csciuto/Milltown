@@ -1,8 +1,6 @@
 package sciuto.corey.milltown.map.swing;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -24,7 +22,7 @@ public class MainScreen extends JFrame {
 	private static final String PROGRAM_NAME = "Milltown!";
 
 	private static final int DEFAULT_MAP_PX = 625;
-	
+
 	/*
 	 * ENGINE ELEMENTS
 	 */
@@ -34,7 +32,7 @@ public class MainScreen extends JFrame {
 	/*
 	 * GUI COMPONENTS
 	 */
-	
+
 	/**
 	 * Runs the simulation itself
 	 */
@@ -61,7 +59,7 @@ public class MainScreen extends JFrame {
 	private final SingleLineTextField moneyLabel;
 	private final SingleLineTextField economyLabel;
 	private final SpeedButton speedButton;
-	
+
 	private final HorizontalPanel bottomBar;
 
 	/**
@@ -139,9 +137,10 @@ public class MainScreen extends JFrame {
 		leftBox = new VerticalPanel("left", 150);
 		getContentPane().add(leftBox, BorderLayout.LINE_START);
 		buildingSelector = new BuildingSelector();
-		buildingSelectorScrollPane = new JScrollPane(buildingSelector, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		buildingSelectorScrollPane.setMaximumSize(new Dimension(150,300));
-		
+		buildingSelectorScrollPane = new JScrollPane(buildingSelector, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		buildingSelectorScrollPane.setMaximumSize(new Dimension(150, 300));
+
 		leftBox.add(buildingSelectorScrollPane);
 
 		// Right Panel - info
@@ -164,7 +163,8 @@ public class MainScreen extends JFrame {
 		topBar.add(dateLabel);
 
 		topBar.add(Box.createHorizontalStrut(50));
-		populationLabel = new SingleLineTextField("Population", game.getPopulation(), new Dimension(250, 35), guiUpdateTimer);
+		populationLabel = new SingleLineTextField("Population", game.getPopulation(), new Dimension(250, 35),
+				guiUpdateTimer);
 		topBar.add(populationLabel);
 
 		topBar.add(Box.createHorizontalStrut(10));
@@ -183,9 +183,9 @@ public class MainScreen extends JFrame {
 		// Center Map
 		map = new GameMap(game.getBoard(), DEFAULT_MAP_PX, clickDataBox, guiUpdateTimer);
 		mapScrollPane = new GameMapScrollPane(map);
-		mapScrollPane.setMaximumSize(new Dimension(DEFAULT_MAP_PX,DEFAULT_MAP_PX));
+		mapScrollPane.setMaximumSize(new Dimension(DEFAULT_MAP_PX, DEFAULT_MAP_PX));
 		getContentPane().add(mapScrollPane, BorderLayout.CENTER);
-		
+
 		/*
 		 * LISTENERS
 		 */
@@ -196,47 +196,82 @@ public class MainScreen extends JFrame {
 			}
 		});
 
-		addKeyListener(new KeyListener() {
-			public void keyPressed(KeyEvent k) {
-				return;
-			}
-			public void keyReleased(KeyEvent k) {
-				return;
-			}
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+			@Override
+			public boolean dispatchKeyEvent(KeyEvent k) {
+				if (k.getID() == KeyEvent.KEY_PRESSED) {
+					/*
+					 * TODO: This needs some refactoring
+					 */
 
-			public void keyTyped(KeyEvent k) {
+					// Message dialogs stop the timer - we need to know if we
+					// should
+					// restart it.
+					boolean timerRunning = simulationTimer.isRunning();
 
-				/*
-				 * XXX: This needs some refactoring. Most of these shouldn't be
-				 * popups. Seems broken right now entirely.
-				 */
-
-				// Message dialogs stop the timer - we need to know if we should
-				// restart it.
-				boolean timerRunning = simulationTimer.isRunning();
-
-				if (k.getKeyChar() == 'p') {
-					if (timerRunning) {
-						simulationTimer.stop();
-						JOptionPane.showMessageDialog(null, "Simulation: OFF");
-					} else {
-						simulationTimer.stop();
-						JOptionPane.showMessageDialog(null, "Simulation: ON.");
-						simulationTimer.start();
+					if (k.getKeyCode() == KeyEvent.VK_P) {
+						if (timerRunning) {
+							simulationTimer.stop();
+							JOptionPane.showMessageDialog(null, "Simulation: OFF");
+						} else {
+							simulationTimer.stop();
+							JOptionPane.showMessageDialog(null, "Simulation: ON.");
+							simulationTimer.start();
+						}
 					}
-				}
-				if (k.getKeyChar() == 'h') {
-					simulationTimer.stop();
-					JOptionPane.showMessageDialog(null, HELP_MSG);
-					if (timerRunning) {
-						simulationTimer.start();
+					if (k.getKeyCode() == KeyEvent.VK_H) {
+						simulationTimer.stop();
+						JOptionPane.showMessageDialog(null, HELP_MSG);
+						if (timerRunning) {
+							simulationTimer.start();
+						}
+					} else if (k.getKeyCode() == KeyEvent.VK_S) {
+						speedButton.doClick();
+					} else if (k.getKeyCode() == KeyEvent.VK_LEFT) {
+						JScrollBar sb = mapScrollPane.getHorizontalScrollBar();
+						int change = sb.getMaximum() / game.getBoard().getBoardSize();
+						int newVal = sb.getValue() - change;
+						if (newVal >= 0) {
+							sb.setValue(newVal);
+						} else {
+							sb.setValue(0);
+						}
+					} else if (k.getKeyCode() == KeyEvent.VK_RIGHT) {
+						JScrollBar sb = mapScrollPane.getHorizontalScrollBar();
+						int change = sb.getMaximum() / game.getBoard().getBoardSize();
+						int newVal = sb.getValue() + change;
+						if (newVal < sb.getMaximum()) {
+							sb.setValue(newVal);
+						} else {
+							sb.setValue(sb.getMaximum());
+						}
+					} else if (k.getKeyCode() == KeyEvent.VK_UP) {
+						JScrollBar sb = mapScrollPane.getVerticalScrollBar();
+						int change = sb.getMaximum() / game.getBoard().getBoardSize();
+						int newVal = sb.getValue() - change;
+						if (newVal >= 0) {
+							sb.setValue(newVal);
+						} else {
+							sb.setValue(0);
+						}
+					} else if (k.getKeyCode() == KeyEvent.VK_DOWN) {
+						JScrollBar sb = mapScrollPane.getVerticalScrollBar();
+						int change = sb.getMaximum() / game.getBoard().getBoardSize();
+						int newVal = sb.getValue() + change;
+						if (newVal< sb.getMaximum()) {
+							sb.setValue(newVal);
+						} else {
+							sb.setValue(0);
+						}
 					}
-				} else if (k.getKeyChar() == 's') {
-					speedButton.doClick();
+
+					return false;
+				} else {
+					return true;
 				}
 			}
 		});
-		
+
 		simulationTimer.start();
 	}
 
