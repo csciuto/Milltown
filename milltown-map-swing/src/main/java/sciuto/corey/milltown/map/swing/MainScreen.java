@@ -48,7 +48,7 @@ public class MainScreen extends JFrame {
 
 	private final VerticalPanel leftBox;
 	private final JScrollPane buildingSelectorScrollPane;
-	private final BuildingSelector buildingSelector;
+	private final ToolSelector toolSelector;
 
 	private final VerticalPanel rightBox;
 	private final MultiLineTextField clickDataBox;
@@ -136,8 +136,8 @@ public class MainScreen extends JFrame {
 		// Left Panel - selection
 		leftBox = new VerticalPanel("left", 150);
 		getContentPane().add(leftBox, BorderLayout.LINE_START);
-		buildingSelector = new BuildingSelector();
-		buildingSelectorScrollPane = new JScrollPane(buildingSelector, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		toolSelector = new ToolSelector();
+		buildingSelectorScrollPane = new JScrollPane(toolSelector, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		buildingSelectorScrollPane.setMaximumSize(new Dimension(150, 300));
 
