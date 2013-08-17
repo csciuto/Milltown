@@ -62,6 +62,15 @@ public class MainScreen extends JFrame {
 
 	private final HorizontalPanel bottomBar;
 
+	
+	public Timer getGuiUpdateTimer() {
+		return guiUpdateTimer;
+	}
+	public ToolSelector getToolSelector() {
+		return toolSelector;
+	}
+
+	
 	/**
 	 * This code controls the simulation/gui interaction.
 	 * 
@@ -181,7 +190,7 @@ public class MainScreen extends JFrame {
 		getContentPane().add(bottomBar, BorderLayout.PAGE_END);
 
 		// Center Map
-		map = new GameMap(game.getBoard(), DEFAULT_MAP_PX, clickDataBox, guiUpdateTimer);
+		map = new GameMap(game.getBoard(), DEFAULT_MAP_PX, clickDataBox, this);
 		mapScrollPane = new GameMapScrollPane(map);
 		mapScrollPane.setMaximumSize(new Dimension(DEFAULT_MAP_PX, DEFAULT_MAP_PX));
 		getContentPane().add(mapScrollPane, BorderLayout.CENTER);

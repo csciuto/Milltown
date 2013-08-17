@@ -9,16 +9,22 @@ import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.Scrollable;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
 import sciuto.corey.milltown.engine.BuildingConstructor;
+import sciuto.corey.milltown.map.swing.MainScreen;
 import sciuto.corey.milltown.map.swing.SquareMapper;
 import sciuto.corey.milltown.model.board.AbstractBuilding;
 import sciuto.corey.milltown.model.board.GameBoard;
 import sciuto.corey.milltown.model.board.Tile;
+import sciuto.corey.milltown.model.buildings.House;
 import sciuto.corey.milltown.model.buildings.Mill;
+import sciuto.corey.milltown.model.buildings.Road;
 
 /**
  * The main map
@@ -29,11 +35,11 @@ import sciuto.corey.milltown.model.buildings.Mill;
 public class GameMap extends JPanel implements ActionListener, Scrollable {
 
 	protected final GameBoard board;
-	protected final Timer timer;
 	protected final BuildingConstructor buildingConstructor;
 	protected final SquareMapper squareMapper;
 	protected final MultiLineTextField selectionPanel;
 	protected final Dimension preferredViewportSize;
+	protected final MainScreen mainScreen;
 
 	/**
 	 * The tile to highlight Set the active tile to null to hide the highlight.
@@ -64,7 +70,18 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 			}
 
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				buildingConstructor.build(activeTile, new Mill());
+				Class<? extends AbstractBuilding> classToBuild = mainScreen.getToolSelector().getBuildingToBuild();
+				if (classToBuild != null) {
+					try {
+						buildingConstructor.build(activeTile, classToBuild.newInstance());
+					} catch (InstantiationException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IllegalAccessException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 			}
 
 			repaintTiles(e.getComponent(), activeTile);
@@ -92,7 +109,9 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 			}
 		}
 	};
-	public GameMap(final GameBoard b, final int mapDisplaySize, final MultiLineTextField selectionPanel, final Timer timer) {
+
+	public GameMap(final GameBoard b, final int mapDisplaySize, final MultiLineTextField selectionPanel,
+			final MainScreen mainScreen) {
 		super();
 
 		this.board = b;
@@ -101,17 +120,16 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 		this.buildingConstructor = new BuildingConstructor(board);
 		this.selectionPanel = selectionPanel;
 		this.preferredViewportSize = new Dimension(mapDisplaySize, mapDisplaySize);
-		
+		this.mainScreen = mainScreen;
+
 		setName("mainMap");
 		setBackground(new Color(0, 255, 0));
 		setBorder(BorderFactory.createEtchedBorder());
-		setPreferredSize(new Dimension(1000,1000));
-		
+		setPreferredSize(new Dimension(1000, 1000));
+
 		MouseInputListener mouseListener = new MouseClickListener();
 		addMouseListener(mouseListener);
 		addMouseMotionListener(mouseListener);
-		
-		this.timer = timer;
 
 	}
 
@@ -127,10 +145,10 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 		squareMapper.update();
 		repaint();
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == timer) {
+		if (e.getSource() == mainScreen.getGuiUpdateTimer()) {
 			// TODO: Don't repaint the whole board...check to see what's dirty.
 			// Only need this if buildings change due to timer...
 			// repaint();
@@ -159,6 +177,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 				currentX = 0;
 			}
 			// Then the buildings
+			// TODO: Factor this out...
 			currentX = 0;
 			currentY = 0;
 			for (int j = 0; j < dimension; j++) {
@@ -169,24 +188,32 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 
 					if (t.equals(b.getRootTile())) {
 						Class<? extends AbstractBuilding> buildingClass = b.getClass();
+						String fileName;
 						if (buildingClass.equals(Mill.class)) {
-							String fileName = "/map_images/mill.png";
-							BufferedImage img = null;
-							URL url = this.getClass().getResource(fileName);
-							if (url == null) {
-								JOptionPane.showMessageDialog(null, String.format("Cannot find image %s", fileName));
-								System.exit(-1);
-							}
-							try {
-								img = ImageIO.read(url);
-							} catch (IOException e) {
-								JOptionPane.showMessageDialog(null, String.format("Cannot render image: % ", url));
-								System.exit(-1);
-							}
-							// subtract from the edges so borders print.
-							g.drawImage(img, currentX + 1, currentY + 1, squareSize * b.getSize().getLeft() - 2,
-									squareSize * b.getSize().getRight() - 2, null);
+							fileName = "/map_images/mill.png";
+						} else if (buildingClass.equals(House.class)) {
+							fileName = "/map_images/house_1.png";
+						} else if (buildingClass.equals(Road.class)) {
+							fileName = "/map_images/road.png";
+						} else {
+							// ...
+							continue;
 						}
+						BufferedImage img = null;
+						URL url = this.getClass().getResource(fileName);
+						if (url == null) {
+							JOptionPane.showMessageDialog(null, String.format("Cannot find image %s", fileName));
+							System.exit(-1);
+						}
+						try {
+							img = ImageIO.read(url);
+						} catch (IOException e) {
+							JOptionPane.showMessageDialog(null, String.format("Cannot render image: % ", url));
+							System.exit(-1);
+						}
+						// subtract from the edges so borders print.
+						g.drawImage(img, currentX + 1, currentY + 1, squareSize * b.getSize().getLeft() - 2, squareSize
+								* b.getSize().getRight() - 2, null);
 					}
 					currentX += squareSize;
 				}

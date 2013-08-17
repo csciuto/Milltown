@@ -2,8 +2,6 @@ package sciuto.corey.milltown.map.swing;
 
 import static org.junit.Assert.assertEquals;
 
-import javax.swing.Timer;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 
@@ -15,8 +13,8 @@ public class SquareMapperUnitTest {
 
 	class DummyGameMap extends GameMap {
 
-		DummyGameMap (GameBoard board, int size, MultiLineTextField d, Timer t) {
-			super(board, size, d, t);
+		DummyGameMap (GameBoard board, int size, MultiLineTextField d, MainScreen m) {
+			super(board, size, d, m);
 		}
 
 		@Override

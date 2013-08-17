@@ -12,6 +12,7 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
 import sciuto.corey.milltown.map.swing.components.GameMap.MouseClickListener;
+import sciuto.corey.milltown.model.board.AbstractBuilding;
 
 public class ToolButton extends JLabel {
 
@@ -20,11 +21,12 @@ public class ToolButton extends JLabel {
 	
 	private boolean isSelected = false;
 	
-	/**
-	 * The object that holds this button.
-	 */
-	private final ToolSelector container;
+	private final Class<? extends AbstractBuilding> buildingType;
 	
+	public Class<? extends AbstractBuilding> getBuildingType() {
+		return buildingType;
+	}
+
 	public boolean isSelected() {
 		return isSelected;
 	}
@@ -33,10 +35,10 @@ public class ToolButton extends JLabel {
 		this.isSelected = isSelected;
 	}
 
-	public ToolButton(String toolName, ToolSelector container){
+	public ToolButton(String toolName, Class<? extends AbstractBuilding> type, ToolSelector container){
 		super(toolName);
 		
-		this.container = container;
+		this.buildingType = type;
 		
 		String fileName = "/map_images/blank.png";
 		if (toolName.equals("Mill")){
