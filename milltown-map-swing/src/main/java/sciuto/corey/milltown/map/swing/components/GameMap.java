@@ -1,7 +1,9 @@
 package sciuto.corey.milltown.map.swing.components;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -61,7 +63,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 				return;
 			}
 
-			if (e.getButton() == MouseEvent.BUTTON3) {
+			if (e.getButton() == MouseEvent.BUTTON1) {
 				buildingConstructor.build(activeTile, new Mill());
 			}
 
@@ -100,7 +102,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 		this.buildingConstructor = new BuildingConstructor(board);
 		this.selectionPanel = selectionPanel;
 		this.preferredViewportSize = new Dimension(mapDisplaySize, mapDisplaySize);
-
+		
 		setName("mainMap");
 		setBackground(new Color(0, 255, 0));
 		setBorder(BorderFactory.createEtchedBorder());
@@ -109,7 +111,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 		MouseInputListener mouseListener = new MouseClickListener();
 		addMouseListener(mouseListener);
 		addMouseMotionListener(mouseListener);
-
+		
 		this.timer = timer;
 
 	}
@@ -118,6 +120,15 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 		return squareSize;
 	}
 
+	protected void setSquareSizeAndUpdateMap(int size) {
+		squareSize = size;
+		Dimension dimensions = new Dimension(squareSize * board.getBoardSize(), squareSize * board.getBoardSize());
+		this.setSize(dimensions);
+		this.setPreferredSize(dimensions);
+		squareMapper.update();
+		repaint();
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == timer) {
