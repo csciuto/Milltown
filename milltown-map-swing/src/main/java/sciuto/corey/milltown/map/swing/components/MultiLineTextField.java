@@ -15,6 +15,7 @@ public class MultiLineTextField extends JTextArea {
 		this.setBorder(BorderFactory.createTitledBorder(null, getName(), TitledBorder.CENTER,TitledBorder.TOP));
 		
 		this.setEditable(false);
+		this.setFocusable(false);
 	}
 	
 }
