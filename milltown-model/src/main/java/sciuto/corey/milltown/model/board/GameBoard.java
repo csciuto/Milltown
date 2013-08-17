@@ -71,10 +71,10 @@ public class GameBoard implements Serializable{
 	}
 
 	/**
-	 * Creates a 25x25 blank board
+	 * Creates a 50x50 blank board
 	 */
 	public GameBoard(){
-		this(25);
+		this(50);
 	}
 
 	/**

@@ -21,12 +21,12 @@ public class SquareMapperUnitTest {
 
 		@Override
 		public int getWidth() {
-			return 625;
+			return 1000;
 		}
 
 		@Override
 		public int getHeight() {
-			return 625;
+			return 1000;
 		}
 	}
 	
@@ -34,9 +34,10 @@ public class SquareMapperUnitTest {
 	public void testMapper() {
 		GameBoard board = new GameBoard();
 		
-		GameMap map = new DummyGameMap(board, 625, null, null);
+		GameMap map = new DummyGameMap(board, 1000, null, null);
 
 		SquareMapper p = new SquareMapper(board, map);
+		p.update();
 
 		Pair<Integer, Integer> clickLoc;
 
@@ -44,12 +45,12 @@ public class SquareMapperUnitTest {
 		assertEquals(Integer.valueOf(0), Integer.valueOf(p.mappingHelper(clickLoc.getLeft())));
 		assertEquals(Integer.valueOf(0), Integer.valueOf(p.mappingHelper(clickLoc.getRight())));
 
-		clickLoc = Pair.of(625, 625);
-		assertEquals(Integer.valueOf(24), Integer.valueOf(p.mappingHelper(clickLoc.getLeft())));
-		assertEquals(Integer.valueOf(24), Integer.valueOf(p.mappingHelper(clickLoc.getRight())));
+		clickLoc = Pair.of(1000, 1000);
+		assertEquals(Integer.valueOf(49), Integer.valueOf(p.mappingHelper(clickLoc.getLeft())));
+		assertEquals(Integer.valueOf(49), Integer.valueOf(p.mappingHelper(clickLoc.getRight())));
 
-		clickLoc = Pair.of(594, 27);
-		assertEquals(Integer.valueOf(23), Integer.valueOf(p.mappingHelper(clickLoc.getLeft())));
+		clickLoc = Pair.of(975, 25);
+		assertEquals(Integer.valueOf(48), Integer.valueOf(p.mappingHelper(clickLoc.getLeft())));
 		assertEquals(Integer.valueOf(1), Integer.valueOf(p.mappingHelper(clickLoc.getRight())));
 
 	}

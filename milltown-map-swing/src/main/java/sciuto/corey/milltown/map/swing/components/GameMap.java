@@ -92,12 +92,11 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 			}
 		}
 	};
-
 	public GameMap(final GameBoard b, final int mapDisplaySize, final MultiLineTextField selectionPanel, final Timer timer) {
 		super();
 
 		this.board = b;
-		this.squareSize = calculateSquareSize(1024, board.getBoardSize());
+		this.squareSize = calculateSquareSize(1000, board.getBoardSize());
 		this.squareMapper = new SquareMapper(board, this);
 		this.buildingConstructor = new BuildingConstructor(board);
 		this.selectionPanel = selectionPanel;
@@ -106,7 +105,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 		setName("mainMap");
 		setBackground(new Color(0, 255, 0));
 		setBorder(BorderFactory.createEtchedBorder());
-		setPreferredSize(new Dimension(1024,1024));
+		setPreferredSize(new Dimension(1000,1000));
 		
 		MouseInputListener mouseListener = new MouseClickListener();
 		addMouseListener(mouseListener);
