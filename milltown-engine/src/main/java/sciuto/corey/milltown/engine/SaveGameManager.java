@@ -15,7 +15,7 @@ import java.io.ObjectOutputStream;
  * @author Corey
  * 
  */
-public class GameManager {
+public class SaveGameManager {
 
 	public static Game newGame() {
 		return new Game();

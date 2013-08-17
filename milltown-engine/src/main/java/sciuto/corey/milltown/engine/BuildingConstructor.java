@@ -3,6 +3,7 @@ package sciuto.corey.milltown.engine;
 import org.apache.commons.lang3.tuple.Pair;
 
 import sciuto.corey.milltown.model.board.AbstractBuilding;
+import sciuto.corey.milltown.model.board.GameBoard;
 import sciuto.corey.milltown.model.board.Tile;
 import sciuto.corey.milltown.model.buildings.Land;
 import sciuto.corey.milltown.model.buildings.Water;

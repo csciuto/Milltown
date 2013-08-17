@@ -1,4 +1,4 @@
-package sciuto.corey.milltown.map.swing;
+package sciuto.corey.milltown.map.swing.components;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.Timer;
+
+import sciuto.corey.milltown.map.swing.Speed;
 
 public class SpeedButton extends JButton implements ActionListener {
 

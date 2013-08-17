@@ -32,6 +32,11 @@
       <artifactId>milltown-model</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>sciuto.corey</groupId>
+      <artifactId>milltown-model-test</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <parent>

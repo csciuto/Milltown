@@ -18,7 +18,12 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import sciuto.corey.milltown.engine.Game;
-import sciuto.corey.milltown.model.board.Tile;
+import sciuto.corey.milltown.map.swing.components.GameMap;
+import sciuto.corey.milltown.map.swing.components.HorizontalPanel;
+import sciuto.corey.milltown.map.swing.components.MultiLineTextField;
+import sciuto.corey.milltown.map.swing.components.SpeedButton;
+import sciuto.corey.milltown.map.swing.components.TextField;
+import sciuto.corey.milltown.map.swing.components.VerticalPanel;
 
 /**
  * Runs the simulator and displays the output. Also accepts the input.
@@ -28,50 +33,46 @@ import sciuto.corey.milltown.model.board.Tile;
  */
 public class MainScreen extends JFrame {
 
-	/*
-	 * CONSTANTS
-	 */
-
 	private static final String HELP_MSG = "Instructions:\n" + "Pressing 's' changes simulation speed\n"
 			+ "'p' toggles the simulation on and off\n" + "'h' displays this message\n" + "'CTRL+C' or 'CTRL+X' quits";
 
 	private static final String PROGRAM_NAME = "Milltown!";
 
-	// The size of the screen
-	private static final int WINDOW_WIDTH = 1024;
-	private static final int WINDOW_HEIGHT = 768;
-
 	/*
-	 * INSTANCE VARIABLES
+	 * ENGINE ELEMENTS
 	 */
 
-	private Game game;
+	private final Game game;
 
+	/*
+	 * GUI COMPONENTS
+	 */
+	
 	/**
 	 * Runs the simulation itself
 	 */
-	private Timer simulationTimer;
+	private final Timer simulationTimer;
 
 	/**
 	 * Updates the GUI. Graphics that need to update register to it.
 	 */
-	private Timer guiUpdateTimer;
+	private final Timer guiUpdateTimer;
 
-	private GameMap map;
+	private final GameMap map;
 
-	private ToolBox leftBox;
+	private final VerticalPanel leftBox;
 
-	private ToolBox rightBox;
-	private MultiLineDisplay clickDataBox;
+	private final VerticalPanel rightBox;
+	private final MultiLineTextField clickDataBox;
 
-	private InfoBar topBar;
-	private FieldDisplayer dateLabel;
-	private FieldDisplayer populationLabel;
-	private FieldDisplayer moneyLabel;
-	private FieldDisplayer economyLabel;
-	private SpeedButton speedButton;
-
-	private InfoBar bottomBar;
+	private final HorizontalPanel topBar;
+	private final TextField dateLabel;
+	private final TextField populationLabel;
+	private final TextField moneyLabel;
+	private final TextField economyLabel;
+	private final SpeedButton speedButton;
+	
+	private final HorizontalPanel bottomBar;
 
 	/**
 	 * This code controls the simulation/gui interaction.
@@ -124,7 +125,7 @@ public class MainScreen extends JFrame {
 		 */
 
 		// The screen itself
-		final Dimension screenSize = new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT);
+		final Dimension screenSize = new Dimension(1024, 768);
 		setSize(screenSize);
 		setSize(screenSize);
 
@@ -144,19 +145,19 @@ public class MainScreen extends JFrame {
 		menuBar.add(helpMenu);
 		this.setJMenuBar(menuBar);
 
-		// Left Panel
-		leftBox = new ToolBox("left", 150);
+		// Left Panel - selection
+		leftBox = new VerticalPanel("left", 150);
 		getContentPane().add(leftBox, BorderLayout.LINE_START);
 
-		// Right Panel
-		rightBox = new ToolBox("right", 221);
+		// Right Panel - info
+		rightBox = new VerticalPanel("right", 221);
 		getContentPane().add(rightBox, BorderLayout.LINE_END);
 
-		clickDataBox = new MultiLineDisplay("Current Selection", 221, 100);
+		clickDataBox = new MultiLineTextField("Current Selection", 221, 100);
 		rightBox.add(clickDataBox);
 
 		// Top Panel
-		topBar = new InfoBar("top", 35);
+		topBar = new HorizontalPanel("top", 35);
 		getContentPane().add(topBar, BorderLayout.PAGE_START);
 
 		topBar.add(Box.createHorizontalStrut(10));
@@ -164,24 +165,24 @@ public class MainScreen extends JFrame {
 		topBar.add(speedButton);
 
 		topBar.add(Box.createHorizontalStrut(10));
-		dateLabel = new FieldDisplayer("Date", game.getGameDate(), new Dimension(150, 35), guiUpdateTimer);
+		dateLabel = new TextField("Date", game.getGameDate(), new Dimension(150, 35), guiUpdateTimer);
 		topBar.add(dateLabel);
 
 		topBar.add(Box.createHorizontalStrut(50));
-		populationLabel = new FieldDisplayer("Population", game.getPopulation(), new Dimension(250, 35), guiUpdateTimer);
+		populationLabel = new TextField("Population", game.getPopulation(), new Dimension(250, 35), guiUpdateTimer);
 		topBar.add(populationLabel);
 
 		topBar.add(Box.createHorizontalStrut(10));
-		moneyLabel = new FieldDisplayer("Funds", game.getMoney(), new Dimension(250, 35), guiUpdateTimer);
+		moneyLabel = new TextField("Funds", game.getMoney(), new Dimension(250, 35), guiUpdateTimer);
 		topBar.add(moneyLabel);
 
 		topBar.add(Box.createHorizontalStrut(10));
-		economyLabel = new FieldDisplayer("Economy", game.getEconomy(), new Dimension(250, 35), guiUpdateTimer);
+		economyLabel = new TextField("Economy", game.getEconomy(), new Dimension(250, 35), guiUpdateTimer);
 		topBar.add(economyLabel);
 		topBar.add(Box.createHorizontalGlue());
 
 		// Bottom Panel
-		bottomBar = new InfoBar("bottom", 35);
+		bottomBar = new HorizontalPanel("bottom", 35);
 		getContentPane().add(bottomBar, BorderLayout.PAGE_END);
 
 		// Center Map
@@ -200,13 +201,8 @@ public class MainScreen extends JFrame {
 
 		addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent k) {
-				if (k.isControlDown()) {
-					if (k.getKeyCode() == KeyEvent.VK_X || k.getKeyCode() == KeyEvent.VK_C) {
-						System.exit(0);
-					}
-				}
+				return;
 			}
-
 			public void keyReleased(KeyEvent k) {
 				return;
 			}
@@ -214,8 +210,8 @@ public class MainScreen extends JFrame {
 			public void keyTyped(KeyEvent k) {
 
 				/*
-				 * TODO: This needs some refactoring. Most of these shouldn't be
-				 * popups.
+				 * XXX: This needs some refactoring. Most of these shouldn't be
+				 * popups. Seems broken right now entirely.
 				 */
 
 				// Message dialogs stop the timer - we need to know if we should

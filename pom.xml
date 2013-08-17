@@ -69,6 +69,7 @@
     <module>milltown-map-swing</module>
     <module>milltown-model</module>
     <module>milltown-exec</module>
+    <module>milltown-model-test</module>
   </modules>
   <dependencies>
     <dependency>

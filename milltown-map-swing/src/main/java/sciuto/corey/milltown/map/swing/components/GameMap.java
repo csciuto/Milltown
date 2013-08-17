@@ -1,4 +1,4 @@
-package sciuto.corey.milltown.map.swing;
+package sciuto.corey.milltown.map.swing.components;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -24,8 +24,9 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
 import sciuto.corey.milltown.engine.BuildingConstructor;
-import sciuto.corey.milltown.engine.GameBoard;
+import sciuto.corey.milltown.map.swing.SquareMapper;
 import sciuto.corey.milltown.model.board.AbstractBuilding;
+import sciuto.corey.milltown.model.board.GameBoard;
 import sciuto.corey.milltown.model.board.Tile;
 import sciuto.corey.milltown.model.buildings.Land;
 import sciuto.corey.milltown.model.buildings.Mill;
@@ -42,7 +43,7 @@ public class GameMap extends JPanel implements ActionListener {
 	protected final Timer timer;
 	protected final BuildingConstructor buildingConstructor;
 	protected final SquareMapper squareMapper;
-	protected final MultiLineDisplay selectionPanel;
+	protected final MultiLineTextField selectionPanel;
 
 	/**
 	 * The tile to highlight Set the active tile to null to hide the highlight.
@@ -133,7 +134,7 @@ public class GameMap extends JPanel implements ActionListener {
 		}
 	};
 
-	public GameMap(final GameBoard b, final MultiLineDisplay selectionPanel, final Timer timer) {
+	public GameMap(final GameBoard b, final MultiLineTextField selectionPanel, final Timer timer) {
 		super();
 	
 		int defaultSize = 625;

@@ -1,12 +1,12 @@
-package sciuto.corey.milltown.map.swing;
+package sciuto.corey.milltown.map.swing.components;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import sciuto.corey.milltown.engine.Game;
-import sciuto.corey.milltown.engine.GameManager;
-import sciuto.corey.milltown.map.swing.GameMap;
+import sciuto.corey.milltown.engine.SaveGameManager;
+import sciuto.corey.milltown.map.swing.components.GameMap;
 
 public class GameMapUnitTest {
 

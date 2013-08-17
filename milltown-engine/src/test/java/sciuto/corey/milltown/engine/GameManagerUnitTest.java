@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import sciuto.corey.milltown.model.buildings.Land;
 import sciuto.corey.milltown.model.buildings.Water;
+import sciuto.corey.milltown.test.DummyBoardGenerator;
 
 public class GameManagerUnitTest {
 
@@ -20,12 +21,12 @@ public class GameManagerUnitTest {
 		game = new Game();
 		game.setBoard(DummyBoardGenerator.createDummyBoard1());
 		
-		GameManager.saveGame(new File("SaveGame1.sav"), game);
-		Game loadedGame = GameManager.loadGame(new File("SaveGame1.sav"));
+		SaveGameManager.saveGame(new File("SaveGame1.sav"), game);
+		Game loadedGame = SaveGameManager.loadGame(new File("SaveGame1.sav"));
 		
 		assertEquals(Water.class, loadedGame.getBoard().getTile(1, 2).getContents().getClass());
 		
-		Game defaultGame = GameManager.newGame();
+		Game defaultGame = SaveGameManager.newGame();
 		assertEquals(Land.class, defaultGame.getBoard().getTile(1, 2).getContents().getClass());
 		
 	}

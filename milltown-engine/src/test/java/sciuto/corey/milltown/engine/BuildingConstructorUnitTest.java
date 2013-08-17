@@ -6,14 +6,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import sciuto.corey.milltown.engine.BuildingConstructor;
-import sciuto.corey.milltown.engine.GameBoard;
 import sciuto.corey.milltown.model.board.AbstractBuilding;
-import sciuto.corey.milltown.model.buildings.Canal;
-import sciuto.corey.milltown.model.buildings.Land;
-import sciuto.corey.milltown.model.buildings.Mill;
-import sciuto.corey.milltown.model.buildings.Road;
-import sciuto.corey.milltown.model.buildings.Water;
+import sciuto.corey.milltown.model.board.GameBoard;
+import sciuto.corey.milltown.model.buildings.*;
+import sciuto.corey.milltown.test.DummyBoardGenerator;
 
 public class BuildingConstructorUnitTest {
 

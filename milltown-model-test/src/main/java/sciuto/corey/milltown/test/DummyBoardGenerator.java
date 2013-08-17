@@ -1,6 +1,6 @@
-package sciuto.corey.milltown.engine;
+package sciuto.corey.milltown.test;
 
-import sciuto.corey.milltown.engine.GameBoard;
+import sciuto.corey.milltown.model.board.GameBoard;
 import sciuto.corey.milltown.model.board.Tile;
 import sciuto.corey.milltown.model.buildings.Water;
 

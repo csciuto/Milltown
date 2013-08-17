@@ -1,4 +1,4 @@
-package sciuto.corey.milltown.map.swing;
+package sciuto.corey.milltown.map.swing.components;
 
 import java.awt.Dimension;
 
@@ -6,9 +6,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 
-public class MultiLineDisplay extends JTextArea {
+public class MultiLineTextField extends JTextArea {
 
-	public MultiLineDisplay(String name, int xSize, int ySize){
+	public MultiLineTextField(String name, int xSize, int ySize){
 		this.setName(name);
 		this.setMaximumSize(new Dimension(xSize,ySize));
 		

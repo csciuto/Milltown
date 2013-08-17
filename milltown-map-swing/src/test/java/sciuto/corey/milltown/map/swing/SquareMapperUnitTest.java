@@ -7,13 +7,15 @@ import javax.swing.Timer;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 
-import sciuto.corey.milltown.engine.GameBoard;
+import sciuto.corey.milltown.map.swing.components.GameMap;
+import sciuto.corey.milltown.map.swing.components.MultiLineTextField;
+import sciuto.corey.milltown.model.board.GameBoard;
 
 public class SquareMapperUnitTest {
 
 	class DummyGameMap extends GameMap {
 
-		DummyGameMap (GameBoard board, MultiLineDisplay d, Timer t) {
+		DummyGameMap (GameBoard board, MultiLineTextField d, Timer t) {
 			super(board, null, null);
 		}
 

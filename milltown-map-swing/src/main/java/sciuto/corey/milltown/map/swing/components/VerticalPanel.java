@@ -1,13 +1,10 @@
-package sciuto.corey.milltown.map.swing;
+package sciuto.corey.milltown.map.swing.components;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -16,7 +13,7 @@ import javax.swing.JPanel;
  * @author Corey
  * 
  */
-public class ToolBox extends JPanel {
+public class VerticalPanel extends JPanel {
 
 	protected final static int BOX_HEIGHT = 700;
 
@@ -25,7 +22,7 @@ public class ToolBox extends JPanel {
 	 * @param name The name of the box
 	 * @param width The width it has
 	 */
-	public ToolBox(String name, int width) {
+	public VerticalPanel(String name, int width) {
 		super();
 		setName(name);
 		setBackground(Color.WHITE);
@@ -33,12 +30,6 @@ public class ToolBox extends JPanel {
 		
 		setBorder(BorderFactory.createLoweredBevelBorder());
 		setPreferredSize(new Dimension(width, BOX_HEIGHT));
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showMessageDialog(null, "Clicked in infobox");
-			}
-		});
 	}
 
 }

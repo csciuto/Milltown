@@ -1,8 +1,8 @@
-package sciuto.corey.milltown.engine;
+package sciuto.corey.milltown.model.board;
 
 import java.io.Serializable;
 
-import sciuto.corey.milltown.model.board.Tile;
+
 
 /**
  * The map of tiles.

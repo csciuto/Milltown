@@ -6,6 +6,7 @@ import org.apache.commons.lang3.mutable.MutableLong;
 
 import sciuto.corey.milltown.model.DollarAmount;
 import sciuto.corey.milltown.model.FormattedNumber;
+import sciuto.corey.milltown.model.board.GameBoard;
 import sciuto.corey.milltown.model.board.GameDate;
 
 /**
@@ -25,6 +26,9 @@ public class Game implements Serializable {
 	private DollarAmount money = new DollarAmount(2000000L);
 	private DollarAmount economy = new DollarAmount(0);
 	
+	/**
+	 * Create through the SaveGameManager
+	 */
 	protected Game() {
 		board = new GameBoard();
 	}

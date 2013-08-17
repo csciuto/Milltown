@@ -1,4 +1,4 @@
-package sciuto.corey.milltown.map.swing;
+package sciuto.corey.milltown.map.swing.components;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,7 +13,7 @@ import javax.swing.JPanel;
  * @author Corey
  * 
  */
-public class InfoBar extends JPanel {
+public class HorizontalPanel extends JPanel {
 
 	protected final static int BAR_WIDTH = 1000;
 
@@ -22,7 +22,7 @@ public class InfoBar extends JPanel {
 	 * @param name The name of the box
 	 * @param height The height it has
 	 */
-	public InfoBar(String name, int height) {
+	public HorizontalPanel(String name, int height) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		setName(name);

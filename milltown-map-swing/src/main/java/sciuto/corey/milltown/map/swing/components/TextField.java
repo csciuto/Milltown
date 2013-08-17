@@ -1,4 +1,4 @@
-package sciuto.corey.milltown.map.swing;
+package sciuto.corey.milltown.map.swing.components;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -12,7 +12,7 @@ import javax.swing.Timer;
  * @author Corey
  *
  */
-public class FieldDisplayer extends JLabel implements ActionListener {
+public class TextField extends JLabel implements ActionListener {
 
 	private Object field;
 	private String displayName;
@@ -32,7 +32,7 @@ public class FieldDisplayer extends JLabel implements ActionListener {
 	 * @param labelSize The preferred size of the label
 	 * @param The timer to listen to updates from.
 	 */
-	public FieldDisplayer(String displayName, Object field, Dimension labelSize, Timer t){
+	public TextField(String displayName, Object field, Dimension labelSize, Timer t){
 		this.displayName = displayName;
 		this.field = field;
 		this.t = t;
@@ -50,7 +50,7 @@ public class FieldDisplayer extends JLabel implements ActionListener {
 	 * @param field The field to call toString on
 	 * @param The timer to listen to updates from.
 	 */
-	public FieldDisplayer(String displayName, Object field, Timer t){
+	public TextField(String displayName, Object field, Timer t){
 		this.displayName = displayName;
 		this.field = field;
 		this.t = t;

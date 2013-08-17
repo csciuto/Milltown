@@ -2,31 +2,17 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>milltown-map-swing</artifactId>
+  <artifactId>milltown-model-test</artifactId>
   <packaging>jar</packaging>
 
-  <name>milltown-map-swing</name>
+  <name>milltown-model-test</name>
   <url>http://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
-
   <dependencies>
-    <dependency>
-      <groupId>sciuto.corey</groupId>
-      <artifactId>milltown-engine</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
     <dependency>
       <groupId>sciuto.corey</groupId>
       <artifactId>milltown-model</artifactId>
@@ -37,6 +23,5 @@
     <groupId>sciuto.corey</groupId>
     <artifactId>milltown</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <relativePath>..</relativePath>
   </parent>
 </project>

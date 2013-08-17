@@ -5,7 +5,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import sciuto.corey.milltown.engine.Game;
-import sciuto.corey.milltown.engine.GameManager;
+import sciuto.corey.milltown.engine.SaveGameManager;
 
 /**
  * Runs the whole thing.
@@ -43,7 +43,7 @@ public class GameRunner {
 
 		UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 
-		game = GameManager.newGame();
+		game = SaveGameManager.newGame();
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {

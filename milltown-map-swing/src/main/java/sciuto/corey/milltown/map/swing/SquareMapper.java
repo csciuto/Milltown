@@ -2,7 +2,8 @@ package sciuto.corey.milltown.map.swing;
 
 import java.awt.event.MouseEvent;
 
-import sciuto.corey.milltown.engine.GameBoard;
+import sciuto.corey.milltown.map.swing.components.GameMap;
+import sciuto.corey.milltown.model.board.GameBoard;
 import sciuto.corey.milltown.model.board.Tile;
 
 /**
@@ -61,7 +62,7 @@ public class SquareMapper {
 	protected int mappingHelper(int pixel){
 		
 		int tile = pixel /squareSize;
-		if (tile > board.getBoardSize()){
+		if (tile >= board.getBoardSize()){
 			// To prevent the last pixel from causing an error:
 			// e.g. 625px / 25 = 25. The last index is 24...
 			tile -= 1;
