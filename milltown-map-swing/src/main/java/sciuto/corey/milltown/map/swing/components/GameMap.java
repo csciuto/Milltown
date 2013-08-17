@@ -1,25 +1,13 @@
 package sciuto.corey.milltown.map.swing.components;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
@@ -28,7 +16,6 @@ import sciuto.corey.milltown.map.swing.SquareMapper;
 import sciuto.corey.milltown.model.board.AbstractBuilding;
 import sciuto.corey.milltown.model.board.GameBoard;
 import sciuto.corey.milltown.model.board.Tile;
-import sciuto.corey.milltown.model.buildings.Land;
 import sciuto.corey.milltown.model.buildings.Mill;
 
 /**
@@ -37,13 +24,14 @@ import sciuto.corey.milltown.model.buildings.Mill;
  * @author Corey
  * 
  */
-public class GameMap extends JPanel implements ActionListener {
+public class GameMap extends JPanel implements ActionListener, Scrollable {
 
 	protected final GameBoard board;
 	protected final Timer timer;
 	protected final BuildingConstructor buildingConstructor;
 	protected final SquareMapper squareMapper;
 	protected final MultiLineTextField selectionPanel;
+	protected final Dimension preferredViewportSize;
 
 	/**
 	 * The tile to highlight Set the active tile to null to hide the highlight.
@@ -54,37 +42,6 @@ public class GameMap extends JPanel implements ActionListener {
 	 * The size of the map in pixels
 	 */
 	protected int squareSize;
-
-	/**
-	 * A helper class for making sure the board stays the right size.
-	 * 
-	 * @author Corey
-	 * 
-	 */
-	protected class ComponentResizeListener implements ComponentListener {
-
-		@Override
-		public void componentResized(ComponentEvent e) {
-			Component component = e.getComponent();
-			int shorterSide = component.getWidth() < component.getHeight() ? component.getWidth() : component
-					.getHeight();
-			squareSize = calculateSquareSize(shorterSide, board.getBoardSize());
-			squareMapper.update();
-			component.repaint();
-		}
-
-		@Override
-		public void componentMoved(ComponentEvent e) {
-		}
-
-		@Override
-		public void componentShown(ComponentEvent e) {
-		}
-
-		@Override
-		public void componentHidden(ComponentEvent e) {
-		}
-	};
 
 	/**
 	 * A helper class for handling mouse clicks
@@ -99,11 +56,11 @@ public class GameMap extends JPanel implements ActionListener {
 			repaintTiles(e.getComponent(), oldTile);
 
 			activeTile = squareMapper.mapSquare(e);
-			if (activeTile == null){
+			if (activeTile == null) {
 				// Clicked outside of the map.
 				return;
 			}
-			
+
 			if (e.getButton() == MouseEvent.BUTTON3) {
 				buildingConstructor.build(activeTile, new Mill());
 			}
@@ -134,30 +91,27 @@ public class GameMap extends JPanel implements ActionListener {
 		}
 	};
 
-	public GameMap(final GameBoard b, final MultiLineTextField selectionPanel, final Timer timer) {
+	public GameMap(final GameBoard b, final int mapDisplaySize, final MultiLineTextField selectionPanel, final Timer timer) {
 		super();
-	
-		int defaultSize = 625;
-	
+
 		this.board = b;
-		this.squareSize = calculateSquareSize(defaultSize, board.getBoardSize());
+		this.squareSize = calculateSquareSize(1024, board.getBoardSize());
 		this.squareMapper = new SquareMapper(board, this);
 		this.buildingConstructor = new BuildingConstructor(board);
 		this.selectionPanel = selectionPanel;
-	
+		this.preferredViewportSize = new Dimension(mapDisplaySize, mapDisplaySize);
+
 		setName("mainMap");
 		setBackground(new Color(0, 255, 0));
 		setBorder(BorderFactory.createEtchedBorder());
-		setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
-	
+		setPreferredSize(new Dimension(1024,1024));
+		
 		MouseInputListener mouseListener = new MouseClickListener();
 		addMouseListener(mouseListener);
 		addMouseMotionListener(mouseListener);
-	
-		addComponentListener(new ComponentResizeListener());
-	
+
 		this.timer = timer;
-	
+
 	}
 
 	public int getSquareSize() {
@@ -202,7 +156,7 @@ public class GameMap extends JPanel implements ActionListener {
 
 					Tile t = board.getTile(i, j);
 					AbstractBuilding b = t.getContents();
-					
+
 					if (t.equals(b.getRootTile())) {
 						Class<? extends AbstractBuilding> buildingClass = b.getClass();
 						if (buildingClass.equals(Mill.class)) {
@@ -220,8 +174,8 @@ public class GameMap extends JPanel implements ActionListener {
 								System.exit(-1);
 							}
 							// subtract from the edges so borders print.
-							g.drawImage(img, currentX+1, currentY+1, squareSize * b.getSize().getLeft()-2, squareSize
-									* b.getSize().getRight()-2, null);
+							g.drawImage(img, currentX + 1, currentY + 1, squareSize * b.getSize().getLeft() - 2,
+									squareSize * b.getSize().getRight() - 2, null);
 						}
 					}
 					currentX += squareSize;
@@ -248,5 +202,31 @@ public class GameMap extends JPanel implements ActionListener {
 
 	private int calculateSquareSize(final int mapSize, final int boardSize) {
 		return mapSize / boardSize;
+	}
+
+	@Override
+	public Dimension getPreferredScrollableViewportSize() {
+		return preferredViewportSize;
+	}
+
+	@Override
+	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+		return squareSize;
+	}
+
+	@Override
+	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+		// TODO Auto-generated method stub
+		return squareSize * 10;
+	}
+
+	@Override
+	public boolean getScrollableTracksViewportWidth() {
+		return false;
+	}
+
+	@Override
+	public boolean getScrollableTracksViewportHeight() {
+		return false;
 	}
 }

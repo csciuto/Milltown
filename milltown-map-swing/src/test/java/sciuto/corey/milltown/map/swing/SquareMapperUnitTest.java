@@ -15,8 +15,8 @@ public class SquareMapperUnitTest {
 
 	class DummyGameMap extends GameMap {
 
-		DummyGameMap (GameBoard board, MultiLineTextField d, Timer t) {
-			super(board, null, null);
+		DummyGameMap (GameBoard board, int size, MultiLineTextField d, Timer t) {
+			super(board, size, d, t);
 		}
 
 		@Override
@@ -34,7 +34,7 @@ public class SquareMapperUnitTest {
 	public void testMapper() {
 		GameBoard board = new GameBoard();
 		
-		GameMap map = new DummyGameMap(board, null, null);
+		GameMap map = new DummyGameMap(board, 625, null, null);
 
 		SquareMapper p = new SquareMapper(board, map);
 

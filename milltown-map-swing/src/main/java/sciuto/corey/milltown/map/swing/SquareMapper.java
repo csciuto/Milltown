@@ -17,7 +17,7 @@ public class SquareMapper {
 	private final GameBoard board;
 	private final GameMap map;
 	
-	private int squareSize;
+	private int squareSize = -1;
 	
 	/**
 	 * Creates a SquareMapper
@@ -27,9 +27,6 @@ public class SquareMapper {
 	public SquareMapper(GameBoard board, GameMap map){
 		this.board = board;
 		this.map = map;
-		
-		int smallSide =  map.getWidth() < map.getHeight() ? map.getWidth() : map.getHeight();
-		this.squareSize = smallSide / board.getBoardSize();
 	}
 	
 	/**
@@ -38,6 +35,12 @@ public class SquareMapper {
 	 * @return
 	 */
 	public Tile mapSquare(MouseEvent e) {
+		
+			if (squareSize == -1){
+				int longSide =  map.getWidth() > map.getHeight() ? map.getWidth() : map.getHeight();
+				this.squareSize = longSide / board.getBoardSize();
+			}
+			
 			int x = e.getX();
 			int y = e.getY();
 			
@@ -47,12 +50,9 @@ public class SquareMapper {
 			return board.getTile(xModSquareSize, yModSquareSize);
 	}
 	
-	/**
-	 * Updates the size of the map and square. Attach to an event listener.
-	 */
 	public void update(){
-		int smallSide =  map.getWidth() < map.getHeight() ? map.getWidth() : map.getHeight();
-		this.squareSize = smallSide / board.getBoardSize();
+		int longSide =  map.getWidth() > map.getHeight() ? map.getWidth() : map.getHeight();
+		this.squareSize = longSide / board.getBoardSize();
 	}
 	
 	/**

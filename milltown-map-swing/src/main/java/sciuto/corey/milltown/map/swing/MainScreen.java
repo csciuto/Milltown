@@ -23,6 +23,8 @@ public class MainScreen extends JFrame {
 
 	private static final String PROGRAM_NAME = "Milltown!";
 
+	private static final int DEFAULT_MAP_PX = 625;
+	
 	/*
 	 * ENGINE ELEMENTS
 	 */
@@ -44,6 +46,7 @@ public class MainScreen extends JFrame {
 	private final Timer guiUpdateTimer;
 
 	private final GameMap map;
+	private final JScrollPane mapScrollPane;
 
 	private final VerticalPanel leftBox;
 	private final JScrollPane buildingSelectorScrollPane;
@@ -178,8 +181,10 @@ public class MainScreen extends JFrame {
 		getContentPane().add(bottomBar, BorderLayout.PAGE_END);
 
 		// Center Map
-		map = new GameMap(game.getBoard(), clickDataBox, guiUpdateTimer);
-		getContentPane().add(map, BorderLayout.CENTER);
+		map = new GameMap(game.getBoard(), DEFAULT_MAP_PX, clickDataBox, guiUpdateTimer);
+		mapScrollPane = new JScrollPane(map);
+		mapScrollPane.setMaximumSize(new Dimension(DEFAULT_MAP_PX,DEFAULT_MAP_PX));
+		getContentPane().add(mapScrollPane, BorderLayout.CENTER);
 		
 		/*
 		 * LISTENERS
