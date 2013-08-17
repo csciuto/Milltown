@@ -188,32 +188,33 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 
 					if (t.equals(b.getRootTile())) {
 						Class<? extends AbstractBuilding> buildingClass = b.getClass();
-						String fileName;
+						String fileName = null;
+						;
 						if (buildingClass.equals(Mill.class)) {
 							fileName = "/map_images/mill.png";
 						} else if (buildingClass.equals(House.class)) {
 							fileName = "/map_images/house_1.png";
 						} else if (buildingClass.equals(Road.class)) {
 							fileName = "/map_images/road.png";
-						} else {
-							// ...
-							continue;
 						}
-						BufferedImage img = null;
-						URL url = this.getClass().getResource(fileName);
-						if (url == null) {
-							JOptionPane.showMessageDialog(null, String.format("Cannot find image %s", fileName));
-							System.exit(-1);
+
+						if (fileName != null) {
+							BufferedImage img = null;
+							URL url = this.getClass().getResource(fileName);
+							if (url == null) {
+								JOptionPane.showMessageDialog(null, String.format("Cannot find image %s", fileName));
+								System.exit(-1);
+							}
+							try {
+								img = ImageIO.read(url);
+							} catch (IOException e) {
+								JOptionPane.showMessageDialog(null, String.format("Cannot render image: % ", url));
+								System.exit(-1);
+							}
+							// subtract from the edges so borders print.
+							g.drawImage(img, currentX + 1, currentY + 1, squareSize * b.getSize().getLeft() - 2,
+									squareSize * b.getSize().getRight() - 2, null);
 						}
-						try {
-							img = ImageIO.read(url);
-						} catch (IOException e) {
-							JOptionPane.showMessageDialog(null, String.format("Cannot render image: % ", url));
-							System.exit(-1);
-						}
-						// subtract from the edges so borders print.
-						g.drawImage(img, currentX + 1, currentY + 1, squareSize * b.getSize().getLeft() - 2, squareSize
-								* b.getSize().getRight() - 2, null);
 					}
 					currentX += squareSize;
 				}
