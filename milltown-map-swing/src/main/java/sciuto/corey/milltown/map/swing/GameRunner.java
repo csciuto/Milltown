@@ -23,7 +23,7 @@ public class GameRunner {
 	
 	protected static void createAndShowGUI(Game g) {
 		try {
-			screen = new MainScreen(g);
+			screen = MainScreen.createMainScreen(g);
 			screen.setVisible(true);
 		} catch (Exception e) {
 			LOGGER.fatal(e.getLocalizedMessage(), e);

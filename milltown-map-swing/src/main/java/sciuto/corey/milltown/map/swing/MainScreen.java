@@ -24,6 +24,8 @@ public class MainScreen extends JFrame {
 
 	private static final Logger LOGGER = Logger.getLogger(MainScreen.class); 
 	
+	private static MainScreen mainScreen = null;
+	
 	/*
 	 * ENGINE ELEMENTS
 	 */
@@ -52,7 +54,7 @@ public class MainScreen extends JFrame {
 	private final ToolSelector toolSelector;
 
 	private final VerticalPanel rightBox;
-	private final MultiLineTextField clickDataBox;
+	private final MultiLineTextField queryBox;
 
 	private final HorizontalPanel topBar;
 	private final SingleLineTextField dateLabel;
@@ -66,6 +68,9 @@ public class MainScreen extends JFrame {
 	
 	public Timer getGuiUpdateTimer() {
 		return guiUpdateTimer;
+	}
+	public MultiLineTextField getQueryBox() {
+		return queryBox;
 	}
 	public ToolSelector getToolSelector() {
 		return toolSelector;
@@ -100,9 +105,26 @@ public class MainScreen extends JFrame {
 	private SimulationHandler simulationHandler;
 
 	/**
+	 * Creates the singleton main screen object
+	 * @param g
+	 */
+	public static MainScreen createMainScreen(Game g){
+		mainScreen = new MainScreen(g);
+		return mainScreen;
+	}
+	
+	/**
+	 * Returns the singleton.
+	 * @return
+	 */
+	public static MainScreen instance(){
+		return mainScreen;
+	}
+	
+	/**
 	 * Renders Game in the Main Screen and starts the simulation
 	 */
-	public MainScreen(Game g) {
+	private MainScreen(Game g) {
 
 		super("Milltown");
 
@@ -157,8 +179,8 @@ public class MainScreen extends JFrame {
 		rightBox = new VerticalPanel("right", 221);
 		getContentPane().add(rightBox, BorderLayout.LINE_END);
 
-		clickDataBox = new MultiLineTextField("Current Selection", 221, 100);
-		rightBox.add(clickDataBox);
+		queryBox = new MultiLineTextField("Current Selection", 221, 100);
+		rightBox.add(queryBox);
 
 		// Top Panel
 		topBar = new HorizontalPanel("top", 35);
@@ -191,7 +213,7 @@ public class MainScreen extends JFrame {
 		getContentPane().add(bottomBar, BorderLayout.PAGE_END);
 
 		// Center Map
-		map = new GameMap(game.getBoard(), DEFAULT_MAP_PX, clickDataBox, this);
+		map = new GameMap(game.getBoard(), DEFAULT_MAP_PX);
 		mapScrollPane = new GameMapScrollPane(map);
 		mapScrollPane.setMaximumSize(new Dimension(DEFAULT_MAP_PX, DEFAULT_MAP_PX));
 		getContentPane().add(mapScrollPane, BorderLayout.CENTER);

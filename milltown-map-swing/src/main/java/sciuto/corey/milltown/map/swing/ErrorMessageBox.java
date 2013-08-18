@@ -11,7 +11,8 @@ import javax.swing.JOptionPane;
 public class ErrorMessageBox {
 
 	public static void show(String message) {
-		JOptionPane.showMessageDialog(null, message, "Milltown", JOptionPane.ERROR_MESSAGE);
+		MainScreen screen = MainScreen.instance();
+		JOptionPane.showMessageDialog(screen, message, "Milltown", JOptionPane.ERROR_MESSAGE);
 	}
 
 }

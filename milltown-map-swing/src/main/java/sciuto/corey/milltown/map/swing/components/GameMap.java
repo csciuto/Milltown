@@ -10,7 +10,6 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Scrollable;
 import javax.swing.event.MouseInputAdapter;
@@ -44,9 +43,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 	protected final GameBoard board;
 	protected final BuildingConstructor buildingConstructor;
 	protected final SquareMapper squareMapper;
-	protected final MultiLineTextField selectionPanel;
 	protected final Dimension preferredViewportSize;
-	protected final MainScreen mainScreen;
 
 	/**
 	 * The tile to highlight Set the active tile to null to hide the highlight.
@@ -69,7 +66,6 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 		public void mouseClicked(MouseEvent e) {
 			Tile oldTile = activeTile;
 			repaintTiles(e.getComponent(), oldTile);
-
 			activeTile = squareMapper.mapSquare(e);
 			if (activeTile == null) {
 				// Clicked outside of the map.
@@ -77,7 +73,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 			}
 
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				Class<? extends AbstractBuilding> classToBuild = mainScreen.getToolSelector().getBuildingToBuild();
+				Class<? extends AbstractBuilding> classToBuild = MainScreen.instance().getToolSelector().getBuildingToBuild();
 				if (classToBuild != null) {
 					try {
 						buildingConstructor.build(activeTile, classToBuild.newInstance());
@@ -91,7 +87,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 
 			repaintTiles(e.getComponent(), activeTile);
 
-			selectionPanel.setText(activeTile.toString());
+			MainScreen.instance().getQueryBox().setText(activeTile.toString());
 		}
 
 		/**
@@ -115,17 +111,14 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 		}
 	};
 
-	public GameMap(final GameBoard b, final int mapDisplaySize, final MultiLineTextField selectionPanel,
-			final MainScreen mainScreen) {
+	public GameMap(final GameBoard b, final int mapDisplaySize) {
 		super();
 
 		this.board = b;
 		this.squareSize = calculateSquareSize(1000, board.getBoardSize());
 		this.squareMapper = new SquareMapper(board, this);
 		this.buildingConstructor = new BuildingConstructor(board);
-		this.selectionPanel = selectionPanel;
 		this.preferredViewportSize = new Dimension(mapDisplaySize, mapDisplaySize);
-		this.mainScreen = mainScreen;
 
 		setName("mainMap");
 		setBackground(new Color(0, 255, 0));
@@ -153,7 +146,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == mainScreen.getGuiUpdateTimer()) {
+		if (e.getSource() == MainScreen.instance().getGuiUpdateTimer()) {
 			// TODO: Don't repaint the whole board...check to see what's dirty.
 			// Only need this if buildings change due to timer...
 			// repaint();
@@ -194,11 +187,18 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 					if (t.equals(b.getRootTile())) {
 						Class<? extends AbstractBuilding> buildingClass = b.getClass();
 						String fileName = null;
-						;
 						if (buildingClass.equals(Mill.class)) {
 							fileName = "/map_images/mill.png";
 						} else if (buildingClass.equals(House.class)) {
-							fileName = "/map_images/house_1.png";
+							double rnd = Math.random();
+							// XXX: Kinda neat, but this makes the houses REDRAW at random, too!
+							if (rnd >= 0.0 && rnd < 0.3){
+								fileName = "/map_images/house_1.png";
+							} else if (rnd >= 0.3 && rnd < 0.6  ) {
+								fileName = "/map_images/house_2.png";
+							}else {
+								fileName = "/map_images/house_3.png";
+							}
 						} else if (buildingClass.equals(Road.class)) {
 							fileName = "/map_images/road.png";
 						}
@@ -208,7 +208,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 							URL url = this.getClass().getResource(fileName);
 							if (url == null) {
 								String msg = String.format("Cannot find image %s", fileName);
-								ErrorMessageBox.show(msg);
+								// All we can do is crash to the desktop. Popping up a dialog causes an infinite loop.
 								LOGGER.fatal(msg,null);
 								System.exit(-1);
 							}
@@ -216,7 +216,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 								img = ImageIO.read(url);
 							} catch (IOException e) {
 								String msg = String.format("Cannot render image: % ", url);
-								ErrorMessageBox.show(msg);
+								// All we can do is crash to the desktop. Popping up a dialog causes an infinite loop.
 								LOGGER.fatal(msg,null);
 								System.exit(-1);
 							}

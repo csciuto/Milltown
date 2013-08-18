@@ -6,20 +6,16 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 
 import sciuto.corey.milltown.map.swing.components.GameMap;
-import sciuto.corey.milltown.map.swing.components.MultiLineTextField;
 import sciuto.corey.milltown.model.board.GameBoard;
 
 public class SquareMapperUnitTest {
 
 	class DummyGameMap extends GameMap {
 
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = -1269610579047429935L;
 
-		DummyGameMap (GameBoard board, int size, MultiLineTextField d, MainScreen m) {
-			super(board, size, d, m);
+		DummyGameMap (GameBoard board, int size) {
+			super(board, size);
 		}
 
 		@Override
@@ -37,7 +33,7 @@ public class SquareMapperUnitTest {
 	public void testMapper() {
 		GameBoard board = new GameBoard();
 		
-		GameMap map = new DummyGameMap(board, 1000, null, null);
+		GameMap map = new DummyGameMap(board, 1000);
 
 		SquareMapper p = new SquareMapper(board, map);
 		p.update();
