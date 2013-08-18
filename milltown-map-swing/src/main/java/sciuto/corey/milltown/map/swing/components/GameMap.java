@@ -16,7 +16,10 @@ import javax.swing.Scrollable;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
+import org.apache.log4j.Logger;
+
 import sciuto.corey.milltown.engine.BuildingConstructor;
+import sciuto.corey.milltown.map.swing.ErrorMessageBox;
 import sciuto.corey.milltown.map.swing.MainScreen;
 import sciuto.corey.milltown.map.swing.SquareMapper;
 import sciuto.corey.milltown.model.board.AbstractBuilding;
@@ -34,10 +37,10 @@ import sciuto.corey.milltown.model.buildings.Road;
  */
 public class GameMap extends JPanel implements ActionListener, Scrollable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6881706563458253977L;
+
+	private static final Logger LOGGER = Logger.getLogger(GameMap.class); 
+	
 	protected final GameBoard board;
 	protected final BuildingConstructor buildingConstructor;
 	protected final SquareMapper squareMapper;
@@ -78,12 +81,10 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 				if (classToBuild != null) {
 					try {
 						buildingConstructor.build(activeTile, classToBuild.newInstance());
-					} catch (InstantiationException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (IllegalAccessException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					} catch (Exception ex) {
+						String msg = String.format("Error building %s on tile %s",classToBuild.toString(), activeTile.toString());
+						LOGGER.error(msg, ex);
+						ErrorMessageBox.show(msg);
 					}
 				}
 			}
@@ -206,13 +207,17 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 							BufferedImage img = null;
 							URL url = this.getClass().getResource(fileName);
 							if (url == null) {
-								JOptionPane.showMessageDialog(null, String.format("Cannot find image %s", fileName));
+								String msg = String.format("Cannot find image %s", fileName);
+								ErrorMessageBox.show(msg);
+								LOGGER.fatal(msg,null);
 								System.exit(-1);
 							}
 							try {
 								img = ImageIO.read(url);
 							} catch (IOException e) {
-								JOptionPane.showMessageDialog(null, String.format("Cannot render image: % ", url));
+								String msg = String.format("Cannot render image: % ", url);
+								ErrorMessageBox.show(msg);
+								LOGGER.fatal(msg,null);
 								System.exit(-1);
 							}
 							// subtract from the edges so borders print.
@@ -258,7 +263,6 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 
 	@Override
 	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-		// TODO Auto-generated method stub
 		return squareSize * 10;
 	}
 

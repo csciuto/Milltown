@@ -10,14 +10,17 @@ import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
+import org.apache.log4j.Logger;
+
+import sciuto.corey.milltown.map.swing.ErrorMessageBox;
 import sciuto.corey.milltown.model.board.AbstractBuilding;
 
 public class ToolButton extends JLabel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2225530348943230026L;
+	
+	private static final Logger LOGGER = Logger.getLogger(ToolButton.class);
+	
 	private static final Border unselectedBorder = BorderFactory.createLineBorder(Color.BLACK,1);
 	private static final Border selectedBorder = BorderFactory.createLineBorder(Color.GREEN,3);
 	
@@ -52,7 +55,9 @@ public class ToolButton extends JLabel {
 		}
 		URL url = this.getClass().getResource(fileName);
 		if (url == null) {
-			JOptionPane.showMessageDialog(null, String.format("Cannot find image %s", fileName));
+			String msg = String.format("Cannot find image %s", fileName);
+			ErrorMessageBox.show(msg);
+			LOGGER.fatal(msg,null);
 			System.exit(-1);
 		}
 		Icon icon = new ImageIcon(url);

@@ -5,6 +5,8 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import org.apache.log4j.Logger;
+
 import sciuto.corey.milltown.engine.Game;
 import sciuto.corey.milltown.map.swing.components.*;
 
@@ -16,18 +18,12 @@ import sciuto.corey.milltown.map.swing.components.*;
  */
 public class MainScreen extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4357328123100158183L;
-
-	private static final String HELP_MSG = "Instructions:\n" + "Pressing 's' changes simulation speed\n"
-			+ "'p' toggles the simulation on and off\n" + "'h' displays this message\n" + "'CTRL+C' or 'CTRL+X' quits";
-
-	private static final String PROGRAM_NAME = "Milltown!";
 
 	private static final int DEFAULT_MAP_PX = 625;
 
+	private static final Logger LOGGER = Logger.getLogger(MainScreen.class); 
+	
 	/*
 	 * ENGINE ELEMENTS
 	 */
@@ -108,7 +104,7 @@ public class MainScreen extends JFrame {
 	 */
 	public MainScreen(Game g) {
 
-		super(PROGRAM_NAME);
+		super("Milltown");
 
 		this.game = g;
 
@@ -206,6 +202,7 @@ public class MainScreen extends JFrame {
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
+				LOGGER.info("***** Quitting game. *****");
 				System.exit(0);
 			}
 		});
@@ -214,29 +211,10 @@ public class MainScreen extends JFrame {
 			@Override
 			public boolean dispatchKeyEvent(KeyEvent k) {
 				if (k.getID() == KeyEvent.KEY_PRESSED) {
-					/*
-					 * TODO: This needs some refactoring
-					 */
-
-					// Message dialogs stop the timer - we need to know if we
-					// should
-					// restart it.
-					boolean timerRunning = simulationTimer.isRunning();
-
 					if (k.getKeyCode() == KeyEvent.VK_P) {
-						if (timerRunning) {
+						if (simulationTimer.isRunning()) {
 							simulationTimer.stop();
-							JOptionPane.showMessageDialog(null, "Simulation: OFF");
 						} else {
-							simulationTimer.stop();
-							JOptionPane.showMessageDialog(null, "Simulation: ON.");
-							simulationTimer.start();
-						}
-					}
-					if (k.getKeyCode() == KeyEvent.VK_H) {
-						simulationTimer.stop();
-						JOptionPane.showMessageDialog(null, HELP_MSG);
-						if (timerRunning) {
 							simulationTimer.start();
 						}
 					} else if (k.getKeyCode() == KeyEvent.VK_S) {

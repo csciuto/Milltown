@@ -7,6 +7,8 @@ import java.io.File;
 import org.junit.After;
 import org.junit.Test;
 
+import sciuto.corey.milltown.engine.exception.LoadGameException;
+import sciuto.corey.milltown.engine.exception.SaveGameException;
 import sciuto.corey.milltown.model.buildings.Land;
 import sciuto.corey.milltown.model.buildings.Water;
 import sciuto.corey.milltown.test.DummyBoardGenerator;
@@ -16,7 +18,7 @@ public class GameManagerUnitTest {
 	private Game game;
 	
 	@Test
-	public void testSave(){
+	public void testSave() throws SaveGameException, LoadGameException{
 
 		game = new Game();
 		game.setBoard(DummyBoardGenerator.createDummyBoard1());

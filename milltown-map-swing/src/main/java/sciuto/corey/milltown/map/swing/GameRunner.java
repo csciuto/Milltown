@@ -1,6 +1,5 @@
 package sciuto.corey.milltown.map.swing;
 
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -28,7 +27,7 @@ public class GameRunner {
 			screen.setVisible(true);
 		} catch (Exception e) {
 			LOGGER.fatal(e.getLocalizedMessage(), e);
-			JOptionPane.showMessageDialog(null, String.format("We have encountered a fatal error and must exit..."));
+			ErrorMessageBox.show(String.format("We have encountered a fatal error and must exit..."));;
 			System.exit(-1);
 		}
 	}
