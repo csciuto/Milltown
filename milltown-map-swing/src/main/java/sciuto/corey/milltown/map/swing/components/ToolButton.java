@@ -3,7 +3,6 @@ package sciuto.corey.milltown.map.swing.components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import javax.swing.*;
@@ -11,11 +10,14 @@ import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
-import sciuto.corey.milltown.map.swing.components.GameMap.MouseClickListener;
 import sciuto.corey.milltown.model.board.AbstractBuilding;
 
 public class ToolButton extends JLabel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2225530348943230026L;
 	private static final Border unselectedBorder = BorderFactory.createLineBorder(Color.BLACK,1);
 	private static final Border selectedBorder = BorderFactory.createLineBorder(Color.GREEN,3);
 	
@@ -48,7 +50,6 @@ public class ToolButton extends JLabel {
 		} else if (toolName.equals("Road")){
 			fileName = "/map_images/road_ico.png";
 		}
-		BufferedImage img = null;
 		URL url = this.getClass().getResource(fileName);
 		if (url == null) {
 			JOptionPane.showMessageDialog(null, String.format("Cannot find image %s", fileName));

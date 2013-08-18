@@ -8,6 +8,10 @@ import javax.swing.JViewport;
 
 public class GameMapScrollPane extends JScrollPane {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -806043179505901461L;
 	private final GameMap map;
 
 	public GameMapScrollPane(GameMap map) {

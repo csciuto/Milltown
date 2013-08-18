@@ -8,6 +8,11 @@ import javax.swing.border.TitledBorder;
 
 public class MultiLineTextField extends JTextArea {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6896691785187294050L;
+
 	public MultiLineTextField(String name, int xSize, int ySize){
 		this.setName(name);
 		this.setMaximumSize(new Dimension(xSize,ySize));

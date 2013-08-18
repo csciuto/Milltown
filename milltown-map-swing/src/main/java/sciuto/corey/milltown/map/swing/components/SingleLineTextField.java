@@ -14,6 +14,10 @@ import javax.swing.Timer;
  */
 public class SingleLineTextField extends JLabel implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2336151904417648513L;
 	private Object field;
 	private String displayName;
 	private Timer t;

@@ -15,6 +15,10 @@ import javax.swing.JPanel;
  */
 public class VerticalPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4808845618130644861L;
 	protected final static int BOX_HEIGHT = 700;
 
 	/**

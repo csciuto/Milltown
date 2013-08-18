@@ -34,6 +34,10 @@ import sciuto.corey.milltown.model.buildings.Road;
  */
 public class GameMap extends JPanel implements ActionListener, Scrollable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6881706563458253977L;
 	protected final GameBoard board;
 	protected final BuildingConstructor buildingConstructor;
 	protected final SquareMapper squareMapper;

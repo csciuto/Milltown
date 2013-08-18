@@ -16,6 +16,11 @@ import sciuto.corey.milltown.model.buildings.Road;
 
 public class ToolSelector extends JLabel implements Scrollable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1193141538972511817L;
+
 	private Dimension viewSize = new Dimension(150, 300);
 
 	private Class<? extends AbstractBuilding> buildingToBuild;

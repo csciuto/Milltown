@@ -16,6 +16,11 @@ import sciuto.corey.milltown.map.swing.components.*;
  */
 public class MainScreen extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4357328123100158183L;
+
 	private static final String HELP_MSG = "Instructions:\n" + "Pressing 's' changes simulation speed\n"
 			+ "'p' toggles the simulation on and off\n" + "'h' displays this message\n" + "'CTRL+C' or 'CTRL+X' quits";
 

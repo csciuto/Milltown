@@ -13,6 +13,11 @@ public class SquareMapperUnitTest {
 
 	class DummyGameMap extends GameMap {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1269610579047429935L;
+
 		DummyGameMap (GameBoard board, int size, MultiLineTextField d, MainScreen m) {
 			super(board, size, d, m);
 		}

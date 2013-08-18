@@ -15,6 +15,10 @@ import javax.swing.JPanel;
  */
 public class HorizontalPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5378554478433884941L;
 	protected final static int BAR_WIDTH = 1000;
 
 	/**
