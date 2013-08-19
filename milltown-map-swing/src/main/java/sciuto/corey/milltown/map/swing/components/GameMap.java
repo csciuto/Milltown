@@ -56,7 +56,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 	private Tile hoveredTile = null;
 
 	/**
-	 * The current size of the map in pixels
+	 * The current size of the square on the board in pixels
 	 */
 	protected int squareSize;
 
