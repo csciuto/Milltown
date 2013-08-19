@@ -52,4 +52,5 @@ public abstract class AbstractBuilding implements Serializable {
 	public String toString(){
 		return this.getClass().getSimpleName();
 	}
+
 }

@@ -18,6 +18,7 @@ import javax.swing.event.MouseInputListener;
 import org.apache.log4j.Logger;
 
 import sciuto.corey.milltown.engine.BuildingConstructor;
+import sciuto.corey.milltown.map.swing.BuildingGraphicsRetriever;
 import sciuto.corey.milltown.map.swing.ErrorMessageBox;
 import sciuto.corey.milltown.map.swing.MainScreen;
 import sciuto.corey.milltown.map.swing.SquareMapper;
@@ -38,8 +39,8 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 
 	private static final long serialVersionUID = -6881706563458253977L;
 
-	private static final Logger LOGGER = Logger.getLogger(GameMap.class); 
-	
+	private static final Logger LOGGER = Logger.getLogger(GameMap.class);
+
 	protected final GameBoard board;
 	protected final BuildingConstructor buildingConstructor;
 	protected final SquareMapper squareMapper;
@@ -51,7 +52,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 	private Tile activeTile = null;
 
 	/**
-	 * The size of the map in pixels
+	 * The current size of the map in pixels
 	 */
 	protected int squareSize;
 
@@ -62,6 +63,9 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 	 * 
 	 */
 	protected class MouseClickListener extends MouseInputAdapter {
+		/**
+		 * Builds the building.
+		 */
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			Tile oldTile = activeTile;
@@ -73,12 +77,15 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 			}
 
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				Class<? extends AbstractBuilding> classToBuild = MainScreen.instance().getToolSelector().getBuildingToBuild();
+				Class<? extends AbstractBuilding> classToBuild = MainScreen.instance().getToolSelector()
+						.getBuildingToBuild();
 				if (classToBuild != null) {
 					try {
+						classToBuild = BuildingGraphicsRetriever.getVariantSelector(classToBuild);
 						buildingConstructor.build(activeTile, classToBuild.newInstance());
 					} catch (Exception ex) {
-						String msg = String.format("Error building %s on tile %s",classToBuild.toString(), activeTile.toString());
+						String msg = String.format("Error building %s on tile %s", classToBuild.toString(),
+								activeTile.toString());
 						LOGGER.error(msg, ex);
 						ErrorMessageBox.show(msg);
 					}
@@ -185,45 +192,14 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 					AbstractBuilding b = t.getContents();
 
 					if (t.equals(b.getRootTile())) {
-						Class<? extends AbstractBuilding> buildingClass = b.getClass();
-						String fileName = null;
-						if (buildingClass.equals(Mill.class)) {
-							fileName = "/map_images/mill.png";
-						} else if (buildingClass.equals(House.class)) {
-							double rnd = Math.random();
-							// XXX: Kinda neat, but this makes the houses REDRAW at random, too!
-							if (rnd >= 0.0 && rnd < 0.3){
-								fileName = "/map_images/house_1.png";
-							} else if (rnd >= 0.3 && rnd < 0.6  ) {
-								fileName = "/map_images/house_2.png";
-							}else {
-								fileName = "/map_images/house_3.png";
-							}
-						} else if (buildingClass.equals(Road.class)) {
-							fileName = "/map_images/road.png";
-						}
-
-						if (fileName != null) {
-							BufferedImage img = null;
-							URL url = this.getClass().getResource(fileName);
-							if (url == null) {
-								String msg = String.format("Cannot find image %s", fileName);
-								// All we can do is crash to the desktop. Popping up a dialog causes an infinite loop.
-								LOGGER.fatal(msg,null);
-								System.exit(-1);
-							}
-							try {
-								img = ImageIO.read(url);
-							} catch (IOException e) {
-								String msg = String.format("Cannot render image: % ", url);
-								// All we can do is crash to the desktop. Popping up a dialog causes an infinite loop.
-								LOGGER.fatal(msg,null);
-								System.exit(-1);
-							}
+						BufferedImage img = BuildingGraphicsRetriever.retrieveImage(b.getClass());
+						if (img != null) {
 							// subtract from the edges so borders print.
 							g.drawImage(img, currentX + 1, currentY + 1, squareSize * b.getSize().getLeft() - 2,
 									squareSize * b.getSize().getRight() - 2, null);
 						}
+						// TODO: If we don't use graphics for water, there's
+						// work to do here.
 					}
 					currentX += squareSize;
 				}
