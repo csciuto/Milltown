@@ -81,7 +81,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 				}
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
 				// Turn off all tools and queries.
-				MainScreen.instance().getToolSelector().unselectAllTools();
+				MainScreen.instance().getToolSelector().setQueryTool();
 				repaintTiles(hoveredTile);
 				hoveredTile = null;
 				cachedBuilding = null;
@@ -210,7 +210,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 			if (!built) {
 				// If we tried to build on a place we can't, unselect the build
 				// tool.
-				MainScreen.instance().getToolSelector().unselectAllTools();
+				MainScreen.instance().getToolSelector().setQueryTool();
 				repaintTiles(hoveredTile);
 				hoveredTile = null;
 				cachedBuilding = null;

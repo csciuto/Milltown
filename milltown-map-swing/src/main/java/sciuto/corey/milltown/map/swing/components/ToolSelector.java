@@ -8,6 +8,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.Scrollable;
 
+import sciuto.corey.milltown.map.swing.components.tools.BuildingToolButton;
+import sciuto.corey.milltown.map.swing.components.tools.ToolButton;
 import sciuto.corey.milltown.model.board.AbstractBuilding;
 import sciuto.corey.milltown.model.buildings.House1;
 import sciuto.corey.milltown.model.buildings.Mill;
@@ -20,20 +22,36 @@ public class ToolSelector extends JLabel implements Scrollable {
 	private Dimension viewSize = new Dimension(150, 300);
 
 	private Class<? extends AbstractBuilding> buildingToBuild;
-	
-	private ToolButton selectedButton = null;
 
+	/**
+	 * Shortcut to the query tool.
+	 */
+	private final ToolButton queryTool;
+	
+	/**
+	 * The active button
+	 */
+	private ToolButton selectedButton = null;
+	
 	public ToolSelector() {
 
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		add(new ToolButton("Mill", Mill.class, this));
+		this.queryTool = new ToolButton("Query", this);
+		add(queryTool);
+		queryTool.activate();
+		selectedButton = queryTool;
+		
 		add(Box.createVerticalStrut(10));
-		add(new ToolButton("House", House1.class, this));
+		add(new BuildingToolButton("Mill", Mill.class, this));
 		add(Box.createVerticalStrut(10));
-		add(new ToolButton("Road", Road.class, this));
+		add(new BuildingToolButton("House", House1.class, this));
+		add(Box.createVerticalStrut(10));
+		add(new BuildingToolButton("Road", Road.class, this));
 
 		setPreferredSize(new Dimension(150, 300));
+		
+		repaint();
 	}
 
 	@Override
@@ -69,30 +87,37 @@ public class ToolSelector extends JLabel implements Scrollable {
 	 */
 	public void setNewTool(ToolButton button) {
 
-		if (selectedButton != null){
+		if (selectedButton != null) {
 			selectedButton.deactivate();
 		}
 		button.activate();
 		selectedButton = button;
 
-		buildingToBuild = button.getBuildingType();
+		if (button instanceof BuildingToolButton) {
+			buildingToBuild = ((BuildingToolButton)button).getBuildingType();
+		} else {
+			buildingToBuild = null;
+		}
 
 		repaint();
 	}
-	
+
 	/**
-	 * Turns off all tools
+	 * Switches to query mode.
 	 * 
 	 * @param button
 	 */
-	public void unselectAllTools() {
+	public void setQueryTool() {
 
-		if (selectedButton != null){
+		if (selectedButton != null) {
 			selectedButton.deactivate();
 		}
 
 		buildingToBuild = null;
 
+		queryTool.activate();
+		selectedButton = queryTool;
+		
 		repaint();
 	}
 
