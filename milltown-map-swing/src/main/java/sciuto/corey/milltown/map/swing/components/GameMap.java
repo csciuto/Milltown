@@ -20,6 +20,9 @@ import sciuto.corey.milltown.map.swing.BuildingGraphicsRetriever;
 import sciuto.corey.milltown.map.swing.ErrorMessageBox;
 import sciuto.corey.milltown.map.swing.MainScreen;
 import sciuto.corey.milltown.map.swing.SquareMapper;
+import sciuto.corey.milltown.map.swing.components.tools.BuildingToolButton;
+import sciuto.corey.milltown.map.swing.components.tools.BulldozerToolButton;
+import sciuto.corey.milltown.map.swing.components.tools.ToolButton;
 import sciuto.corey.milltown.model.board.AbstractBuilding;
 import sciuto.corey.milltown.model.board.GameBoard;
 import sciuto.corey.milltown.model.board.Tile;
@@ -72,25 +75,24 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 		public void mouseClicked(MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				Tile clickedTile = squareMapper.mapSquare(e);
-				GameMap.this.activateTile(clickedTile);
-				// Build if there is a selected building.
-				Class<? extends AbstractBuilding> classToBuild = MainScreen.instance().getToolSelector()
-						.getBuildingToBuild();
-				if (classToBuild != null) {
-					GameMap.this.buildOnTile(clickedTile, classToBuild);
+
+				ToolButton activeButton = MainScreen.instance().getToolSelector().getSelectedButton();
+				if (activeButton instanceof BuildingToolButton) {
+					// Build if there is a selected building.
+					Class<? extends AbstractBuilding> classToBuild = MainScreen.instance().getToolSelector()
+							.getBuildingToBuild();
+					if (classToBuild != null) {
+						GameMap.this.buildOnTile(clickedTile, classToBuild);
+					}
+				} else if (activeButton instanceof BulldozerToolButton) {
+					GameMap.this.demolishBuilding(clickedTile);
+				} else {
+					GameMap.this.activateTile(clickedTile);
 				}
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
 				// Turn off all tools and queries.
-				MainScreen.instance().getToolSelector().setQueryTool();
-				repaintTiles(hoveredTile);
-				hoveredTile = null;
-				cachedBuilding = null;
-
-				Tile oldTile = activeTile;
-				repaintTiles(oldTile);
-				activeTile = null;
-
-				MainScreen.instance().getQueryBox().setText("");
+				MainScreen.instance().getToolSelector().activateQueryTool();
+				GameMap.this.turnOffSelectionTool();
 			}
 
 		}
@@ -101,11 +103,11 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 		@Override
 		public void mouseMoved(MouseEvent e) {
 
-			Class<? extends AbstractBuilding> classToBuild = MainScreen.instance().getToolSelector()
-					.getBuildingToBuild();
+			ToolButton activeButton = MainScreen.instance().getToolSelector().getSelectedButton();
 
-			if (classToBuild != null) {
-
+			if (activeButton instanceof BuildingToolButton) {
+				Class<? extends AbstractBuilding> classToBuild = MainScreen.instance().getToolSelector()
+						.getBuildingToBuild();
 				Tile oldTile = hoveredTile;
 				repaintTiles(oldTile);
 
@@ -120,9 +122,21 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 				}
 				cachedBuilding.setRootTile(hoveredTile);
 				repaintTiles(hoveredTile);
-			} else {
-				cachedBuilding = null;
-				hoveredTile = null;
+			} else if (activeButton instanceof BulldozerToolButton) {
+				Tile oldTile = hoveredTile;
+				repaintTiles(oldTile);
+
+				hoveredTile = squareMapper.mapSquare(e);
+				try {
+					cachedBuilding = hoveredTile.getContents();
+				} catch (Exception ex) {
+					LOGGER.error("Exception in MouseMoved", ex);
+					return;
+				}
+
+				hoveredTile = squareMapper.mapSquare(e);
+				hoveredTile = hoveredTile.getContents().getRootTile();
+				repaintTiles(hoveredTile);
 			}
 		}
 
@@ -206,21 +220,23 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 
 		try {
 			classToBuild = BuildingGraphicsRetriever.getVariantSelector(classToBuild);
-			boolean built = buildingConstructor.build(tile, classToBuild.newInstance());
-			if (!built) {
-				// If we tried to build on a place we can't, unselect the build
-				// tool.
-				MainScreen.instance().getToolSelector().setQueryTool();
-				repaintTiles(hoveredTile);
-				hoveredTile = null;
-				cachedBuilding = null;
-			}
-			MainScreen.instance().getQueryBox().setText(activeTile.toString());
+			buildingConstructor.build(tile, classToBuild.newInstance());
+			turnOffSelectionTool();
+			repaintTiles(tile);
 		} catch (Exception ex) {
 			String msg = String.format("Error building %s on tile %s", classToBuild.toString(), activeTile.toString());
 			LOGGER.error(msg, ex);
 			ErrorMessageBox.show(msg);
 		}
+	}
+
+	protected void demolishBuilding(Tile clickedTile) {
+
+		buildingConstructor.demolish(clickedTile);
+		turnOffSelectionTool();
+		hoveredTile = clickedTile;
+		cachedBuilding = hoveredTile.getContents();
+		repaintTiles(hoveredTile);
 	}
 
 	/**
@@ -239,6 +255,19 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 			repaint(rootTile.getXLoc() * squareSize - 2, rootTile.getYLoc() * squareSize - 2, squareSize * 3 + 4,
 					squareSize * 3 + 4);
 		}
+	}
+
+	protected void turnOffSelectionTool() {
+		repaintTiles(hoveredTile);
+		hoveredTile = null;
+		cachedBuilding = null;
+	
+		Tile oldTile = activeTile;
+		repaintTiles(oldTile);
+		activeTile = null;
+	
+		MainScreen.instance().getQueryBox().setText("");
+		
 	}
 
 	@Override
@@ -268,7 +297,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 			currentY += squareSize;
 			currentX = 0;
 		}
-		
+
 		// Then the buildings
 		currentX = 0;
 		currentY = 0;
@@ -301,30 +330,37 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 			Graphics2D g2 = (Graphics2D) g;
 			drawHighlighter(g2, b.getRootTile(), b.getSize(), Color.YELLOW, 0.3f);
 		}
-		
+
 		if (hoveredTile != null && cachedBuilding != null) {
 			// Draw the selection box.
 			AbstractBuilding b = cachedBuilding;
 			Tile t = b.getRootTile();
 
 			Graphics2D g2 = (Graphics2D) g;
-			if (buildingConstructor.canBuild(t, cachedBuilding)) {
-				drawHighlighter(g2, b.getRootTile(), b.getSize(), Color.BLUE, 0.3f);
-			} else {
+
+			if (MainScreen.instance().getToolSelector().getSelectedButton() instanceof BulldozerToolButton) {
 				drawHighlighter(g2, b.getRootTile(), b.getSize(), Color.RED, 0.6f);
+			} else {
+				if (buildingConstructor.canBuild(t, cachedBuilding)) {
+					drawHighlighter(g2, b.getRootTile(), b.getSize(), Color.BLUE, 0.3f);
+				} else {
+					drawHighlighter(g2, b.getRootTile(), b.getSize(), Color.RED, 0.6f);
+				}
 			}
 		}
 	}
 
 	/**
-	 * Draws a semi-opaque box around the tile of the specified size, color, and transparency.
+	 * Draws a semi-opaque box around the tile of the specified size, color, and
+	 * transparency.
+	 * 
 	 * @param g2
 	 * @param t
 	 * @param d
 	 * @param color
 	 * @param transparency
 	 */
-	private void drawHighlighter(Graphics2D g2, Tile t, Pair<Integer,Integer> d, Color color, float transparency){
+	private void drawHighlighter(Graphics2D g2, Tile t, Pair<Integer, Integer> d, Color color, float transparency) {
 		g2.setColor(color);
 		g2.drawRect(t.getXLoc() * squareSize, t.getYLoc() * squareSize, squareSize * d.getLeft(),
 				squareSize * d.getRight());
@@ -332,7 +368,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 		g2.fillRect(t.getXLoc() * squareSize, t.getYLoc() * squareSize, squareSize * d.getLeft(),
 				squareSize * d.getRight());
 	}
-	
+
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {
 		return preferredViewportSize;

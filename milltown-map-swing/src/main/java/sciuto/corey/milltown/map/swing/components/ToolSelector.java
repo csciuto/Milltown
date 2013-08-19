@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.Scrollable;
 
 import sciuto.corey.milltown.map.swing.components.tools.BuildingToolButton;
+import sciuto.corey.milltown.map.swing.components.tools.BulldozerToolButton;
 import sciuto.corey.milltown.map.swing.components.tools.ToolButton;
 import sciuto.corey.milltown.model.board.AbstractBuilding;
 import sciuto.corey.milltown.model.buildings.House1;
@@ -20,8 +21,6 @@ public class ToolSelector extends JLabel implements Scrollable {
 	private static final long serialVersionUID = -1193141538972511817L;
 
 	private Dimension viewSize = new Dimension(150, 300);
-
-	private Class<? extends AbstractBuilding> buildingToBuild;
 
 	/**
 	 * Shortcut to the query tool.
@@ -41,6 +40,9 @@ public class ToolSelector extends JLabel implements Scrollable {
 		add(queryTool);
 		queryTool.activate();
 		selectedButton = queryTool;
+		
+		add(Box.createVerticalStrut(10));
+		add(new BulldozerToolButton("Demolish", this));
 		
 		add(Box.createVerticalStrut(10));
 		add(new BuildingToolButton("Mill", Mill.class, this));
@@ -93,12 +95,6 @@ public class ToolSelector extends JLabel implements Scrollable {
 		button.activate();
 		selectedButton = button;
 
-		if (button instanceof BuildingToolButton) {
-			buildingToBuild = ((BuildingToolButton)button).getBuildingType();
-		} else {
-			buildingToBuild = null;
-		}
-
 		repaint();
 	}
 
@@ -107,13 +103,11 @@ public class ToolSelector extends JLabel implements Scrollable {
 	 * 
 	 * @param button
 	 */
-	public void setQueryTool() {
+	public void activateQueryTool() {
 
 		if (selectedButton != null) {
 			selectedButton.deactivate();
 		}
-
-		buildingToBuild = null;
 
 		queryTool.activate();
 		selectedButton = queryTool;
@@ -122,7 +116,15 @@ public class ToolSelector extends JLabel implements Scrollable {
 	}
 
 	public Class<? extends AbstractBuilding> getBuildingToBuild() {
-		return buildingToBuild;
+		if (selectedButton instanceof BuildingToolButton) {
+			return ((BuildingToolButton)selectedButton).getBuildingType();
+		} else {
+			return null;
+		}
+	}
+
+	public ToolButton getSelectedButton() {
+		return selectedButton;
 	}
 
 }
