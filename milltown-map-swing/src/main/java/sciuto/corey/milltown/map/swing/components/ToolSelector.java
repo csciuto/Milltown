@@ -79,6 +79,22 @@ public class ToolSelector extends JLabel implements Scrollable {
 
 		repaint();
 	}
+	
+	/**
+	 * Turns off all tools
+	 * 
+	 * @param button
+	 */
+	public void unselectAllTools() {
+
+		if (selectedButton != null){
+			selectedButton.deactivate();
+		}
+
+		buildingToBuild = null;
+
+		repaint();
+	}
 
 	public Class<? extends AbstractBuilding> getBuildingToBuild() {
 		return buildingToBuild;
