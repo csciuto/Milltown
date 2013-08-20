@@ -11,9 +11,6 @@ import sciuto.corey.milltown.map.swing.Speed;
 
 public class SpeedButton extends JButton implements ActionListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8531319618899226477L;
 
 	private final Timer simulationTimer;

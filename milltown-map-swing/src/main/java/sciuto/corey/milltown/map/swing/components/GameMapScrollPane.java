@@ -24,17 +24,22 @@ public class GameMapScrollPane extends JScrollPane {
 	}
 
 	@Override
-	/**
-	 * Zooms the map - this algorithm focuses around the upper-left corner of the screen.
-	 */
 	protected void processMouseWheelEvent(MouseWheelEvent e) {
 
 		int rotation = e.getWheelRotation();
-		for (int i = 1; i <= Math.abs(rotation); i++) {
+		doZoom(rotation);
+	}
+
+	/**
+	 * Zooms the map - this algorithm focuses around the upper-left corner of the screen.
+	 * @param multiplier - Number of times to perform a zoom. Negative zooms in, positive out.
+	 */
+	protected void doZoom(final int multiplier){
+		for (int i = 1; i <= Math.abs(multiplier); i++) {
 			double mapWidthPre = map.getWidth();
 			double mapHeightPre = map.getHeight();
 
-			if (rotation < 0) {
+			if (multiplier < 0) {
 				map.setSquareSizeAndUpdateMap((int) Math.round(map.squareSize + map.squareSize * 0.10));
 			} else {
 				map.setSquareSizeAndUpdateMap((int) Math.round(map.squareSize - map.squareSize * 0.10));

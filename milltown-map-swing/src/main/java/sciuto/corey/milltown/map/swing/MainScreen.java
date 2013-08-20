@@ -47,7 +47,7 @@ public class MainScreen extends JFrame {
 	private final Timer guiUpdateTimer;
 
 	private final GameMap map;
-	private final JScrollPane mapScrollPane;
+	private final GameMapScrollPane mapScrollPane;
 
 	private final VerticalPanel leftBox;
 	private final JScrollPane buildingSelectorScrollPane;
@@ -71,6 +71,9 @@ public class MainScreen extends JFrame {
 	}
 	public MultiLineTextField getQueryBox() {
 		return queryBox;
+	}
+	public GameMapScrollPane getMapScrollPane() {
+		return mapScrollPane;
 	}
 	public ToolSelector getToolSelector() {
 		return toolSelector;
@@ -206,6 +209,14 @@ public class MainScreen extends JFrame {
 		topBar.add(Box.createHorizontalStrut(10));
 		economyLabel = new SingleLineTextField("Economy", game.getEconomy(), new Dimension(250, 35), guiUpdateTimer);
 		topBar.add(economyLabel);
+		
+		topBar.add(Box.createHorizontalStrut(20));
+		topBar.add(new ZoomButton(ZoomButton.Direction.OUT));
+		topBar.add(Box.createHorizontalStrut(5));
+		topBar.add(new JLabel("Zoom"));
+		topBar.add(Box.createHorizontalStrut(5));
+		topBar.add(new ZoomButton(ZoomButton.Direction.IN));
+		
 		topBar.add(Box.createHorizontalGlue());
 
 		// Bottom Panel
