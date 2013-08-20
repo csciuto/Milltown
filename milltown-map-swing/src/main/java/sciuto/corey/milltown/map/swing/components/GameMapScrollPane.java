@@ -34,7 +34,7 @@ public class GameMapScrollPane extends JScrollPane {
 	 * Zooms the map - this algorithm focuses around the upper-left corner of the screen.
 	 * @param multiplier - Number of times to perform a zoom. Negative zooms in, positive out.
 	 */
-	protected void doZoom(final int multiplier){
+	public void doZoom(final int multiplier){
 		for (int i = 1; i <= Math.abs(multiplier); i++) {
 			double mapWidthPre = map.getWidth();
 			double mapHeightPre = map.getHeight();

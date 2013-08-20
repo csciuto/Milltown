@@ -22,15 +22,15 @@ public class MainScreen extends JFrame {
 
 	private static final int DEFAULT_MAP_PX = 625;
 
-	private static final Logger LOGGER = Logger.getLogger(MainScreen.class); 
-	
+	private static final Logger LOGGER = Logger.getLogger(MainScreen.class);
+
 	private static MainScreen mainScreen = null;
-	
+
 	/*
 	 * ENGINE ELEMENTS
 	 */
 
-	private final Game game;
+	private Game game;
 
 	/*
 	 * GUI COMPONENTS
@@ -40,6 +40,11 @@ public class MainScreen extends JFrame {
 	 * Runs the simulation itself
 	 */
 	private final Timer simulationTimer;
+
+	/**
+	 * Stores the keyboard input controller.
+	 */
+	private KeyEventDispatcher keyDispatcher;
 
 	/**
 	 * Updates the GUI. Graphics that need to update register to it.
@@ -65,21 +70,26 @@ public class MainScreen extends JFrame {
 
 	private final HorizontalPanel bottomBar;
 
-	
 	public Timer getGuiUpdateTimer() {
 		return guiUpdateTimer;
 	}
+
 	public MultiLineTextField getQueryBox() {
 		return queryBox;
 	}
+
 	public GameMapScrollPane getMapScrollPane() {
 		return mapScrollPane;
 	}
+
 	public ToolSelector getToolSelector() {
 		return toolSelector;
 	}
 
-	
+	public Game getGame() {
+		return game;
+	}
+
 	/**
 	 * This code controls the simulation/gui interaction.
 	 * 
@@ -108,22 +118,53 @@ public class MainScreen extends JFrame {
 	private SimulationHandler simulationHandler;
 
 	/**
+	 * Turns off the keyboard dispatcher
+	 */
+	public void disableKeyEvents() {
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(keyDispatcher);
+	}
+
+	/**
+	 * Turns on the keyboard dispatcher
+	 */
+	public void enableKeyEvents() {
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyDispatcher);
+	}
+
+	/**
 	 * Creates the singleton main screen object
+	 * 
 	 * @param g
 	 */
-	public static MainScreen createMainScreen(Game g){
+	public static MainScreen createMainScreen(Game g) {
 		mainScreen = new MainScreen(g);
 		return mainScreen;
 	}
-	
+
+	/**
+	 * Reinitializes all state and loads a new game.
+	 * 
+	 * @param g
+	 */
+	public static void loadMainScreen(Game g) {
+		mainScreen.setVisible(false);
+		mainScreen = null;
+		System.gc();
+		
+		mainScreen = new MainScreen(g);
+		mainScreen.setVisible(true);
+		
+	}
+
 	/**
 	 * Returns the singleton.
+	 * 
 	 * @return
 	 */
-	public static MainScreen instance(){
+	public static MainScreen instance() {
 		return mainScreen;
 	}
-	
+
 	/**
 	 * Renders Game in the Main Screen and starts the simulation
 	 */
@@ -159,14 +200,8 @@ public class MainScreen extends JFrame {
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 
 		// The menu bar
-		JMenu fileMenu = new JMenu("File");
-		fileMenu.setMnemonic(KeyEvent.VK_F);
-		JMenu helpMenu = new JMenu("Help");
-		helpMenu.setMnemonic(KeyEvent.VK_H);
-		JMenuBar menuBar = new JMenuBar();
-		menuBar.add(fileMenu);
-		menuBar.add(helpMenu);
-		this.setJMenuBar(menuBar);
+		MainMenu mainMenu = new MainMenu();
+		this.setJMenuBar(mainMenu);
 
 		// Left Panel - selection
 		leftBox = new VerticalPanel("left", 150);
@@ -209,14 +244,14 @@ public class MainScreen extends JFrame {
 		topBar.add(Box.createHorizontalStrut(10));
 		economyLabel = new SingleLineTextField("Economy", game.getEconomy(), new Dimension(250, 35), guiUpdateTimer);
 		topBar.add(economyLabel);
-		
+
 		topBar.add(Box.createHorizontalStrut(20));
 		topBar.add(new ZoomButton(ZoomButton.Direction.OUT));
 		topBar.add(Box.createHorizontalStrut(5));
 		topBar.add(new JLabel("Zoom"));
 		topBar.add(Box.createHorizontalStrut(5));
 		topBar.add(new ZoomButton(ZoomButton.Direction.IN));
-		
+
 		topBar.add(Box.createHorizontalGlue());
 
 		// Bottom Panel
@@ -240,17 +275,11 @@ public class MainScreen extends JFrame {
 			}
 		});
 
-		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+		keyDispatcher = new KeyEventDispatcher() {
 			@Override
 			public boolean dispatchKeyEvent(KeyEvent k) {
 				if (k.getID() == KeyEvent.KEY_PRESSED) {
-					if (k.getKeyCode() == KeyEvent.VK_P) {
-						if (simulationTimer.isRunning()) {
-							simulationTimer.stop();
-						} else {
-							simulationTimer.start();
-						}
-					} else if (k.getKeyCode() == KeyEvent.VK_S) {
+					if (k.getKeyCode() == KeyEvent.VK_S && k.isAltDown()) {
 						speedButton.doClick();
 					} else if (k.getKeyCode() == KeyEvent.VK_LEFT) {
 						JScrollBar sb = mapScrollPane.getHorizontalScrollBar();
@@ -283,11 +312,17 @@ public class MainScreen extends JFrame {
 						JScrollBar sb = mapScrollPane.getVerticalScrollBar();
 						int change = sb.getMaximum() / game.getBoard().getBoardSize();
 						int newVal = sb.getValue() + change;
-						if (newVal< sb.getMaximum()) {
+						if (newVal < sb.getMaximum()) {
 							sb.setValue(newVal);
 						} else {
 							sb.setValue(0);
 						}
+					} else if (k.getKeyCode() == KeyEvent.VK_ESCAPE) {
+						map.turnOffAllTools();
+					} else if (k.getKeyCode() == KeyEvent.VK_EQUALS && k.isAltDown()) {
+						MainScreen.this.getMapScrollPane().doZoom(-1);
+					} else if (k.getKeyCode() == KeyEvent.VK_MINUS && k.isAltDown()) {
+						MainScreen.this.getMapScrollPane().doZoom(1);
 					}
 
 					return false;
@@ -295,7 +330,8 @@ public class MainScreen extends JFrame {
 					return true;
 				}
 			}
-		});
+		};
+		this.enableKeyEvents();
 
 		simulationTimer.start();
 	}

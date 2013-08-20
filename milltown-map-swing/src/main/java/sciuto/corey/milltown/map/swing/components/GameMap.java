@@ -258,6 +258,8 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 	}
 
 	protected void turnOffSelectionTool() {
+		
+		
 		repaintTiles(hoveredTile);
 		hoveredTile = null;
 		cachedBuilding = null;
@@ -268,6 +270,14 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 	
 		MainScreen.instance().getQueryBox().setText("");
 		
+	}
+	
+	/**
+	 * Puts the state in query mode.
+	 */
+	public void turnOffAllTools(){
+		MainScreen.instance().getToolSelector().activateQueryTool();
+		turnOffSelectionTool();
 	}
 
 	@Override
