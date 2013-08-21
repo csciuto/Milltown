@@ -3,6 +3,8 @@ package sciuto.corey.milltown.engine;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.mutable.MutableLong;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import sciuto.corey.milltown.model.DollarAmount;
 import sciuto.corey.milltown.model.FormattedNumber;
@@ -19,6 +21,8 @@ public class Game implements Serializable {
 
 	private static final long serialVersionUID = -6707842129706632605L;
 
+	private static final Logger LOGGER = Logger.getLogger(Game.class);
+	
 	private GameBoard board;
 
 	private GameDate gameDate = new GameDate();
@@ -29,9 +33,15 @@ public class Game implements Serializable {
 	private boolean isDebug = Boolean.parseBoolean(PropertiesReader.read("milltown.properties").getProperty("milltown.debug"));
 	
 	/**
-	 * Create through the SaveGameManager
+	 * Create through the GameRunner
 	 */
 	protected Game() {
+		
+		if (isDebug){
+			Logger.getRootLogger().setLevel(Level.DEBUG);
+			LOGGER.debug("Debug mode ON");
+		}
+		
 		board = new GameBoard();
 	}
 

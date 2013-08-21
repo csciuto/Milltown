@@ -25,7 +25,7 @@ public class GameRunner {
 		try {
 			screen = MainScreen.createMainScreen(g);
 			screen.setVisible(true);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			LOGGER.fatal(e.getLocalizedMessage(), e);
 			ErrorMessageBox.show(String.format("We have encountered a fatal error and must exit..."));;
 			System.exit(-1);

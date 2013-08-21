@@ -8,13 +8,13 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.Scrollable;
 
+import sciuto.corey.milltown.engine.PropertiesReader;
+import sciuto.corey.milltown.map.swing.MainScreen;
 import sciuto.corey.milltown.map.swing.components.tools.BuildingToolButton;
 import sciuto.corey.milltown.map.swing.components.tools.BulldozerToolButton;
 import sciuto.corey.milltown.map.swing.components.tools.ToolButton;
 import sciuto.corey.milltown.model.board.AbstractBuilding;
-import sciuto.corey.milltown.model.buildings.House1;
-import sciuto.corey.milltown.model.buildings.Mill;
-import sciuto.corey.milltown.model.buildings.Road;
+import sciuto.corey.milltown.model.buildings.*;
 
 public class ToolSelector extends JLabel implements Scrollable {
 
@@ -50,7 +50,15 @@ public class ToolSelector extends JLabel implements Scrollable {
 		add(new BuildingToolButton("House", House1.class, this));
 		add(Box.createVerticalStrut(10));
 		add(new BuildingToolButton("Road", Road.class, this));
-
+		add(Box.createVerticalStrut(10));
+		add(new BuildingToolButton("Canal", Canal.class, this));
+		
+		if (Boolean.parseBoolean(PropertiesReader.read("milltown.properties").getProperty("milltown.debug"))){
+			// Can't reference via the Main Screen instance's game pointer because it's not fully constructed yet!
+			add(Box.createVerticalStrut(10));
+			add(new BuildingToolButton("Water", Water.class, this));
+		}
+		
 		setPreferredSize(new Dimension(150, 300));
 		
 		repaint();

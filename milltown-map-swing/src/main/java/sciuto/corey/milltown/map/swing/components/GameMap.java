@@ -16,6 +16,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 
 import sciuto.corey.milltown.engine.BuildingConstructor;
+import sciuto.corey.milltown.engine.PropertiesReader;
 import sciuto.corey.milltown.map.swing.BuildingGraphicsRetriever;
 import sciuto.corey.milltown.map.swing.ErrorMessageBox;
 import sciuto.corey.milltown.map.swing.MainScreen;
@@ -26,6 +27,7 @@ import sciuto.corey.milltown.map.swing.components.tools.ToolButton;
 import sciuto.corey.milltown.model.board.AbstractBuilding;
 import sciuto.corey.milltown.model.board.GameBoard;
 import sciuto.corey.milltown.model.board.Tile;
+import sciuto.corey.milltown.model.buildings.Land;
 
 /**
  * The main map
@@ -59,6 +61,12 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 	 * The current size of the square on the board in pixels
 	 */
 	protected int squareSize;
+
+	/**
+	 * XXX: A property that turns off the ground rendering.
+	 */
+	private boolean disableGround = Boolean.parseBoolean(PropertiesReader.read("milltown.properties").getProperty(
+			"milltown.disable.ground"));
 
 	/**
 	 * A helper class for handling mouse clicks
@@ -258,24 +266,23 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 	}
 
 	protected void turnOffSelectionTool() {
-		
-		
+
 		repaintTiles(hoveredTile);
 		hoveredTile = null;
 		cachedBuilding = null;
-	
+
 		Tile oldTile = activeTile;
 		repaintTiles(oldTile);
 		activeTile = null;
-	
+
 		MainScreen.instance().getQueryBox().setText("");
-		
+
 	}
-	
+
 	/**
 	 * Puts the state in query mode.
 	 */
-	public void turnOffAllTools(){
+	public void turnOffAllTools() {
 		MainScreen.instance().getToolSelector().activateQueryTool();
 		turnOffSelectionTool();
 	}
@@ -290,7 +297,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 
 		// Draw the board itself.
 		if (board == null) {
-			// Not ready yet.
+			// Not ready to render yet.
 			return;
 		}
 		int dimension = board.getBoardSize();
@@ -318,14 +325,14 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 				AbstractBuilding b = t.getContents();
 
 				if (t.equals(b.getRootTile())) {
-					BufferedImage img = BuildingGraphicsRetriever.retrieveImage(b.getClass());
-					if (img != null) {
+					if (b instanceof Land && disableGround) {
+						// XXX: Renders too much
+					} else {
+						BufferedImage img = BuildingGraphicsRetriever.retrieveImage(b.getClass());
 						// subtract from the edges so borders print.
 						g.drawImage(img, currentX + 1, currentY + 1, squareSize * b.getSize().getLeft() - 2, squareSize
 								* b.getSize().getRight() - 2, null);
 					}
-					// TODO: If we don't use graphics for water, there's
-					// work to do here.
 				}
 				currentX += squareSize;
 			}

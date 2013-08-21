@@ -103,7 +103,11 @@ public class BuildingGraphicsRetriever {
 	}
 
 	public static String getFileName(Class<? extends AbstractBuilding> buildingClass) {
-		if (buildingClass.equals(House1.class)) {
+		if (buildingClass.equals(Land.class)){
+			return "land";
+		}else if (buildingClass.equals(Water.class)) {
+			return "water";
+		} else if (buildingClass.equals(House1.class)) {
 			return "house_1";
 		} else if (buildingClass.equals(House2.class)) {
 			return "house_2";
@@ -113,6 +117,14 @@ public class BuildingGraphicsRetriever {
 			return "mill";
 		} else if (buildingClass.equals(Road.class)) {
 			return "road";
+		} else if (buildingClass.equals(Canal.class)) {
+			return "canal";
+		} else {
+			String msg = String.format("Cannot find image for %s", buildingClass.toString());
+			// All we can do is crash to the desktop. Popping up a dialog
+			// causes an infinite loop.
+			LOGGER.fatal(msg, null);
+			System.exit(-1);
 		}
 
 		return null;
