@@ -26,6 +26,8 @@ public class Game implements Serializable {
 	private DollarAmount money = new DollarAmount(2000000L);
 	private DollarAmount economy = new DollarAmount(0);
 	
+	private boolean isDebug = Boolean.parseBoolean(PropertiesReader.read("milltown.properties").getProperty("milltown.debug"));
+	
 	/**
 	 * Create through the SaveGameManager
 	 */
@@ -62,5 +64,13 @@ public class Game implements Serializable {
 	
 	public MutableLong getEconomy() {
 		return economy;
+	}
+
+	public boolean isDebug() {
+		return isDebug;
+	}
+
+	public void setDebug(boolean isDebug) {
+		this.isDebug = isDebug;
 	}
 }

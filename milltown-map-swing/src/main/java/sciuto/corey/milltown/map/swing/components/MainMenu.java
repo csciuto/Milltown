@@ -1,10 +1,13 @@
 package sciuto.corey.milltown.map.swing.components;
 
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Properties;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -13,6 +16,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.log4j.Logger;
 
 import sciuto.corey.milltown.engine.Game;
+import sciuto.corey.milltown.engine.PropertiesReader;
 import sciuto.corey.milltown.engine.SaveGameManager;
 import sciuto.corey.milltown.engine.exception.LoadGameException;
 import sciuto.corey.milltown.engine.exception.SaveGameException;
@@ -58,6 +62,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
 		exit.setName(EXIT);
 		file.add(exit);
 
+		this.add(Box.createHorizontalGlue());
 		JMenu help = new JMenu("Help");
 		help.setMnemonic(KeyEvent.VK_H);
 		this.add(help);
@@ -99,6 +104,17 @@ public class MainMenu extends JMenuBar implements ActionListener {
 				} else if (n == 1) {
 					System.exit(1);
 				}
+			} else if (name.equals(ABOUT)) {
+				String versionInformationProp = PropertiesReader.read("version.properties").getProperty("milltown.version");
+				String versionInformation = versionInformationProp == null ? "DEVELOPMENT" : versionInformationProp;
+				StringBuilder message = new StringBuilder().append("Milltown version ").append(versionInformation)
+						.append("\n").append("Copyright 2013 Corey Sciuto").append("\n").append("corey.sciuto@gmail.com");
+				
+				if (MainScreen.instance().getGame().isDebug()){
+					message.append("\nDebug mode: ON");
+				}
+				JOptionPane.showMessageDialog(MainScreen.instance(), message, "Milltown",
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 		} finally {
 			MainScreen.instance().enableKeyEvents();
