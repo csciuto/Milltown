@@ -14,6 +14,14 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <scm>
+    <!-- The buldnumber plugin requires something here. -->
+    <connection>scm:git:http://127.0.0.1/git/my-project</connection>
+    <developerConnection>scm:git:https://127.0.0.1/git/my-project</developerConnection>
+    <tag>HEAD</tag>
+    <url>http://127.0.0.1/git/my-project</url>
+  </scm>
+
   <build>
     <pluginManagement>
       <plugins>
@@ -30,21 +38,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
           <version>2.1</version>
-          <configuration>
-            <transformers>
-              <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                <mainClass>sciuto.corey.milltown.map.swing.GameRunner</mainClass>
-              </transformer>
-            </transformers>
-          </configuration>
-          <executions>
-            <execution>
-              <phase>package</phase>
-              <goals>
-                <goal>shade</goal>
-              </goals>
-            </execution>
-          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>buildnumber-maven-plugin</artifactId>
+          <version>1.2</version>
         </plugin>
       </plugins>
     </pluginManagement>
