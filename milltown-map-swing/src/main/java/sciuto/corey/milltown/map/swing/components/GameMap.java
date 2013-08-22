@@ -171,7 +171,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 		this.graphicsRetriever = new BuildingGraphicsRetriever();
 
 		setName("mainMap");
-		setBackground(new Color(0, 255, 0));
+		setBackground(new Color(0, 200, 0));
 		setBorder(BorderFactory.createEtchedBorder());
 		setPreferredSize(new Dimension(1000, 1000));
 
@@ -330,11 +330,20 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 				Tile t = board.getTile(i, j);
 				AbstractBuilding b = t.getContents();
 
-				if (t.equals(b.getRootTile()) && !(b instanceof Land && disableGround)) {
-					BufferedImage img = graphicsRetriever.retrieveImage(b.getClass());
-					// subtract from the edges so borders print.
-					g.drawImage(img, currentX + 1, currentY + 1, squareSize * b.getSize().getLeft() - 2, squareSize
-							* b.getSize().getRight() - 2, null);
+				if (t.equals(b.getRootTile())) {
+					if (!disableGround) {
+						// draw the grass first.
+						BufferedImage img = graphicsRetriever.retrieveImage(Land.class);
+						// subtract from the edges so borders print.
+						g.drawImage(img, currentX + 1, currentY + 1, squareSize * b.getSize().getLeft() - 2, squareSize
+								* b.getSize().getRight() - 2, null);
+					} 
+					if (!(b instanceof Land)){
+						BufferedImage img = graphicsRetriever.retrieveImage(b.getClass());
+						// subtract from the edges so borders print.
+						g.drawImage(img, currentX + 1, currentY + 1, squareSize * b.getSize().getLeft() - 2, squareSize
+								* b.getSize().getRight() - 2, null);
+					}
 				}
 				currentX += squareSize;
 			}
