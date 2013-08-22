@@ -1,10 +1,8 @@
 package sciuto.corey.milltown.map.swing;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.URL;
 
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -23,35 +21,20 @@ public class BuildingGraphicsRetriever {
 
 	private static final Logger LOGGER = Logger.getLogger(BuildingGraphicsRetriever.class);
 
+	private final GraphicsCache cache = new GraphicsCache();
+	
 	/**
 	 * Returns a graphical representation of the passed-in building
 	 * 
 	 * @param buildingClass
 	 * @return
 	 */
-	public static BufferedImage retrieveImage(Class<? extends AbstractBuilding> buildingClass) {
+	public BufferedImage retrieveImage(Class<? extends AbstractBuilding> buildingClass) {
 		String fileName = getFileName(buildingClass);
 
 		BufferedImage img = null;
 		if (fileName != null) {
-			URL url = BuildingGraphicsRetriever.class.getClassLoader().getResource(
-					String.format("map_images/%s.png", fileName));
-			if (url == null) {
-				String msg = String.format("Cannot find image map_images/%s.png", fileName);
-				// All we can do is crash to the desktop. Popping up a dialog
-				// causes an infinite loop.
-				LOGGER.fatal(msg, null);
-				System.exit(-1);
-			}
-			try {
-				img = ImageIO.read(url);
-			} catch (IOException e) {
-				String msg = String.format("Cannot render image: %s", url);
-				// All we can do is crash to the desktop. Popping up a dialog
-				// causes an infinite loop.
-				LOGGER.fatal(msg, null);
-				System.exit(-1);
-			}
+			return cache.getGraphics(fileName);
 		}
 		return img;
 	}
@@ -62,12 +45,12 @@ public class BuildingGraphicsRetriever {
 	 * @param b
 	 * @return
 	 */
-	public static Icon retrieveIcon(Class<? extends AbstractBuilding> buildingClass) {
+	public Icon retrieveIcon(Class<? extends AbstractBuilding> buildingClass) {
 
 		String fileName = getFileName(buildingClass);
 
-		URL url = BuildingGraphicsRetriever.class.getClassLoader().getResource(
-				String.format("map_images/%s_ico.png", fileName));
+		URL url = this.getClass().getResource(
+				String.format("/map_images/%s_ico.png", fileName));
 		if (url == null) {
 			String msg = String.format("Cannot find image map_images/%s_ico.png", fileName);
 			// All we can do is crash to the desktop. Popping up a dialog
@@ -84,7 +67,7 @@ public class BuildingGraphicsRetriever {
 	 * @param classToBuild
 	 * @return
 	 */
-	public static Class<? extends AbstractBuilding> getVariantSelector(Class<? extends AbstractBuilding> classToBuild) {
+	public Class<? extends AbstractBuilding> getVariantSelector(Class<? extends AbstractBuilding> classToBuild) {
 
 		if (classToBuild.equals(House1.class)) {
 			double d = Math.random();
@@ -102,7 +85,7 @@ public class BuildingGraphicsRetriever {
 		return classToBuild;
 	}
 
-	public static String getFileName(Class<? extends AbstractBuilding> buildingClass) {
+	public String getFileName(Class<? extends AbstractBuilding> buildingClass) {
 		if (buildingClass.equals(Land.class)){
 			return "land";
 		}else if (buildingClass.equals(Water.class)) {

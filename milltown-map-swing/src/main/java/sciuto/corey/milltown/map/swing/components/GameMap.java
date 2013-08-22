@@ -45,6 +45,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 	protected final BuildingConstructor buildingConstructor;
 	protected final SquareMapper squareMapper;
 	protected final Dimension preferredViewportSize;
+	protected final BuildingGraphicsRetriever graphicsRetriever;
 
 	/**
 	 * The tile to highlight Set the active tile to null to hide the highlight.
@@ -63,7 +64,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 	protected int squareSize;
 
 	/**
-	 * XXX: A property that turns off the ground rendering.
+	 * A property that turns off the ground rendering.
 	 */
 	private boolean disableGround = Boolean.parseBoolean(PropertiesReader.read("milltown.properties").getProperty(
 			"milltown.disable.ground"));
@@ -167,6 +168,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 		this.squareMapper = new SquareMapper(board, this);
 		this.buildingConstructor = new BuildingConstructor(board);
 		this.preferredViewportSize = new Dimension(mapDisplaySize, mapDisplaySize);
+		this.graphicsRetriever = new BuildingGraphicsRetriever();
 
 		setName("mainMap");
 		setBackground(new Color(0, 255, 0));
@@ -190,6 +192,10 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 
 	public int getSquareSize() {
 		return squareSize;
+	}
+
+	public BuildingGraphicsRetriever getGraphicsRetriever() {
+		return graphicsRetriever;
 	}
 
 	protected void setSquareSizeAndUpdateMap(int size) {
@@ -227,7 +233,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 	protected void buildOnTile(Tile tile, Class<? extends AbstractBuilding> classToBuild) {
 
 		try {
-			classToBuild = BuildingGraphicsRetriever.getVariantSelector(classToBuild);
+			classToBuild = graphicsRetriever.getVariantSelector(classToBuild);
 			buildingConstructor.build(tile, classToBuild.newInstance());
 			turnOffSelectionTool();
 			repaintTiles(tile);
@@ -324,15 +330,11 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 				Tile t = board.getTile(i, j);
 				AbstractBuilding b = t.getContents();
 
-				if (t.equals(b.getRootTile())) {
-					if (b instanceof Land && disableGround) {
-						// XXX: Renders too much
-					} else {
-						BufferedImage img = BuildingGraphicsRetriever.retrieveImage(b.getClass());
-						// subtract from the edges so borders print.
-						g.drawImage(img, currentX + 1, currentY + 1, squareSize * b.getSize().getLeft() - 2, squareSize
-								* b.getSize().getRight() - 2, null);
-					}
+				if (t.equals(b.getRootTile()) && !(b instanceof Land && disableGround)) {
+					BufferedImage img = graphicsRetriever.retrieveImage(b.getClass());
+					// subtract from the edges so borders print.
+					g.drawImage(img, currentX + 1, currentY + 1, squareSize * b.getSize().getLeft() - 2, squareSize
+							* b.getSize().getRight() - 2, null);
 				}
 				currentX += squareSize;
 			}

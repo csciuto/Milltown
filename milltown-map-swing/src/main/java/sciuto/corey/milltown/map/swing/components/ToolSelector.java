@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.Scrollable;
 
 import sciuto.corey.milltown.engine.PropertiesReader;
+import sciuto.corey.milltown.map.swing.BuildingGraphicsRetriever;
 import sciuto.corey.milltown.map.swing.MainScreen;
 import sciuto.corey.milltown.map.swing.components.tools.BuildingToolButton;
 import sciuto.corey.milltown.map.swing.components.tools.BulldozerToolButton;
@@ -40,23 +41,25 @@ public class ToolSelector extends JLabel implements Scrollable {
 		add(queryTool);
 		queryTool.activate();
 		selectedButton = queryTool;
+
+		BuildingGraphicsRetriever graphicsRetriever = new BuildingGraphicsRetriever();
 		
 		add(Box.createVerticalStrut(10));
 		add(new BulldozerToolButton("Demolish", this));
 		
 		add(Box.createVerticalStrut(10));
-		add(new BuildingToolButton("Mill", Mill.class, this));
+		add(new BuildingToolButton("Mill", Mill.class, this, graphicsRetriever));
 		add(Box.createVerticalStrut(10));
-		add(new BuildingToolButton("House", House1.class, this));
+		add(new BuildingToolButton("House", House1.class, this, graphicsRetriever));
 		add(Box.createVerticalStrut(10));
-		add(new BuildingToolButton("Road", Road.class, this));
+		add(new BuildingToolButton("Road", Road.class, this, graphicsRetriever));
 		add(Box.createVerticalStrut(10));
-		add(new BuildingToolButton("Canal", Canal.class, this));
+		add(new BuildingToolButton("Canal", Canal.class, this, graphicsRetriever));
 		
 		if (Boolean.parseBoolean(PropertiesReader.read("milltown.properties").getProperty("milltown.debug"))){
 			// Can't reference via the Main Screen instance's game pointer because it's not fully constructed yet!
 			add(Box.createVerticalStrut(10));
-			add(new BuildingToolButton("Water", Water.class, this));
+			add(new BuildingToolButton("Water", Water.class, this, graphicsRetriever));
 		}
 		
 		setPreferredSize(new Dimension(150, 300));
