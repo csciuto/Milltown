@@ -55,7 +55,7 @@ public class BuildingGraphicsRetriever {
 			String msg = String.format("Cannot find image map_images/%s_ico.png", fileName);
 			// All we can do is crash to the desktop. Popping up a dialog
 			// causes an infinite loop.
-			LOGGER.fatal(msg, null);
+			LOGGER.fatal(msg, new Exception().fillInStackTrace());
 			System.exit(-1);
 		}
 		return new ImageIcon(url);
@@ -106,7 +106,7 @@ public class BuildingGraphicsRetriever {
 			String msg = String.format("Cannot find image for %s", buildingClass.toString());
 			// All we can do is crash to the desktop. Popping up a dialog
 			// causes an infinite loop.
-			LOGGER.fatal(msg, null);
+			LOGGER.fatal(msg, new Exception().fillInStackTrace());
 			System.exit(-1);
 		}
 

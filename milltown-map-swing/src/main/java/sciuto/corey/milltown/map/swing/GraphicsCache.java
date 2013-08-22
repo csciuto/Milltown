@@ -27,7 +27,7 @@ public class GraphicsCache {
 				String msg = String.format("Cannot find image map_images/%s.png", fileName);
 				// All we can do is crash to the desktop. Popping up a dialog
 				// causes an infinite loop.
-				LOGGER.fatal(msg, null);
+				LOGGER.fatal(msg, new Exception().fillInStackTrace());
 				System.exit(-1);
 			}
 			try {
@@ -36,7 +36,7 @@ public class GraphicsCache {
 				String msg = String.format("Cannot render image: %s", url);
 				// All we can do is crash to the desktop. Popping up a dialog
 				// causes an infinite loop.
-				LOGGER.fatal(msg, null);
+				LOGGER.fatal(msg, new Exception().fillInStackTrace());
 				System.exit(-1);
 			}
 		}

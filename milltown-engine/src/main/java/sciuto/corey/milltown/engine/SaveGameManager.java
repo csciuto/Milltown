@@ -1,6 +1,7 @@
 package sciuto.corey.milltown.engine;
 
 import java.io.*;
+import java.net.URL;
 
 import org.apache.log4j.Logger;
 
@@ -17,8 +18,35 @@ public class SaveGameManager {
 
 	private static final Logger LOGGER = Logger.getLogger(SaveGameManager.class);
 
-	public static Game newGame() {
+	public static Game newBlankGame() {
 		return new Game();
+	}
+	
+	public static Game newGame() {
+		InputStream in = null;
+		ObjectInputStream s = null;
+		Game g = null;
+		try {
+			URL file = SaveGameManager.class.getClassLoader().getResource("default.mtown");
+			in = file.openStream();
+			s = new ObjectInputStream(in);
+			g = (Game) s.readObject();
+
+			LOGGER.debug(String.format("Loaded default game"));
+			s.close();
+		} catch (Exception e) {
+			LOGGER.fatal(String.format("Unable to load default game"),e);
+			System.exit(-1);
+		} finally {
+			if (s != null) {
+				try {
+					s.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return g;
 	}
 
 	public static Game loadGame(File file) throws LoadGameException {
