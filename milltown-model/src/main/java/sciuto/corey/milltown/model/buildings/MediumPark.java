@@ -2,12 +2,11 @@ package sciuto.corey.milltown.model.buildings;
 
 import sciuto.corey.milltown.model.board.AbstractBuilding;
 
-public class Mill extends AbstractBuilding {
+public class MediumPark extends AbstractBuilding {
 
-	private static final long serialVersionUID = -4963262192104736767L;
+	private static final long serialVersionUID = 1L;
 
-	public Mill(){
+	public MediumPark(){
 		super(MEDIUM_SQUARE);
 	}
-	
 }
