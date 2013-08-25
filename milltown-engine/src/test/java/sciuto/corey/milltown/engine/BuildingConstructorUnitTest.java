@@ -49,6 +49,29 @@ public class BuildingConstructorUnitTest {
 		assertTrue(board.getTile(2, 3).getContents() instanceof Water);
 		assertFalse(board.getTile(2, 3).isDirty());
 	}
+
+	@Test
+	public void testBuildOnWater(){
+		
+		board = DummyBoardGenerator.createDummyBoard1();
+		
+		BuildingConstructor bc = new BuildingConstructor(board);
+		
+		Road road = new Road();
+		bc.build(board.getTile(3, 1),road);
+		
+		AbstractBuilding building = board.getTile(3, 1).getContents();
+		assertEquals(road,building);
+		
+		Road road2 = new Road();
+		bc.build(board.getTile(3, 4),road2);
+		
+		AbstractBuilding building2 = board.getTile(3, 4).getContents();
+		assertTrue(building2 instanceof RoadBridge);
+
+		bc.demolish(board.getTile(3, 4));	
+		assertTrue(board.getTile(3, 4).getContents() instanceof Water);
+	}
 	
 	@Test
 	public void testBuildAndDemolish(){

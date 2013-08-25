@@ -10,10 +10,10 @@ public class DummyBoardGenerator {
 	 * Makes this board:<br><br>
 	 * 
 	 * LLLLL<br>
-	 * LLWLL<br>
-	 * LLLWL<br>
-	 * LLLLW <br>
-	 * LLLLL
+	 * LLLLL<br>
+	 * LWLLL<br>
+	 * LLWLL <br>
+	 * LLLWL
 	 * 
 	 */
 	public static GameBoard createDummyBoard1() {

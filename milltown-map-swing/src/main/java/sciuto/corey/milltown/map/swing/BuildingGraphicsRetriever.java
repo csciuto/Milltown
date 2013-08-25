@@ -112,7 +112,7 @@ public class BuildingGraphicsRetriever {
 			return "mill";
 		} else if (buildingClass.equals(Warehouse.class)) {
 			return "warehouse";
-		} else if (buildingClass.equals(Road.class)) {
+		} else if (buildingClass.equals(Road.class) || buildingClass.equals(RoadBridge.class) || buildingClass.equals(RoadCanalBridge.class)) {
 			return "road";
 		} else if (buildingClass.equals(Canal.class)) {
 			return "canal";
