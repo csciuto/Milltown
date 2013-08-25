@@ -22,7 +22,7 @@ public class BuildingGraphicsRetriever {
 	private static final Logger LOGGER = Logger.getLogger(BuildingGraphicsRetriever.class);
 
 	private final GraphicsCache cache = new GraphicsCache();
-	
+
 	/**
 	 * Returns a graphical representation of the passed-in building
 	 * 
@@ -49,8 +49,7 @@ public class BuildingGraphicsRetriever {
 
 		String fileName = getFileName(buildingClass);
 
-		URL url = this.getClass().getResource(
-				String.format("/map_images/%s_ico.png", fileName));
+		URL url = this.getClass().getResource(String.format("/map_images/%s_ico.png", fileName));
 		if (url == null) {
 			String msg = String.format("Cannot find image map_images/%s_ico.png", fileName);
 			// All we can do is crash to the desktop. Popping up a dialog
@@ -80,15 +79,24 @@ public class BuildingGraphicsRetriever {
 				return House3.class;
 			}
 		}
+		if (classToBuild.equals(Office1.class)) {
+			double d = Math.random();
+
+			if (d <= 0.5) {
+				return Office1.class;
+			} else {
+				return Office2.class;
+			}
+		}
 
 		// No variants
 		return classToBuild;
 	}
 
 	public String getFileName(Class<? extends AbstractBuilding> buildingClass) {
-		if (buildingClass.equals(Land.class)){
+		if (buildingClass.equals(Land.class)) {
 			return "land";
-		}else if (buildingClass.equals(Water.class)) {
+		} else if (buildingClass.equals(Water.class)) {
 			return "water";
 		} else if (buildingClass.equals(House1.class)) {
 			return "house_1";
@@ -96,8 +104,14 @@ public class BuildingGraphicsRetriever {
 			return "house_2";
 		} else if (buildingClass.equals(House3.class)) {
 			return "house_3";
+		} else if (buildingClass.equals(Office1.class)) {
+			return "office_1";
+		} else if (buildingClass.equals(Office2.class)) {
+			return "office_2";
 		} else if (buildingClass.equals(Mill.class)) {
 			return "mill";
+		} else if (buildingClass.equals(Warehouse.class)) {
+			return "warehouse";
 		} else if (buildingClass.equals(Road.class)) {
 			return "road";
 		} else if (buildingClass.equals(Canal.class)) {

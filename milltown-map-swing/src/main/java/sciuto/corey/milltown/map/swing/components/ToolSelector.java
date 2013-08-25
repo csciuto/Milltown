@@ -46,15 +46,19 @@ public class ToolSelector extends JLabel implements Scrollable {
 		
 		add(Box.createVerticalStrut(10));
 		add(new BulldozerToolButton("Demolish", this));
-		
-		add(Box.createVerticalStrut(10));
-		add(new BuildingToolButton("Mill", Mill.class, this, graphicsRetriever));
-		add(Box.createVerticalStrut(10));
-		add(new BuildingToolButton("House", House1.class, this, graphicsRetriever));
+
 		add(Box.createVerticalStrut(10));
 		add(new BuildingToolButton("Road", Road.class, this, graphicsRetriever));
 		add(Box.createVerticalStrut(10));
 		add(new BuildingToolButton("Canal", Canal.class, this, graphicsRetriever));
+		add(Box.createVerticalStrut(10));
+		add(new BuildingToolButton("House", House1.class, this, graphicsRetriever));
+		add(Box.createVerticalStrut(10));
+		add(new BuildingToolButton("Mill", Mill.class, this, graphicsRetriever));
+		add(Box.createVerticalStrut(10));
+		add(new BuildingToolButton("Warehouse", Warehouse.class, this, graphicsRetriever));
+		add(Box.createVerticalStrut(10));
+		add(new BuildingToolButton("Office", Office1.class, this, graphicsRetriever));
 		
 		if (Boolean.parseBoolean(PropertiesReader.read("milltown.properties").getProperty("milltown.debug"))){
 			// Can't reference via the Main Screen instance's game pointer because it's not fully constructed yet!
@@ -62,7 +66,7 @@ public class ToolSelector extends JLabel implements Scrollable {
 			add(new BuildingToolButton("Water", Water.class, this, graphicsRetriever));
 		}
 		
-		setPreferredSize(new Dimension(150, 300));
+		setPreferredSize(new Dimension(150, 450));
 		
 		repaint();
 	}

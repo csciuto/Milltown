@@ -209,7 +209,7 @@ public class MainScreen extends JFrame {
 		toolSelector = new ToolSelector();
 		buildingSelectorScrollPane = new JScrollPane(toolSelector, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		buildingSelectorScrollPane.setMaximumSize(new Dimension(150, 300));
+		buildingSelectorScrollPane.setMaximumSize(new Dimension(150, 450));
 
 		leftBox.add(buildingSelectorScrollPane);
 
