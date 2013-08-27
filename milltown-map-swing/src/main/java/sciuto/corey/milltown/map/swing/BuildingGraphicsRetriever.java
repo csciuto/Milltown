@@ -79,6 +79,17 @@ public class BuildingGraphicsRetriever {
 				return House3.class;
 			}
 		}
+		if (classToBuild.equals(Tenement2.class)) {
+			double d = Math.random();
+
+			if (d <= 0.3) {
+				return Tenement1.class;
+			} else if (d <= 0.6) {
+				return Tenement2.class;
+			} else {
+				return Tenement3.class;
+			}
+		}
 		if (classToBuild.equals(Office1.class)) {
 			double d = Math.random();
 
@@ -104,6 +115,12 @@ public class BuildingGraphicsRetriever {
 			return "house_2";
 		} else if (buildingClass.equals(House3.class)) {
 			return "house_3";
+		} else if (buildingClass.equals(Tenement1.class)) {
+			return "tenement_1";
+		} else if (buildingClass.equals(Tenement2.class)) {
+			return "tenement_2";
+		} else if (buildingClass.equals(Tenement3.class)) {
+			return "tenement_3";
 		} else if (buildingClass.equals(Office1.class)) {
 			return "office_1";
 		} else if (buildingClass.equals(Office2.class)) {

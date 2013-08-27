@@ -10,7 +10,6 @@ import javax.swing.Scrollable;
 
 import sciuto.corey.milltown.engine.PropertiesReader;
 import sciuto.corey.milltown.map.swing.BuildingGraphicsRetriever;
-import sciuto.corey.milltown.map.swing.MainScreen;
 import sciuto.corey.milltown.map.swing.components.tools.BuildingToolButton;
 import sciuto.corey.milltown.map.swing.components.tools.BulldozerToolButton;
 import sciuto.corey.milltown.map.swing.components.tools.ToolButton;
@@ -53,6 +52,8 @@ public class ToolSelector extends JLabel implements Scrollable {
 		add(new BuildingToolButton("Canal", Canal.class, this, graphicsRetriever));
 		add(Box.createVerticalStrut(10));
 		add(new BuildingToolButton("House", House1.class, this, graphicsRetriever));
+		add(Box.createVerticalStrut(10));
+		add(new BuildingToolButton("Tenement", Tenement2.class, this, graphicsRetriever));
 		add(Box.createVerticalStrut(10));
 		add(new BuildingToolButton("Mill", Mill.class, this, graphicsRetriever));
 		add(Box.createVerticalStrut(10));
