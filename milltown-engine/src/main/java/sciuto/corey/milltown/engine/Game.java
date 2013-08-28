@@ -88,4 +88,8 @@ public class Game implements Serializable {
 	public void setDebug(boolean isDebug) {
 		this.isDebug = isDebug;
 	}
+
+	public CanalSystemManager getCanalSystemManager() {
+		return canalSystemManager;
+	}
 }

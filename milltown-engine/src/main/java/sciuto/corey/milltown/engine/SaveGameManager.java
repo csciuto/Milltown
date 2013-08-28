@@ -27,13 +27,16 @@ public class SaveGameManager {
 		ObjectInputStream s = null;
 		Game g = null;
 		try {
-			URL file = SaveGameManager.class.getClassLoader().getResource("default.mtown");
-			in = file.openStream();
-			s = new ObjectInputStream(in);
-			g = (Game) s.readObject();
-
+			/*
+			 * TODO: This is an issue because the serializaiton doesn't stay up to date as the engine changes...
+			 * URL file = SaveGameManager.class.getClassLoader().getResource("default.mtown");
+			 * in = file.openStream();
+			 * s = new ObjectInputStream(in);
+			 * g = (Game) s.readObject();
+			 * s.close();*/
+			g = new Game(null);
+			
 			LOGGER.debug(String.format("Loaded default game"));
-			s.close();
 		} catch (Exception e) {
 			LOGGER.fatal(String.format("Unable to load default game"),e);
 			System.exit(-1);

@@ -34,7 +34,7 @@ public class BuildingConstructor {
 		size = building.getSize();
 
 		GameBoard board = game.getBoard();
-		
+
 		for (int x = upperLeftTile.getXLoc(); x < upperLeftTile.getXLoc() + size.getLeft(); x++) {
 			for (int y = upperLeftTile.getYLoc(); y < upperLeftTile.getYLoc() + size.getRight(); y++) {
 				Tile t = board.getTile(x, y);
@@ -71,10 +71,11 @@ public class BuildingConstructor {
 		size = building.getSize();
 
 		GameBoard board = game.getBoard();
-		
+
 		for (int x = upperLeftTile.getXLoc(); x < upperLeftTile.getXLoc() + size.getLeft(); x++) {
 			for (int y = upperLeftTile.getYLoc(); y < upperLeftTile.getYLoc() + size.getRight(); y++) {
 				Tile t = board.getTile(x, y);
+				// This is all around building bridges.
 				if (t.getContents() instanceof Water) {
 					if (building instanceof Road) {
 						building = new RoadBridge();
@@ -96,8 +97,21 @@ public class BuildingConstructor {
 				t.setDirty(true);
 			}
 		}
-
 		building.setRootTile(upperLeftTile);
+
+		
+		if (building instanceof Canal) {
+			// Dirty the canal system checker.
+			game.getCanalSystemManager().primeRecalc();
+			if ((board.getTileEast(upperLeftTile) != null && board.getTileEast(upperLeftTile).getContents() instanceof Water)
+					|| (board.getTileWest(upperLeftTile) != null && board.getTileWest(upperLeftTile).getContents() instanceof Water)
+					|| (board.getTileNorth(upperLeftTile) != null && board.getTileNorth(upperLeftTile).getContents() instanceof Water)
+					|| (board.getTileSouth(upperLeftTile) != null && board.getTileSouth(upperLeftTile).getContents() instanceof Water)) {
+				// If the tile is a new canal stub, fill it with water.
+				game.getCanalSystemManager().addRoot((Canal) building);
+				((Canal) building).setHasWater(true);
+			}
+		}
 
 		return true;
 	}
@@ -120,7 +134,7 @@ public class BuildingConstructor {
 		size = building.getSize();
 
 		GameBoard board = game.getBoard();
-		
+
 		for (int x = rootTile.getXLoc(); x < rootTile.getXLoc() + size.getLeft(); x++) {
 			for (int y = rootTile.getYLoc(); y < rootTile.getYLoc() + size.getRight(); y++) {
 				Tile t = board.getTile(x, y);
