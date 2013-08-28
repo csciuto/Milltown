@@ -22,4 +22,9 @@ public class Canal extends AbstractBuilding {
 	public void setHasWater(boolean hasWater) {
 		this.hasWater = hasWater;
 	}
+	
+	@Override
+	public String toString(){
+		return String.format("Canal\nCarrying Water: %b", hasWater);
+	}
 }
