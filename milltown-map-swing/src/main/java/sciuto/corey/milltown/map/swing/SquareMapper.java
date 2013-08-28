@@ -2,7 +2,7 @@ package sciuto.corey.milltown.map.swing;
 
 import java.awt.event.MouseEvent;
 
-import sciuto.corey.milltown.map.swing.components.GameMap;
+import sciuto.corey.milltown.map.swing.components.UIGameMap;
 import sciuto.corey.milltown.model.board.GameBoard;
 import sciuto.corey.milltown.model.board.Tile;
 
@@ -15,7 +15,7 @@ import sciuto.corey.milltown.model.board.Tile;
 public class SquareMapper {
 
 	private final GameBoard board;
-	private final GameMap map;
+	private final UIGameMap map;
 	
 	private int squareSize = -1;
 	
@@ -24,7 +24,7 @@ public class SquareMapper {
 	 * @param board The board to select a tile from
 	 * @param mapSize The map to map from
 	 */
-	public SquareMapper(GameBoard board, GameMap map){
+	public SquareMapper(GameBoard board, UIGameMap map){
 		this.board = board;
 		this.map = map;
 	}

@@ -5,12 +5,12 @@ import static org.junit.Assert.assertEquals;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 
-import sciuto.corey.milltown.map.swing.components.GameMap;
+import sciuto.corey.milltown.map.swing.components.UIGameMap;
 import sciuto.corey.milltown.model.board.GameBoard;
 
 public class SquareMapperUnitTest {
 
-	class DummyGameMap extends GameMap {
+	class DummyGameMap extends UIGameMap {
 
 		private static final long serialVersionUID = -1269610579047429935L;
 
@@ -33,7 +33,7 @@ public class SquareMapperUnitTest {
 	public void testMapper() {
 		GameBoard board = new GameBoard();
 		
-		GameMap map = new DummyGameMap(board, 1000);
+		UIGameMap map = new DummyGameMap(board, 1000);
 
 		SquareMapper p = new SquareMapper(board, map);
 		p.update();

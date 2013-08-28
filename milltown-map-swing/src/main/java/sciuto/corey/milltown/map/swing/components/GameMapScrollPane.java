@@ -10,9 +10,9 @@ public class GameMapScrollPane extends JScrollPane {
 
 	private static final long serialVersionUID = -806043179505901461L;
 
-	private final GameMap map;
+	private final UIGameMap map;
 
-	public GameMapScrollPane(GameMap map) {
+	public GameMapScrollPane(UIGameMap map) {
 		super(map);
 		this.map = map;
 

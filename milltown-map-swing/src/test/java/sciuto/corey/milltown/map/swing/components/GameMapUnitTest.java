@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import sciuto.corey.milltown.engine.Game;
 import sciuto.corey.milltown.engine.SaveGameManager;
-import sciuto.corey.milltown.map.swing.components.GameMap;
+import sciuto.corey.milltown.map.swing.components.UIGameMap;
 
 public class GameMapUnitTest {
 

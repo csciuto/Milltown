@@ -35,11 +35,11 @@ import sciuto.corey.milltown.model.buildings.Land;
  * @author Corey
  * 
  */
-public class GameMap extends JPanel implements ActionListener, Scrollable {
+public class UIGameMap extends JPanel implements ActionListener, Scrollable {
 
 	private static final long serialVersionUID = -6881706563458253977L;
 
-	private static final Logger LOGGER = Logger.getLogger(GameMap.class);
+	private static final Logger LOGGER = Logger.getLogger(UIGameMap.class);
 
 	protected final GameBoard board;
 	protected final BuildingConstructor buildingConstructor;
@@ -91,17 +91,17 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 					Class<? extends AbstractBuilding> classToBuild = MainScreen.instance().getToolSelector()
 							.getBuildingToBuild();
 					if (classToBuild != null) {
-						GameMap.this.buildOnTile(clickedTile, classToBuild);
+						UIGameMap.this.buildOnTile(clickedTile, classToBuild);
 					}
 				} else if (activeButton instanceof BulldozerToolButton) {
-					GameMap.this.demolishBuilding(clickedTile);
+					UIGameMap.this.demolishBuilding(clickedTile);
 				} else {
-					GameMap.this.activateTile(clickedTile);
+					UIGameMap.this.activateTile(clickedTile);
 				}
 			} else if (e.getButton() == MouseEvent.BUTTON3) {
 				// Turn off all tools and queries.
 				MainScreen.instance().getToolSelector().activateQueryTool();
-				GameMap.this.turnOffSelectionTool();
+				UIGameMap.this.turnOffSelectionTool();
 			}
 
 		}
@@ -160,7 +160,7 @@ public class GameMap extends JPanel implements ActionListener, Scrollable {
 		}
 	};
 
-	public GameMap(final GameBoard b, final int mapDisplaySize) {
+	public UIGameMap(final GameBoard b, final int mapDisplaySize) {
 		super();
 
 		this.board = b;
