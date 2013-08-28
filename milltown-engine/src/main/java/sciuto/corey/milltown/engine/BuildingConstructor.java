@@ -15,10 +15,10 @@ import sciuto.corey.milltown.model.buildings.*;
  */
 public class BuildingConstructor {
 
-	private final GameBoard board;
+	private final Game game;
 
-	public BuildingConstructor(GameBoard b) {
-		this.board = b;
+	public BuildingConstructor(Game g) {
+		this.game = g;
 	}
 
 	/**
@@ -33,6 +33,8 @@ public class BuildingConstructor {
 		Pair<Integer, Integer> size = null;
 		size = building.getSize();
 
+		GameBoard board = game.getBoard();
+		
 		for (int x = upperLeftTile.getXLoc(); x < upperLeftTile.getXLoc() + size.getLeft(); x++) {
 			for (int y = upperLeftTile.getYLoc(); y < upperLeftTile.getYLoc() + size.getRight(); y++) {
 				Tile t = board.getTile(x, y);
@@ -68,6 +70,8 @@ public class BuildingConstructor {
 		Pair<Integer, Integer> size = null;
 		size = building.getSize();
 
+		GameBoard board = game.getBoard();
+		
 		for (int x = upperLeftTile.getXLoc(); x < upperLeftTile.getXLoc() + size.getLeft(); x++) {
 			for (int y = upperLeftTile.getYLoc(); y < upperLeftTile.getYLoc() + size.getRight(); y++) {
 				Tile t = board.getTile(x, y);
@@ -115,6 +119,8 @@ public class BuildingConstructor {
 		Pair<Integer, Integer> size = null;
 		size = building.getSize();
 
+		GameBoard board = game.getBoard();
+		
 		for (int x = rootTile.getXLoc(); x < rootTile.getXLoc() + size.getLeft(); x++) {
 			for (int y = rootTile.getYLoc(); y < rootTile.getYLoc() + size.getRight(); y++) {
 				Tile t = board.getTile(x, y);

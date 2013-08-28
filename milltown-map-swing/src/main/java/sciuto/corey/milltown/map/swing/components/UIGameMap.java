@@ -16,6 +16,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 
 import sciuto.corey.milltown.engine.BuildingConstructor;
+import sciuto.corey.milltown.engine.Game;
 import sciuto.corey.milltown.engine.PropertiesReader;
 import sciuto.corey.milltown.map.swing.BuildingGraphicsRetriever;
 import sciuto.corey.milltown.map.swing.ErrorMessageBox;
@@ -160,13 +161,13 @@ public class UIGameMap extends JPanel implements ActionListener, Scrollable {
 		}
 	};
 
-	public UIGameMap(final GameBoard b, final int mapDisplaySize) {
+	public UIGameMap(final Game g, final int mapDisplaySize) {
 		super();
 
-		this.board = b;
+		this.board = g.getBoard();
 		this.squareSize = 1000 / board.getBoardSize();
 		this.squareMapper = new SquareMapper(board, this);
-		this.buildingConstructor = new BuildingConstructor(board);
+		this.buildingConstructor = new BuildingConstructor(g);
 		this.preferredViewportSize = new Dimension(mapDisplaySize, mapDisplaySize);
 		this.graphicsRetriever = new BuildingGraphicsRetriever();
 

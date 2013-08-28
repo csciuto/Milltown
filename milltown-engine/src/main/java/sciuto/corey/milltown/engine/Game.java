@@ -23,7 +23,8 @@ public class Game implements Serializable {
 
 	private static final Logger LOGGER = Logger.getLogger(Game.class);
 	
-	private GameBoard board;
+	private final GameBoard board;
+	private final CanalSystemManager canalSystemManager;
 
 	private GameDate gameDate = new GameDate();
 	private FormattedNumber population = new FormattedNumber(0);
@@ -34,15 +35,23 @@ public class Game implements Serializable {
 	
 	/**
 	 * Create through the SaveGameManager
+	 * 
+	 * @param b The game board to init with. Used for testing
 	 */
-	protected Game() {
+	protected Game(GameBoard b) {
 		
 		if (isDebug){
 			Logger.getRootLogger().setLevel(Level.DEBUG);
 			LOGGER.debug("Debug mode ON");
 		}
 		
-		board = new GameBoard();
+		if (b == null){
+			board = new GameBoard();
+		} else {
+			board = b;
+		}
+		
+		canalSystemManager = new CanalSystemManager(board);
 	}
 
 	/**
@@ -54,10 +63,6 @@ public class Game implements Serializable {
 
 	public GameBoard getBoard() {
 		return board;
-	}
-
-	protected void setBoard(GameBoard b) {
-		this.board = b;
 	}
 
 	public GameDate getGameDate() {

@@ -20,8 +20,7 @@ public class GameManagerUnitTest {
 	@Test
 	public void testSave() throws SaveGameException, LoadGameException{
 
-		game = new Game();
-		game.setBoard(DummyBoardGenerator.createDummyBoard1());
+		game = new Game(DummyBoardGenerator.createDummyBoard1());
 		
 		SaveGameManager.saveGame(new File("SaveGame1.sav"), game);
 		Game loadedGame = SaveGameManager.loadGame(new File("SaveGame1.sav"));

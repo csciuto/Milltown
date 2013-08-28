@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 
+import sciuto.corey.milltown.engine.Game;
+import sciuto.corey.milltown.engine.SaveGameManager;
 import sciuto.corey.milltown.map.swing.components.UIGameMap;
 import sciuto.corey.milltown.model.board.GameBoard;
 
@@ -14,8 +16,8 @@ public class SquareMapperUnitTest {
 
 		private static final long serialVersionUID = -1269610579047429935L;
 
-		DummyGameMap (GameBoard board, int size) {
-			super(board, size);
+		DummyGameMap (Game game, int size) {
+			super(game, size);
 		}
 
 		@Override
@@ -31,11 +33,11 @@ public class SquareMapperUnitTest {
 	
 	@Test
 	public void testMapper() {
-		GameBoard board = new GameBoard();
+		Game game = SaveGameManager.newBlankGame();
 		
-		UIGameMap map = new DummyGameMap(board, 1000);
+		UIGameMap map = new DummyGameMap(game, 1000);
 
-		SquareMapper p = new SquareMapper(board, map);
+		SquareMapper p = new SquareMapper(game.getBoard(), map);
 		p.update();
 
 		Pair<Integer, Integer> clickLoc;

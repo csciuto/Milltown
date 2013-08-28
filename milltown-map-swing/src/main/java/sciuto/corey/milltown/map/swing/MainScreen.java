@@ -259,7 +259,7 @@ public class MainScreen extends JFrame {
 		getContentPane().add(bottomBar, BorderLayout.PAGE_END);
 
 		// Center Map
-		map = new UIGameMap(game.getBoard(), DEFAULT_MAP_PX);
+		map = new UIGameMap(game, DEFAULT_MAP_PX);
 		mapScrollPane = new GameMapScrollPane(map);
 		mapScrollPane.setMaximumSize(new Dimension(DEFAULT_MAP_PX, DEFAULT_MAP_PX));
 		getContentPane().add(mapScrollPane, BorderLayout.CENTER);

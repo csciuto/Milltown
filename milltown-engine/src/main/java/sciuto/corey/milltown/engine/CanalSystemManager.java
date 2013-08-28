@@ -1,5 +1,6 @@
 package sciuto.corey.milltown.engine;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Set;
 
@@ -12,7 +13,9 @@ import sciuto.corey.milltown.model.buildings.Canal;
  * @author Corey
  *
  */
-public class CanalSystemManager {
+public class CanalSystemManager implements Serializable {
+
+	private static final long serialVersionUID = -4256775891274539695L;
 
 	private final GameBoard board;
 	

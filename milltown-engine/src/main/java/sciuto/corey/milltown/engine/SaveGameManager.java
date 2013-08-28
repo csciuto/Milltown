@@ -19,7 +19,7 @@ public class SaveGameManager {
 	private static final Logger LOGGER = Logger.getLogger(SaveGameManager.class);
 
 	public static Game newBlankGame() {
-		return new Game();
+		return new Game(null);
 	}
 	
 	public static Game newGame() {
