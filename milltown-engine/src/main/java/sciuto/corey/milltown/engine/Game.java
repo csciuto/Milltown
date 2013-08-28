@@ -33,7 +33,7 @@ public class Game implements Serializable {
 	private boolean isDebug = Boolean.parseBoolean(PropertiesReader.read("milltown.properties").getProperty("milltown.debug"));
 	
 	/**
-	 * Create through the GameRunner
+	 * Create through the SaveGameManager
 	 */
 	protected Game() {
 		
