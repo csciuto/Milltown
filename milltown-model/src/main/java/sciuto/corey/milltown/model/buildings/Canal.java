@@ -15,7 +15,7 @@ public class Canal extends AbstractBuilding {
 		setHasWater(false);
 	}
 
-	public boolean isHasWater() {
+	public boolean hasWater() {
 		return hasWater;
 	}
 

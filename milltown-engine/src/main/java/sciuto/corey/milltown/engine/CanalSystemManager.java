@@ -1,7 +1,6 @@
 package sciuto.corey.milltown.engine;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,12 +26,12 @@ public class CanalSystemManager implements Serializable {
 	/**
 	 * All canal squares
 	 */
-	private Set<Canal> canalSquares = new HashSet<Canal>();
+	protected Set<Canal> canalSquares = new HashSet<Canal>();
 	
 	/**
 	 * The squares from hence the water flows.
 	 */
-	private Set<Canal> canalRoots = new HashSet<Canal>();
+	protected Set<Canal> canalRoots = new HashSet<Canal>();
 	
 	public CanalSystemManager(GameBoard board){
 		this.board = board;
@@ -112,7 +111,7 @@ public class CanalSystemManager implements Serializable {
 	private void pathfindAndAddWater(Tile current){
 		
 		// If we're off the board, not on a canal, or have already filled this one up, bail.
-		if (current == null || !(current.getContents() instanceof Canal) || ((Canal)current.getContents()).isHasWater() ){
+		if (current == null || !(current.getContents() instanceof Canal) || ((Canal)current.getContents()).hasWater() ){
 			return;
 		}
 		
