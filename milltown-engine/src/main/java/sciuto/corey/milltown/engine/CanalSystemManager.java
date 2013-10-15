@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import sciuto.corey.milltown.model.board.GameBoard;
+import sciuto.corey.milltown.model.board.Tile;
 import sciuto.corey.milltown.model.buildings.Canal;
+import sciuto.corey.milltown.model.buildings.Water;
 
 
 /**
@@ -21,6 +23,11 @@ public class CanalSystemManager implements Serializable {
 	private final GameBoard board;
 	
 	private boolean doRecalc = false;
+
+	/**
+	 * All canal squares
+	 */
+	private Set<Canal> canalSquares = new HashSet<Canal>();
 	
 	/**
 	 * The squares from hence the water flows.
@@ -32,26 +39,40 @@ public class CanalSystemManager implements Serializable {
 	}
 	
 	/**
-	 * Adds a canal square as a root square
-	 * @param canal
-	 */
-	public void addRoot(Canal canal){
-		canalRoots.add(canal);
-	}
-	
-	/**
-	 * Retrieves all root squares
-	 * @return
-	 */
-	public Set<Canal>getRoots(){
-		return Collections.unmodifiableSet(canalRoots);
-	}
-
-	/**
 	 * Tells us to run on the next call of Manage
 	 */
 	public void primeRecalc() {
 		doRecalc = true;
+	}
+	
+	/**
+	 * Set up a new canal square in the manager
+	 * @param c
+	 */
+	public void newCanal(Canal c){
+		primeRecalc();
+		
+		Tile t = c.getRootTile();
+		
+		if ((board.getTileEast(t) != null && board.getTileEast(t).getContents() instanceof Water)
+				|| (board.getTileWest(t) != null && board.getTileWest(t).getContents() instanceof Water)
+				|| (board.getTileNorth(t) != null && board.getTileNorth(t).getContents() instanceof Water)
+				|| (board.getTileSouth(t) != null && board.getTileSouth(t).getContents() instanceof Water)) {
+			// If the tile is a new canal stub, fill it with water.
+			canalRoots.add(c);
+			c.setHasWater(true);
+		}
+		canalSquares.add(c);
+	}
+	
+	/**
+	 * Remove a new canal square from the manager
+	 * @param c
+	 */
+	public void removeCanal(Canal c){
+		canalRoots.remove(c);
+		canalSquares.remove(c);
+		primeRecalc();
 	}
 	
 	/**
@@ -63,10 +84,44 @@ public class CanalSystemManager implements Serializable {
 		}
 		doRecalc = false;
 		
-		for (Canal c : canalRoots){
-			// Well, this is crappy...we don't know where we are! I knew that was here for a reason...
-			// Tile west = 
+		/* This algorithm is crap but for now just get it working, right?
+		 * 
+		 * First, empty all the water. We're going to recalc the whole system.
+		 */
+		for (Canal c : canalSquares){
+			c.setHasWater(false);
 		}
+		
+		// Now, recursively, refill it.
+		for (Canal c : canalRoots){
+			c.setHasWater(true);
+			
+			Tile current = c.getRootTile();
+			pathfindAndAddWater(board.getTileEast(current));
+			pathfindAndAddWater(board.getTileWest(current));
+			pathfindAndAddWater(board.getTileNorth(current));
+			pathfindAndAddWater(board.getTileSouth(current));
+		}
+		
+	}
+	
+	/**
+	 * Regular old recursive depth-first traversal.
+	 * @param t
+	 */
+	private void pathfindAndAddWater(Tile current){
+		
+		// If we're off the board, not on a canal, or have already filled this one up, bail.
+		if (current == null || !(current.getContents() instanceof Canal) || ((Canal)current.getContents()).isHasWater() ){
+			return;
+		}
+		
+		((Canal)current.getContents()).setHasWater(true);
+		
+		pathfindAndAddWater(board.getTileEast(current));
+		pathfindAndAddWater(board.getTileWest(current));
+		pathfindAndAddWater(board.getTileNorth(current));
+		pathfindAndAddWater(board.getTileSouth(current));
 		
 	}
 	

@@ -59,6 +59,7 @@ public class Game implements Serializable {
 	 */
 	public void simulate() {
 		gameDate.addWeek();
+		canalSystemManager.manage();
 	}
 
 	public GameBoard getBoard() {

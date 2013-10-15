@@ -99,18 +99,9 @@ public class BuildingConstructor {
 		}
 		building.setRootTile(upperLeftTile);
 
-		
 		if (building instanceof Canal) {
-			// Dirty the canal system checker.
-			game.getCanalSystemManager().primeRecalc();
-			if ((board.getTileEast(upperLeftTile) != null && board.getTileEast(upperLeftTile).getContents() instanceof Water)
-					|| (board.getTileWest(upperLeftTile) != null && board.getTileWest(upperLeftTile).getContents() instanceof Water)
-					|| (board.getTileNorth(upperLeftTile) != null && board.getTileNorth(upperLeftTile).getContents() instanceof Water)
-					|| (board.getTileSouth(upperLeftTile) != null && board.getTileSouth(upperLeftTile).getContents() instanceof Water)) {
-				// If the tile is a new canal stub, fill it with water.
-				game.getCanalSystemManager().addRoot((Canal) building);
-				((Canal) building).setHasWater(true);
-			}
+			// Delegate to the manager
+			game.getCanalSystemManager().newCanal((Canal) building);
 		}
 
 		return true;
@@ -148,6 +139,10 @@ public class BuildingConstructor {
 				} else if (current instanceof RoadCanalBridge || current instanceof RoadWithStreetcarCanalBridge
 						|| current instanceof RailCanalBridge) {
 					blank = new Canal();
+				} else if (building instanceof Canal) {
+					// Delegate to the manager
+					game.getCanalSystemManager().removeCanal((Canal) building);
+					blank = new Land();
 				} else {
 					blank = new Land();
 				}
