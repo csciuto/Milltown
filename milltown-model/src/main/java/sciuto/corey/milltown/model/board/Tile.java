@@ -17,8 +17,6 @@ public class Tile implements Serializable {
 	private final int xLoc;
 	private final int yLoc;
 
-	private boolean isDirty;
-
 	private AbstractBuilding contents;
 
 	/**
@@ -63,24 +61,6 @@ public class Tile implements Serializable {
 		return yLoc;
 	}
 
-	/**
-	 * A UI hinter to redraw this tile.
-	 * 
-	 * @return
-	 */
-	public boolean isDirty() {
-		return isDirty;
-	}
-
-	/**
-	 * Set if your UI redraws only tiles that have changed.
-	 * 
-	 * @param isDirty
-	 */
-	public void setDirty(boolean isDirty) {
-		this.isDirty = isDirty;
-	}
-	
 	@Override
 	public String toString(){
 		return String.format("Tile: (%d,  %d)\nContents: %s",Integer.valueOf(xLoc),Integer.valueOf(yLoc),contents.toString());

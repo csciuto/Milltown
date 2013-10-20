@@ -19,7 +19,7 @@ public class CanalSystemManager implements Serializable {
 
 	private static final long serialVersionUID = -4256775891274539695L;
 
-	private final GameBoard board;
+	private final Game game;
 	
 	private boolean doRecalc = false;
 
@@ -33,8 +33,8 @@ public class CanalSystemManager implements Serializable {
 	 */
 	protected Set<Canal> canalRoots = new HashSet<Canal>();
 	
-	public CanalSystemManager(GameBoard board){
-		this.board = board;
+	public CanalSystemManager(Game game){
+		this.game = game;
 	}
 	
 	/**
@@ -50,6 +50,8 @@ public class CanalSystemManager implements Serializable {
 	 */
 	public void newCanal(Canal c){
 
+		GameBoard board = game.getBoard();
+		
 		Tile t = c.getRootTile();
 		
 		if ((board.getTileEast(t) != null && board.getTileEast(t).getContents() instanceof Water)
@@ -82,6 +84,8 @@ public class CanalSystemManager implements Serializable {
 		if (!doRecalc){
 			return;
 		}
+		GameBoard board = game.getBoard();
+		
 		doRecalc = false;
 		
 		/* This algorithm is crap but for now just get it working, right?
@@ -89,12 +93,14 @@ public class CanalSystemManager implements Serializable {
 		 * First, empty all the water. We're going to recalc the whole system.
 		 */
 		for (Canal c : canalSquares){
-			c.setHasWater(false);
+			if (c.hasWater()){
+				setCanalEmpty(c);
+			}
 		}
 		
 		// Now, recursively, refill it.
 		for (Canal c : canalRoots){
-			c.setHasWater(true);
+			setCanalFull(c);
 			
 			Tile current = c.getRootTile();
 			pathfindAndAddWater(board.getTileEast(current));
@@ -116,13 +122,37 @@ public class CanalSystemManager implements Serializable {
 			return;
 		}
 		
-		((Canal)current.getContents()).setHasWater(true);
+		GameBoard board = game.getBoard();
+		
+		setCanalFull((Canal)current.getContents());
 		
 		pathfindAndAddWater(board.getTileEast(current));
 		pathfindAndAddWater(board.getTileWest(current));
 		pathfindAndAddWater(board.getTileNorth(current));
 		pathfindAndAddWater(board.getTileSouth(current));
 		
+	}
+	
+	/**
+	 * Sets up the tiles for not having water. Readies the UI to redraw as well.
+	 * @param c
+	 * @param hasWater
+	 */
+	private void setCanalEmpty(Canal c){
+		c.setHasWater(false);
+		game.getTileStateManager().setDirtyTile(c.getRootTile());
+		c.setFileName("canal_empty");
+	}
+	
+	/**
+	 * Sets up the tiles for having water. Readies the UI to redraw as well.
+	 * @param c
+	 * @param hasWater
+	 */
+	private void setCanalFull(Canal c){
+		c.setHasWater(true);
+		game.getTileStateManager().setDirtyTile(c.getRootTile());
+		c.setFileName("canal");
 	}
 	
 }

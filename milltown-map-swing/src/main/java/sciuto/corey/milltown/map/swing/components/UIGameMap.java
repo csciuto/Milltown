@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -42,7 +43,7 @@ public class UIGameMap extends JPanel implements ActionListener, Scrollable {
 
 	private static final Logger LOGGER = Logger.getLogger(UIGameMap.class);
 
-	protected final GameBoard board;
+	protected final Game game;
 	protected final BuildingConstructor buildingConstructor;
 	protected final SquareMapper squareMapper;
 	protected final Dimension preferredViewportSize;
@@ -164,7 +165,8 @@ public class UIGameMap extends JPanel implements ActionListener, Scrollable {
 	public UIGameMap(final Game g, final int mapDisplaySize) {
 		super();
 
-		this.board = g.getBoard();
+		this.game = g;
+		GameBoard board = g.getBoard();
 		this.squareSize = 1000 / board.getBoardSize();
 		this.squareMapper = new SquareMapper(board, this);
 		this.buildingConstructor = new BuildingConstructor(g);
@@ -179,15 +181,19 @@ public class UIGameMap extends JPanel implements ActionListener, Scrollable {
 		MouseInputListener mouseListener = new MouseListener();
 		addMouseListener(mouseListener);
 		addMouseMotionListener(mouseListener);
-
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == MainScreen.instance().getGuiUpdateTimer()) {
-			// TODO: Don't repaint the whole board...check to see what's dirty.
-			// Only need this if buildings change due to timer...
-			// repaint();
+			/*
+			 * If the timer clicked over, update any tiles that need to be redrawn.
+			 */
+			Set<Tile> dirtyTiles = game.getTileStateManager().getDirtyTiles();
+			for (Tile t : dirtyTiles){
+				repaintTiles(t);
+			}
+			game.getTileStateManager().clearDirtyTiles();
 		}
 	}
 
@@ -200,6 +206,7 @@ public class UIGameMap extends JPanel implements ActionListener, Scrollable {
 	}
 
 	protected void setSquareSizeAndUpdateMap(int size) {
+		GameBoard board = game.getBoard();
 		squareSize = size;
 		Dimension dimensions = new Dimension(squareSize * board.getBoardSize(), squareSize * board.getBoardSize());
 		this.setSize(dimensions);
@@ -222,7 +229,7 @@ public class UIGameMap extends JPanel implements ActionListener, Scrollable {
 			return;
 		}
 		repaintTiles(activeTile);
-		MainScreen.instance().getQueryBox().setText(activeTile.toString());
+		MainScreen.instance().getQueryBox().setObject(activeTile);
 	}
 
 	/**
@@ -281,7 +288,7 @@ public class UIGameMap extends JPanel implements ActionListener, Scrollable {
 		repaintTiles(oldTile);
 		activeTile = null;
 
-		MainScreen.instance().getQueryBox().setText("");
+		MainScreen.instance().getQueryBox().setObject("");
 
 	}
 
@@ -299,6 +306,8 @@ public class UIGameMap extends JPanel implements ActionListener, Scrollable {
 	 */
 	protected void paintComponent(Graphics g) {
 
+		GameBoard board = game.getBoard();
+		
 		super.paintComponent(g);
 
 		// Draw the board itself.

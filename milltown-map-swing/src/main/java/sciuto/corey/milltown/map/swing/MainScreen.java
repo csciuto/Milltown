@@ -217,7 +217,7 @@ public class MainScreen extends JFrame {
 		rightBox = new VerticalPanel("right", 221);
 		getContentPane().add(rightBox, BorderLayout.LINE_END);
 
-		queryBox = new MultiLineTextField("Current Selection", 221, 100);
+		queryBox = new MultiLineTextField("Current Selection", 221, 100,guiUpdateTimer);
 		rightBox.add(queryBox);
 
 		// Top Panel
@@ -267,6 +267,8 @@ public class MainScreen extends JFrame {
 		/*
 		 * LISTENERS
 		 */
+		
+		registerAsGuiListener(map);
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -334,6 +336,14 @@ public class MainScreen extends JFrame {
 		this.enableKeyEvents();
 
 		simulationTimer.start();
+	}
+
+	/**
+	 * Adds the passed-in object as a listener to receive scheduled UI updates
+	 * @param uiGameMap
+	 */
+	public void registerAsGuiListener(ActionListener listener) {
+		guiUpdateTimer.addActionListener(listener);
 	}
 
 }

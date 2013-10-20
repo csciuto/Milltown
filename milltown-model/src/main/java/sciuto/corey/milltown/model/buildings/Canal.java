@@ -11,7 +11,7 @@ public class Canal extends AbstractBuilding {
 	private boolean hasWater;
 	
 	public Canal(){
-		super(SMALL_SQUARE,"canal");
+		super(SMALL_SQUARE,"canal_empty");
 		setHasWater(false);
 	}
 
@@ -25,6 +25,6 @@ public class Canal extends AbstractBuilding {
 	
 	@Override
 	public String toString(){
-		return String.format("Canal\nCarrying Water: %b", hasWater);
+		return String.format("Canal\nCarrying Water: %b\nfileName %s", hasWater,fileName);
 	}
 }

@@ -94,7 +94,7 @@ public class BuildingConstructor {
 					}
 				}
 				t.setContents(building);
-				t.setDirty(true);
+				game.getTileStateManager().setDirtyTile(t);
 			}
 		}
 		building.setRootTile(upperLeftTile);
@@ -149,7 +149,7 @@ public class BuildingConstructor {
 
 				t.setContents(blank);
 				blank.setRootTile(t);
-				t.setDirty(true);
+				game.getTileStateManager().setDirtyTile(t);
 			}
 		}
 		building = null;

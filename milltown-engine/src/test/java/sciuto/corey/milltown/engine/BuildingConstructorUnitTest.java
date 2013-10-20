@@ -44,12 +44,12 @@ public class BuildingConstructorUnitTest {
 
 		AbstractBuilding building = board.getTile(4, 2).getContents();
 		assertEquals(mill, building);
-		assertTrue(board.getTile(4, 2).isDirty());
+		assertTrue(game.getTileStateManager().isTileDirty(board.getTile(4, 2)));
 
 		assertTrue(board.getTile(3, 0).getContents() instanceof Land);
-		assertFalse(board.getTile(3, 0).isDirty());
+		assertFalse(game.getTileStateManager().isTileDirty(board.getTile(3, 0)));
 		assertTrue(board.getTile(2, 3).getContents() instanceof Water);
-		assertFalse(board.getTile(2, 3).isDirty());
+		assertFalse(game.getTileStateManager().isTileDirty(board.getTile(2, 3)));
 	}
 
 	@Test
@@ -79,26 +79,26 @@ public class BuildingConstructorUnitTest {
 
 		AbstractBuilding building = board.getTile(4, 2).getContents();
 		assertEquals(mill, building);
-		assertTrue(board.getTile(4, 2).isDirty());
-		board.getTile(4, 2).setDirty(false);
+		assertTrue(game.getTileStateManager().isTileDirty(board.getTile(4, 2)));
+		game.getTileStateManager().setDirtyTile(board.getTile(4, 2));
 
 		assertTrue(board.getTile(3, 0).getContents() instanceof Land);
-		assertFalse(board.getTile(3, 0).isDirty());
+		assertFalse(game.getTileStateManager().isTileDirty(board.getTile(3, 0)));
 		assertTrue(board.getTile(2, 3).getContents() instanceof Water);
-		assertFalse(board.getTile(2, 3).isDirty());
+		assertFalse(game.getTileStateManager().isTileDirty(board.getTile(2, 3)));
 
 		bc.demolish(board.getTile(4, 2));
 		assertTrue(board.getTile(4, 2).getContents() instanceof Land);
 		assertEquals(board.getTile(4, 2), board.getTile(4, 2).getContents().getRootTile());
-		assertTrue(board.getTile(4, 2).isDirty());
+		assertTrue(game.getTileStateManager().isTileDirty(board.getTile(4, 2)));
 		assertTrue(board.getTile(3, 1).getContents() instanceof Land);
 		assertEquals(board.getTile(3, 1), board.getTile(3, 1).getContents().getRootTile());
-		assertTrue(board.getTile(3, 1).isDirty());
+		assertTrue(game.getTileStateManager().isTileDirty(board.getTile(3, 1)));
 
 		bc.demolish(board.getTile(2, 3));
 		assertTrue(board.getTile(2, 3).getContents() instanceof Water);
 		assertEquals(board.getTile(2, 3), board.getTile(2, 3).getContents().getRootTile());
-		assertFalse(board.getTile(2, 3).isDirty());
+		assertFalse(game.getTileStateManager().isTileDirty(board.getTile(2, 3)));
 	}
 
 }

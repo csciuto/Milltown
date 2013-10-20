@@ -25,6 +25,7 @@ public class Game implements Serializable {
 	
 	private final GameBoard board;
 	private final CanalSystemManager canalSystemManager;
+	private final TileStateManager tileStateManager;
 
 	private GameDate gameDate = new GameDate();
 	private FormattedNumber population = new FormattedNumber(0);
@@ -51,7 +52,8 @@ public class Game implements Serializable {
 			board = b;
 		}
 		
-		canalSystemManager = new CanalSystemManager(board);
+		canalSystemManager = new CanalSystemManager(this);
+		tileStateManager = new TileStateManager();
 	}
 
 	/**
@@ -92,5 +94,9 @@ public class Game implements Serializable {
 
 	public CanalSystemManager getCanalSystemManager() {
 		return canalSystemManager;
+	}
+	
+	public TileStateManager getTileStateManager() {
+		return tileStateManager;
 	}
 }

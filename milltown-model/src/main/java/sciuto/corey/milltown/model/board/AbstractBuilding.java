@@ -23,7 +23,7 @@ public abstract class AbstractBuilding implements Serializable {
 
 	private Tile rootTile = null;
 
-	private String fileName = null;
+	protected String fileName = null;
 	
 	/**
 	 * Instantiates an unbuilt building.
