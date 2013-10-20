@@ -7,6 +7,6 @@ public class MediumPark extends AbstractBuilding {
 	private static final long serialVersionUID = 1L;
 
 	public MediumPark(){
-		super(MEDIUM_SQUARE);
+		super(MEDIUM_SQUARE,"");
 	}
 }

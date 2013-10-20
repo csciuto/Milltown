@@ -7,7 +7,7 @@ public class Warehouse extends AbstractBuilding {
 	private static final long serialVersionUID = -4572761290003226219L;
 
 	public Warehouse(){
-		super(MEDIUM_SQUARE);
+		super(MEDIUM_SQUARE,"warehouse");
 	}
 	
 }

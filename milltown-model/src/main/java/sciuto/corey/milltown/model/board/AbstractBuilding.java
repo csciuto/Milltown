@@ -23,13 +23,16 @@ public abstract class AbstractBuilding implements Serializable {
 
 	private Tile rootTile = null;
 
+	private String fileName = null;
+	
 	/**
 	 * Instantiates an unbuilt building.
 	 * 
 	 * @param size
 	 */
-	public AbstractBuilding(Pair<Integer, Integer> size) {
+	public AbstractBuilding(Pair<Integer, Integer> size, String fileName) {
 		this.size = size;
+		this.fileName = fileName;
 	}
 
 	public Pair<Integer, Integer> getSize() {
@@ -38,6 +41,14 @@ public abstract class AbstractBuilding implements Serializable {
 
 	public Tile getRootTile() {
 		return rootTile;
+	}
+	
+	public String getFileName(){
+		return this.fileName;
+	}
+	
+	public void setFileName(String fileName){
+		this.fileName = fileName;
 	}
 
 	/**

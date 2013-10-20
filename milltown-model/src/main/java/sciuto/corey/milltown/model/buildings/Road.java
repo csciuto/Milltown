@@ -9,6 +9,6 @@ public class Road extends AbstractBuilding {
 	private static final long serialVersionUID = -9176226041662830671L;
 
 	public Road(){
-		super(SMALL_SQUARE);
+		super(SMALL_SQUARE, "road");
 	}
 }

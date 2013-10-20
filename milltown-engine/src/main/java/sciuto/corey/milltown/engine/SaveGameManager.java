@@ -1,7 +1,6 @@
 package sciuto.corey.milltown.engine;
 
 import java.io.*;
-import java.net.URL;
 
 import org.apache.log4j.Logger;
 
@@ -28,7 +27,7 @@ public class SaveGameManager {
 		Game g = null;
 		try {
 			/*
-			 * TODO: This is an issue because the serializaiton doesn't stay up to date as the engine changes...
+			 * TODO: This is an issue because the serialization doesn't stay up to date as the engine changes...
 			 * URL file = SaveGameManager.class.getClassLoader().getResource("default.mtown");
 			 * in = file.openStream();
 			 * s = new ObjectInputStream(in);

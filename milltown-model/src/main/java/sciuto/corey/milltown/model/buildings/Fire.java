@@ -9,6 +9,6 @@ public class Fire extends AbstractBuilding {
 	private static final long serialVersionUID = 2121737147892078610L;
 
 	public Fire(){
-		super(MEDIUM_SQUARE);
+		super(MEDIUM_SQUARE, "");
 	}
 }

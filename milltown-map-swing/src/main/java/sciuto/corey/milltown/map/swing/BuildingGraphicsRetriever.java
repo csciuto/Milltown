@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import org.apache.log4j.Logger;
 
 import sciuto.corey.milltown.model.board.AbstractBuilding;
+import sciuto.corey.milltown.model.board.Tile;
 import sciuto.corey.milltown.model.buildings.*;
 
 /**
@@ -26,11 +27,11 @@ public class BuildingGraphicsRetriever {
 	/**
 	 * Returns a graphical representation of the passed-in building
 	 * 
-	 * @param buildingClass
+	 * @param tile
 	 * @return
 	 */
-	public BufferedImage retrieveImage(Class<? extends AbstractBuilding> buildingClass) {
-		String fileName = getFileName(buildingClass);
+	public BufferedImage retrieveImage(Tile tile) {
+		String fileName = tile.getContents().getFileName();
 
 		BufferedImage img = null;
 		if (fileName != null) {
@@ -61,75 +62,26 @@ public class BuildingGraphicsRetriever {
 	}
 
 	/**
-	 * Retrieves the actual class to build if there are variants used by the UI
-	 * 
-	 * @param classToBuild
+	 * Retrieves the file name by class
+	 * @param buildingClass
 	 * @return
 	 */
-	public Class<? extends AbstractBuilding> getVariantSelector(Class<? extends AbstractBuilding> classToBuild) {
-
-		if (classToBuild.equals(House1.class)) {
-			double d = Math.random();
-
-			if (d <= 0.3) {
-				return House1.class;
-			} else if (d <= 0.6) {
-				return House2.class;
-			} else {
-				return House3.class;
-			}
-		}
-		if (classToBuild.equals(Tenement2.class)) {
-			double d = Math.random();
-
-			if (d <= 0.3) {
-				return Tenement1.class;
-			} else if (d <= 0.6) {
-				return Tenement2.class;
-			} else {
-				return Tenement3.class;
-			}
-		}
-		if (classToBuild.equals(Office1.class)) {
-			double d = Math.random();
-
-			if (d <= 0.5) {
-				return Office1.class;
-			} else {
-				return Office2.class;
-			}
-		}
-
-		// No variants
-		return classToBuild;
-	}
-
 	public String getFileName(Class<? extends AbstractBuilding> buildingClass) {
 		if (buildingClass.equals(Land.class)) {
 			return "land";
 		} else if (buildingClass.equals(Water.class)) {
 			return "water";
-		} else if (buildingClass.equals(House1.class)) {
+		} else if (buildingClass.equals(House.class)) {
 			return "house_1";
-		} else if (buildingClass.equals(House2.class)) {
-			return "house_2";
-		} else if (buildingClass.equals(House3.class)) {
-			return "house_3";
-		} else if (buildingClass.equals(Tenement1.class)) {
+		} else if (buildingClass.equals(Tenement.class)) {
 			return "tenement_1";
-		} else if (buildingClass.equals(Tenement2.class)) {
-			return "tenement_2";
-		} else if (buildingClass.equals(Tenement3.class)) {
-			return "tenement_3";
-		} else if (buildingClass.equals(Office1.class)) {
+		} else if (buildingClass.equals(Office.class)) {
 			return "office_1";
-		} else if (buildingClass.equals(Office2.class)) {
-			return "office_2";
 		} else if (buildingClass.equals(Mill.class)) {
 			return "mill";
 		} else if (buildingClass.equals(Warehouse.class)) {
 			return "warehouse";
-		} else if (buildingClass.equals(Road.class) || buildingClass.equals(RoadBridge.class) || buildingClass.equals(RoadCanalBridge.class)) {
+		} else if (buildingClass.equals(Road.class)) {
 			return "road";
 		} else if (buildingClass.equals(Canal.class)) {
 			return "canal";

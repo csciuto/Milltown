@@ -49,8 +49,7 @@ public class CanalSystemManager implements Serializable {
 	 * @param c
 	 */
 	public void newCanal(Canal c){
-		primeRecalc();
-		
+
 		Tile t = c.getRootTile();
 		
 		if ((board.getTileEast(t) != null && board.getTileEast(t).getContents() instanceof Water)
@@ -62,6 +61,8 @@ public class CanalSystemManager implements Serializable {
 			c.setHasWater(true);
 		}
 		canalSquares.add(c);
+		
+		primeRecalc();
 	}
 	
 	/**

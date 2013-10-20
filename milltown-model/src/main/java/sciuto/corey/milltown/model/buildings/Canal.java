@@ -11,7 +11,7 @@ public class Canal extends AbstractBuilding {
 	private boolean hasWater;
 	
 	public Canal(){
-		super(SMALL_SQUARE);
+		super(SMALL_SQUARE,"canal");
 		setHasWater(false);
 	}
 

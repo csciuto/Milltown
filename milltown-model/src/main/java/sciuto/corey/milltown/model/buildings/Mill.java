@@ -7,7 +7,7 @@ public class Mill extends AbstractBuilding {
 	private static final long serialVersionUID = -4963262192104736767L;
 
 	public Mill(){
-		super(MEDIUM_SQUARE);
+		super(MEDIUM_SQUARE, "mill");
 	}
 	
 }
