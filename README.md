@@ -1,4 +1,4 @@
-Milltown
+ Milltown
 
 A SimCity style clone written with a Swing interface and all the graphical complexity of MSPaint.
 
